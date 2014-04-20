@@ -2967,7 +2967,8 @@ namespace ERPMercuryProcessingOrder
                         worksheet.Cells[iCurrentRow, 2].Value = objWaybillItemForExport.COUNTRY_NAME;
                         worksheet.Cells[iCurrentRow, 3].Value = objWaybillItemForExport.MEASURE_SHORTNAME;
                         worksheet.Cells[iCurrentRow, 4].Value = objWaybillItemForExport.WAYBITMS_QUANTITY;
-                        worksheet.Cells[iCurrentRow, 5].Value = objWaybillItemForExport.WAYBITMS_BASEPRICE;
+                        worksheet.Cells[iCurrentRow, 5].Value = (objWaybillItemForExport.WAYBITMS_TOTALPRICEWITHOUTNDS / objWaybillItemForExport.WAYBITMS_QUANTITY);
+                        //worksheet.Cells[iCurrentRow, 5].Value = objWaybillItemForExport.WAYBITMS_BASEPRICE;
                         worksheet.Cells[iCurrentRow, 6].Value = objWaybillItemForExport.WAYBITMS_DOUBLEPERCENT;
                         worksheet.Cells[iCurrentRow, 7].Value = objWaybillItemForExport.WAYBITMS_TOTALPRICEWITHOUTNDS;
                         worksheet.Cells[iCurrentRow, 8].Value = objWaybillItemForExport.WAYBITMS_NDS;
