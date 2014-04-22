@@ -1053,7 +1053,7 @@ namespace ERPMercuryProcessingOrder
                 System.Guid uuidStockId = ((cboxStock.SelectedItem == null) ? System.Guid.Empty : ((ERP_Mercury.Common.CStock)cboxStock.SelectedItem).ID);
                 System.Guid uuidPaymentTypeId = ((cboxPaymentType.SelectedItem == null) ? System.Guid.Empty : ((ERP_Mercury.Common.CPaymentType)cboxPaymentType.SelectedItem).ID);
 
-                m_objList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, dtBeginDate.DateTime,
+                m_objList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, System.Guid.Empty, false, dtBeginDate.DateTime,
                     dtEndDate.DateTime, uuidCompanyId, uuidStockId, uuidPaymentTypeId, uuidCustomerId, ref strErr);
 
                 if (m_objList != null)

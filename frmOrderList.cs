@@ -1862,7 +1862,6 @@ namespace ERPMercuryProcessingOrder
             }
             return;
         }
-
         private void CreateWaybillForSuppl(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
@@ -1894,7 +1893,7 @@ namespace ERPMercuryProcessingOrder
                         bNeedOpenWaybill = objfrmCreateWaybillFromSuppl.NeedOpenWaybill;
                     }
 
-                    if ((dlgRes == System.Windows.Forms.DialogResult.OK) && (Waybill_Guid.CompareTo(System.Guid.Empty) != 0) )
+                    if ((dlgRes == System.Windows.Forms.DialogResult.OK) && (Waybill_Guid.CompareTo(System.Guid.Empty) != 0))
                     {
                         if (objOrder.OrderState.ID.CompareTo(OrderState_Guid) != 0)
                         {
@@ -1923,7 +1922,86 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
+        /// <summary>
+        /// Перевод заказа в накладную
+        /// </summary>
+        /// <param name="objOrder">Заказ</param>
+        private void TransformSupplToWaybill(ERP_Mercury.Common.COrder objOrder)
+        {
+            if (objOrder == null) { return; }
+            try
+            {
+                System.String strErr = System.String.Empty;
+
+                List<ERP_Mercury.Common.CWaybill> objWaybillList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, objOrder.ID, true, System.DateTime.Today,
+                    System.DateTime.Today, System.Guid.Empty, System.Guid.Empty, System.Guid.Empty, System.Guid.Empty, ref strErr);
+                if ((objWaybillList == null) || (objWaybillList.Count == 0))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Запрос информации по заказу для накладной.\n\nТекст ошибки: " + strErr, "Ошибка",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                ERP_Mercury.Common.CWaybill objItem = objWaybillList[0];
+                objItem.SupplID = objOrder.ID;
+                List<ERP_Mercury.Common.CSalesMan> objSalesManList = ERP_Mercury.Common.CSalesMan.GetSalesManListForDepart(m_objProfile, null, objItem.Depart.uuidID, ref strErr);
+                if ((objSalesManList != null) && (objSalesManList.Count > 0))
+                {
+                    objItem.SalesMan = objSalesManList[0];
+                }
+
+                Cursor = Cursors.WaitCursor;
+
+                ERP_Mercury.Common.CAddress.Init(m_objProfile, null, objItem.AddressDelivery, objItem.AddressDelivery.ID);
+                objItem.WaybillItemList = ERP_Mercury.Common.CWaybillItem.GetWaybillTablePart(m_objProfile, objOrder.ID, ref strErr, true);
+
+                if (frmItemEditor == null)
+                {
+                    frmItemEditor = new ctrlWaybillEditor(m_objProfile, m_objMenuItem, m_objCustomerList);
+                    tableLayoutPanelWaybillEditor.Controls.Add(frmItemEditor, 0, 0);
+                    frmItemEditor.Dock = DockStyle.Fill;
+                    frmItemEditor.ChangeWaybillForCustomerProperties += this.OnChangeWaybillPropertie;
+                }
+
+                frmItemEditor.NewWaybillFromSuppl( objItem );
+
+                tabControl.SelectedTabPage = tabPageWaybill;
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("CreateWaybillForSuppl. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+            return;
+        }
+        private void menuTransformSupplToWaybillInManualMode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gridViewAgreementList.FocusedRowHandle < 0) { return; }
+                if (GetSelectedOrder() == null) { return; }
+
+                TransformSupplToWaybill(GetSelectedOrder());
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("menuTransformSupplToWaybillInManualMode_Click. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+
+        }
         #endregion
+
+
 
     }
 

@@ -1364,6 +1364,57 @@ namespace ERPMercuryProcessingOrder
             }
             return;
         }
+        private void SetModeNewWaybillFromSuppl()
+        {
+            try
+            {
+                BeginDate.Properties.ReadOnly = true;
+                DeliveryDate.Properties.ReadOnly = true;
+                ShipDate.Properties.ReadOnly = true;
+                txtDescription.Properties.ReadOnly = false;
+                WaybilllNum.Properties.ReadOnly = false;
+
+                Customer.Properties.ReadOnly = true;
+                ChildDepart.Properties.ReadOnly = true;
+                PaymentType.Properties.ReadOnly = true;
+                WaybillState.Properties.ReadOnly = true;
+                WaybillShipMode.Properties.ReadOnly = false;
+                IsBonus.Properties.ReadOnly = true;
+                Rtt.Properties.ReadOnly = true;
+                AddressDelivery.Properties.ReadOnly = true;
+                Depart.Properties.ReadOnly = true;
+                SalesMan.Properties.ReadOnly = true;
+                Stock.Properties.ReadOnly = true;
+
+                cboxProductTradeMark.Properties.ReadOnly = true;
+                cboxProductType.Properties.ReadOnly = true;
+                spinEditDiscount.Properties.ReadOnly = true;
+
+                checkSetOrderInQueue.Enabled = false;
+
+                gridView.OptionsBehavior.Editable = false;
+                controlNavigator.Enabled = true;
+                if (m_bIsAutoCreatePriceMode == false)
+                {
+                    btnSetDiscount.Enabled = false;
+                    checkEditCalcPrices.Enabled = false;
+                }
+
+                mitemImport.Enabled = false;
+
+                m_bIsReadOnly = false;
+
+                btnEdit.Enabled = false;
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("SetModeNewWaybillFromSuppl. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
         private void btnEdit_Click(object sender, EventArgs e)
         {
             try
@@ -1589,6 +1640,7 @@ namespace ERPMercuryProcessingOrder
                 m_bDisableEvents = false;
 
                 GetCustomerDebtInfo(true);
+                Cursor = Cursors.Default;
             }
             return;
         }
@@ -1800,6 +1852,163 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
+        #endregion
+
+        #region Новая накладная (заказ переводится в накладную)
+        /// <summary>
+        /// Создание накладной на основе заказа
+        /// </summary>
+        /// <param name="Suppl_Guid">УИ заказа</param>
+        public void NewWaybillFromSuppl(CWaybill objWaybill)
+        {
+            if (objWaybill == null) { return; }
+            m_bDisableEvents = true;
+            m_bNewObject = true;
+            SetCreatePriceMode();
+            try
+            {
+                System.String strErr = System.String.Empty;
+                m_objSelectedWaybill = objWaybill;
+
+                if (m_objSelectedWaybill.ChildDepart != null)
+                {
+                    m_objSelectedWaybill.ChildDepart = CChildDepart.GetChildDepart(m_objProfile, null, m_objSelectedWaybill.ChildDepart.ID);
+                }
+
+                this.tableLayoutPanelBackground.SuspendLayout();
+
+                ClearControls();
+
+
+                BeginDate.DateTime = m_objSelectedWaybill.BeginDate;
+                DeliveryDate.DateTime = m_objSelectedWaybill.DeliveryDate;
+                if (System.DateTime.Compare(m_objSelectedWaybill.ShipDate, System.DateTime.MinValue) != 0)
+                {
+                    ShipDate.DateTime = m_objSelectedWaybill.ShipDate;
+                }
+                txtDescription.Text = m_objSelectedWaybill.Description;
+                WaybilllNum.Text = m_objSelectedWaybill.DocNum;
+
+                Customer.SelectedItem = (m_objSelectedWaybill.Customer == null) ? null : Customer.Properties.Items.Cast<CCustomer>().Single<CCustomer>(x => x.ID.CompareTo(m_objSelectedWaybill.Customer.ID) == 0);
+
+                AddressDelivery.Properties.Items.Clear();
+
+                LoadRttListForCustomer(m_objSelectedWaybill.Customer.ID);
+                LoadChildDeprtForCustomer(m_objSelectedWaybill.Customer.ID);
+                m_objSelectedWaybill.Customer.PhoneList = CPhone.GetPhoneListForCustomer(m_objProfile, null,
+                    m_objSelectedWaybill.Customer.ID, ref strErr);
+
+
+                Rtt.SelectedItem = (m_objSelectedWaybill.Rtt == null) ? null : Rtt.Properties.Items.Cast<CRtt>().Single<CRtt>(x => x.ID.CompareTo(m_objSelectedWaybill.Rtt.ID) == 0);
+                if (Rtt.SelectedItem != null)
+                {
+                    AddressDelivery.Properties.Items.AddRange((((CRtt)Rtt.SelectedItem).AddressList));
+                }
+
+                ChildDepart.SelectedItem = (m_objSelectedWaybill.ChildDepart == null) ? null : ChildDepart.Properties.Items.Cast<CChildDepart>().SingleOrDefault<CChildDepart>(x => x.ID.CompareTo(m_objSelectedWaybill.ChildDepart.ID) == 0);
+                PaymentType.SelectedItem = (m_objSelectedWaybill.PaymentType == null) ? null : PaymentType.Properties.Items.Cast<CPaymentType>().SingleOrDefault<CPaymentType>(x => x.ID.CompareTo(m_objSelectedWaybill.PaymentType.ID) == 0);
+                WaybillShipMode.SelectedItem = (m_objSelectedWaybill.WaybillShipMode == null) ? null : WaybillShipMode.Properties.Items.Cast<CWaybillShipMode>().SingleOrDefault<CWaybillShipMode>(x => x.ID.CompareTo(m_objSelectedWaybill.WaybillShipMode.ID) == 0);
+                WaybillState.SelectedItem = (m_objSelectedWaybill.WaybillState == null) ? null : WaybillState.Properties.Items.Cast<CWaybillState>().SingleOrDefault<CWaybillState>(x => x.ID.CompareTo(m_objSelectedWaybill.WaybillState.ID) == 0);
+
+                IsBonus.CheckState = ((m_objSelectedWaybill.IsBonus == true) ? CheckState.Checked : CheckState.Unchecked);
+                AddressDelivery.SelectedItem = (m_objSelectedWaybill.AddressDelivery == null) ? null : AddressDelivery.Properties.Items.Cast<CAddress>().SingleOrDefault<CAddress>(x => x.ID.CompareTo(m_objSelectedWaybill.AddressDelivery.ID) == 0);
+                Depart.SelectedItem = (m_objSelectedWaybill.Depart == null) ? null : Depart.Properties.Items.Cast<CDepart>().SingleOrDefault<CDepart>(x => x.uuidID.CompareTo(m_objSelectedWaybill.Depart.uuidID) == 0);
+
+                LoadSalesManListForDepart((CDepart)Depart.SelectedItem);
+
+                SalesMan.SelectedItem = (m_objSelectedWaybill.SalesMan == null) ? null : SalesMan.Properties.Items.Cast<CSalesMan>().SingleOrDefault<CSalesMan>(x => x.uuidID.CompareTo(m_objSelectedWaybill.SalesMan.uuidID) == 0);
+                Stock.SelectedItem = (m_objSelectedWaybill.Stock == null) ? null : Stock.Properties.Items.Cast<CStock>().SingleOrDefault<CStock>(x => x.ID.CompareTo(m_objSelectedWaybill.Stock.ID) == 0);
+
+                cboxProductTradeMark.Properties.Items.Add(new CProductTradeMark() { ID = System.Guid.Empty, Name = "" });
+                cboxProductTradeMark.Properties.Items.AddRange(CProductTradeMark.GetProductTradeMarkList(m_objProfile, null));
+                cboxProductType.Properties.Items.Add(new CProductType() { ID = System.Guid.Empty, Name = "" });
+                cboxProductType.Properties.Items.AddRange(CProductType.GetProductTypeList(m_objProfile, null));
+
+                if (Stock.SelectedItem != null)
+                {
+                    m_uuidSelectedStockID = ((CStock)Stock.SelectedItem).ID;
+                    m_objPartsList = COrderRepository.GetPartsInstockList(m_objProfile, null, m_uuidSelectedStockID, m_objSelectedWaybill.SupplID, true, true);
+                    if (m_objPartsList != null)
+                    {
+                        SetProductListToForm(m_objPartsList);
+                    }
+                }
+
+                dataSet.Tables["OrderItems"].Clear();
+                System.Data.DataRow newRowOrderItems = null;
+                CProduct objProduct = null;
+                foreach (CWaybillItem objItem in m_objSelectedWaybill.WaybillItemList)
+                {
+                    newRowOrderItems = dataSet.Tables["OrderItems"].NewRow();
+
+                    newRowOrderItems["OrderItemsID"] = objItem.ID;
+                    newRowOrderItems["WaybItem_Id"] = objItem.Ib_ID;
+                    newRowOrderItems["SupplItem_Guid"] = objItem.SupplItemID;
+
+                    newRowOrderItems["ProductID"] = objItem.Product.ID;
+                    newRowOrderItems["MeasureID"] = objItem.Measure.ID;
+                    newRowOrderItems["Quantity"] = objItem.Quantity;
+                    newRowOrderItems["QuantityReturned"] = objItem.QuantityReturn;
+
+                    if (m_objPartsList != null)
+                    {
+                        try
+                        {
+                            objProduct = m_objPartsList.Single<CProduct>(x => x.ID.CompareTo(objItem.Product.ID) == 0);
+                        }
+                        catch
+                        {
+                            objProduct = null;
+                        }
+                        if (objProduct != null)
+                        {
+                            newRowOrderItems["OrderPackQty"] = objProduct.CustomerOrderMinRetailQty;
+                            newRowOrderItems["OrderItems_QuantityInstock"] = objProduct.CustomerOrderStockQty;
+                        }
+                    }
+
+                    newRowOrderItems["OrderItems_MeasureName"] = objItem.Measure.ShortName;
+                    newRowOrderItems["OrderItems_PartsName"] = objItem.Product.Name;
+                    newRowOrderItems["OrderItems_PartsArticle"] = objItem.Product.Article;
+                    newRowOrderItems["PriceImporter"] = objItem.PriceImporter;
+                    newRowOrderItems["Price"] = objItem.Price;
+                    newRowOrderItems["DiscountPercent"] = objItem.DiscountPercent;
+                    newRowOrderItems["PriceWithDiscount"] = objItem.PriceWithDiscount;
+                    newRowOrderItems["NDSPercent"] = objItem.NDSPercent;
+                    newRowOrderItems["PriceInAccountingCurrency"] = objItem.PriceInAccountingCurrency;
+                    newRowOrderItems["PriceWithDiscountInAccountingCurrency"] = objItem.PriceWithDiscountInAccountingCurrency;
+
+                    dataSet.Tables["OrderItems"].Rows.Add(newRowOrderItems);
+                }
+                newRowOrderItems = null;
+                objProduct = null;
+                dataSet.Tables["OrderItems"].AcceptChanges();
+
+                ReloadDscrpnByAddress();
+
+                SetPropertiesModified(true);
+                
+                btnCancel.Enabled = true;
+                btnCancel.Focus();
+                
+                btnSave.Enabled =  ValidateProperties();
+
+                SetModeNewWaybillFromSuppl();
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка формирования накладной из заказа. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                this.tableLayoutPanelBackground.ResumeLayout(false);
+                m_bDisableEvents = false;
+
+                GetCustomerDebtInfo(true);
+                Cursor = Cursors.Default;
+            }
+            return;
+        }
         #endregion
 
         #region Отмена

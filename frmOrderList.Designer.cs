@@ -109,7 +109,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuCreateOrderBlank = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuTransformSupplToWaybill = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTransformSupplToWaybillInAutoMode = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGoToWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.gridViewAgreementList = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
@@ -124,6 +124,7 @@
             this.tabPageWaybill = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.menuTransformSupplToWaybillInManualMode = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -1022,50 +1023,51 @@
             this.toolStripMenuItem1,
             this.menuCreateOrderBlank,
             this.toolStripMenuItem2,
-            this.menuTransformSupplToWaybill,
+            this.menuTransformSupplToWaybillInManualMode,
+            this.menuTransformSupplToWaybillInAutoMode,
             this.menuGoToWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(308, 226);
+            this.contextMenuStrip.Size = new System.Drawing.Size(324, 270);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(307, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(323, 22);
             this.menuRefresh.Text = "Обновить";
             this.menuRefresh.Click += new System.EventHandler(this.barBtnRefresh_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(304, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(320, 6);
             // 
             // menuCalcPrice
             // 
             this.menuCalcPrice.Name = "menuCalcPrice";
-            this.menuCalcPrice.Size = new System.Drawing.Size(307, 22);
+            this.menuCalcPrice.Size = new System.Drawing.Size(323, 22);
             this.menuCalcPrice.Text = "Пересчитать цены в заказе";
             this.menuCalcPrice.Click += new System.EventHandler(this.menuCalcPrice_Click);
             // 
             // menuClearPrices
             // 
             this.menuClearPrices.Name = "menuClearPrices";
-            this.menuClearPrices.Size = new System.Drawing.Size(307, 22);
+            this.menuClearPrices.Size = new System.Drawing.Size(323, 22);
             this.menuClearPrices.Text = "Обнулить цены для ручной обработки";
             this.menuClearPrices.Visible = false;
             // 
             // menuReturnSupplStateToAutoProcessPrices
             // 
             this.menuReturnSupplStateToAutoProcessPrices.Name = "menuReturnSupplStateToAutoProcessPrices";
-            this.menuReturnSupplStateToAutoProcessPrices.Size = new System.Drawing.Size(307, 22);
+            this.menuReturnSupplStateToAutoProcessPrices.Size = new System.Drawing.Size(323, 22);
             this.menuReturnSupplStateToAutoProcessPrices.Text = "Вернуть заказ на автоматический расчет цен";
             this.menuReturnSupplStateToAutoProcessPrices.Visible = false;
             // 
             // menuMakeSupplDeleted
             // 
             this.menuMakeSupplDeleted.Name = "menuMakeSupplDeleted";
-            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(307, 22);
+            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(323, 22);
             this.menuMakeSupplDeleted.Text = "Удалить заказ";
             this.menuMakeSupplDeleted.ToolTipText = "Изменить состояние заказа на \"удален\"";
             this.menuMakeSupplDeleted.Click += new System.EventHandler(this.barBtnDelete_Click);
@@ -1073,24 +1075,24 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(304, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(320, 6);
             // 
             // menuEventLog
             // 
             this.menuEventLog.Name = "menuEventLog";
-            this.menuEventLog.Size = new System.Drawing.Size(307, 22);
+            this.menuEventLog.Size = new System.Drawing.Size(323, 22);
             this.menuEventLog.Text = "Журнал событий";
             this.menuEventLog.Click += new System.EventHandler(this.menuEventLog_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(304, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(320, 6);
             // 
             // menuCreateOrderBlank
             // 
             this.menuCreateOrderBlank.Name = "menuCreateOrderBlank";
-            this.menuCreateOrderBlank.Size = new System.Drawing.Size(307, 22);
+            this.menuCreateOrderBlank.Size = new System.Drawing.Size(323, 22);
             this.menuCreateOrderBlank.Text = "Формирование бланка заказа";
             this.menuCreateOrderBlank.ToolTipText = "Формирование бланка заказа в MS Excel";
             this.menuCreateOrderBlank.Click += new System.EventHandler(this.menuCreateOrderBlank_Click);
@@ -1098,19 +1100,19 @@
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(304, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(320, 6);
             // 
-            // menuTransformSupplToWaybill
+            // menuTransformSupplToWaybillInAutoMode
             // 
-            this.menuTransformSupplToWaybill.Name = "menuTransformSupplToWaybill";
-            this.menuTransformSupplToWaybill.Size = new System.Drawing.Size(307, 22);
-            this.menuTransformSupplToWaybill.Text = "Перевести заказ в накладную...";
-            this.menuTransformSupplToWaybill.Click += new System.EventHandler(this.menuTransformSupplToWaybill_Click);
+            this.menuTransformSupplToWaybillInAutoMode.Name = "menuTransformSupplToWaybillInAutoMode";
+            this.menuTransformSupplToWaybillInAutoMode.Size = new System.Drawing.Size(323, 22);
+            this.menuTransformSupplToWaybillInAutoMode.Text = "Перевести заказ в накладную (авто)...";
+            this.menuTransformSupplToWaybillInAutoMode.Click += new System.EventHandler(this.menuTransformSupplToWaybill_Click);
             // 
             // menuGoToWaybill
             // 
             this.menuGoToWaybill.Name = "menuGoToWaybill";
-            this.menuGoToWaybill.Size = new System.Drawing.Size(307, 22);
+            this.menuGoToWaybill.Size = new System.Drawing.Size(323, 22);
             this.menuGoToWaybill.Text = "Перейти к накладной...";
             this.menuGoToWaybill.Click += new System.EventHandler(this.menuGoToWaybill_Click);
             // 
@@ -1285,6 +1287,13 @@
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
             // 
+            // menuTransformSupplToWaybillInManualMode
+            // 
+            this.menuTransformSupplToWaybillInManualMode.Name = "menuTransformSupplToWaybillInManualMode";
+            this.menuTransformSupplToWaybillInManualMode.Size = new System.Drawing.Size(323, 22);
+            this.menuTransformSupplToWaybillInManualMode.Text = "Перевести заказ в накладную (ручной режим)...";
+            this.menuTransformSupplToWaybillInManualMode.Click += new System.EventHandler(this.menuTransformSupplToWaybillInManualMode_Click);
+            // 
             // frmOrderList
             // 
             this.Appearance.Options.UseBackColor = true;
@@ -1444,9 +1453,10 @@
         private DevExpress.XtraEditors.LabelControl labelControl17;
         private DevExpress.XtraEditors.MemoEdit txtSupplDescrpn;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem menuTransformSupplToWaybill;
+        private System.Windows.Forms.ToolStripMenuItem menuTransformSupplToWaybillInAutoMode;
         private System.Windows.Forms.ToolStripMenuItem menuGoToWaybill;
         private DevExpress.XtraTab.XtraTabPage tabPageWaybill;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelWaybillEditor;
+        private System.Windows.Forms.ToolStripMenuItem menuTransformSupplToWaybillInManualMode;
     }
 }
