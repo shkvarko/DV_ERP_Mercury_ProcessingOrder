@@ -110,11 +110,12 @@ namespace ERPMercuryProcessingOrder
             // Если есть зарегистрированные объектв, уведомляем их
             if (temp != null) temp(this, e);
         }
-        public void SimulateChangeWaybillProperties(CWaybill objWaybill, enumActionSaveCancel enActionType, System.Boolean bIsNewWaybill)
+        public void SimulateChangeWaybillProperties( CWaybill objWaybill, enumActionSaveCancel enActionType,
+            System.Boolean bIsNewWaybill, System.Guid uuidOrderCurrentStateGuid )
         {
             // Создаем объект, хранящий информацию, которую нужно передать
             // объектам, получающим уведомление о событии
-            ChangeWaybillPropertieEventArgs e = new ChangeWaybillPropertieEventArgs(objWaybill, enActionType, bIsNewWaybill);
+            ChangeWaybillPropertieEventArgs e = new ChangeWaybillPropertieEventArgs(objWaybill, enActionType, bIsNewWaybill, uuidOrderCurrentStateGuid);
 
             // Вызываем виртуальный метод, уведомляющий наш объект о возникновении события
             // Если нет типа, переопределяющего этот метод, наш объект уведомит все объекты, 
@@ -290,10 +291,10 @@ namespace ERPMercuryProcessingOrder
                 m_bIsChanged = bModified;
                 btnSave.Enabled = (m_bIsChanged && (ValidateProperties() == true));
                 btnCancel.Enabled = m_bIsChanged;
-                if (m_bIsChanged == true)
-                {
-                    SimulateChangeWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Unkown, m_bNewObject);
-                }
+                //if (m_bIsChanged == true)
+                //{
+                //    SimulateChangeWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Unkown, m_bNewObject, System.Guid.Empty);
+                //}
             }
             catch (System.Exception f)
             {
@@ -1394,6 +1395,11 @@ namespace ERPMercuryProcessingOrder
 
                 gridView.OptionsBehavior.Editable = false;
                 controlNavigator.Enabled = true;
+                controlNavigator.Buttons.Append.Enabled = false;
+                controlNavigator.Buttons.Edit.Enabled = false;
+                controlNavigator.Buttons.CancelEdit.Enabled = false;
+                controlNavigator.Buttons.EndEdit.Enabled = false;
+
                 if (m_bIsAutoCreatePriceMode == false)
                 {
                     btnSetDiscount.Enabled = false;
@@ -1622,6 +1628,9 @@ namespace ERPMercuryProcessingOrder
                 dataSet.Tables["OrderItems"].AcceptChanges();
 
                 ReloadDscrpnByAddress();
+
+                checkEditForStock.Visible = false;
+                checkEditForStock.Checked = true;
 
                 SetPropertiesModified(false);
                 btnCancel.Enabled = true;
@@ -1875,7 +1884,7 @@ namespace ERPMercuryProcessingOrder
                     m_objSelectedWaybill.ChildDepart = CChildDepart.GetChildDepart(m_objProfile, null, m_objSelectedWaybill.ChildDepart.ID);
                 }
 
-                this.tableLayoutPanelBackground.SuspendLayout();
+                //this.tableLayoutPanelBackground.SuspendLayout();
 
                 ClearControls();
 
@@ -1990,6 +1999,9 @@ namespace ERPMercuryProcessingOrder
                 
                 btnCancel.Enabled = true;
                 btnCancel.Focus();
+
+                checkEditForStock.Visible = true;
+                checkEditForStock.Checked = false;
                 
                 btnSave.Enabled =  ValidateProperties();
 
@@ -2001,7 +2013,7 @@ namespace ERPMercuryProcessingOrder
             }
             finally
             {
-                this.tableLayoutPanelBackground.ResumeLayout(false);
+                //this.tableLayoutPanelBackground.ResumeLayout(false);
                 m_bDisableEvents = false;
 
                 GetCustomerDebtInfo(true);
@@ -2035,7 +2047,7 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                SimulateChangeWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Cancel, m_bNewObject);
+                SimulateChangeWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Cancel, m_bNewObject, System.Guid.Empty);
             }
             catch (System.Exception f)
             {
@@ -2055,7 +2067,7 @@ namespace ERPMercuryProcessingOrder
         /// Сохраняет изменения в базе данных
         /// </summary>
         /// <returns>true - удачное завершение операции;false - ошибка</returns>
-        private System.Boolean bSaveChanges(ref System.String strErr)
+        private System.Boolean bSaveChanges(ref System.Guid SupplState_Guid, ref System.String strErr)
         {
             System.Boolean bRet = false;
             System.Boolean bOkSave = false;
@@ -2063,27 +2075,33 @@ namespace ERPMercuryProcessingOrder
             try
             {
 
-                System.DateTime dtBeginDate = BeginDate.DateTime;
-                System.DateTime dtDeliveryDate = DeliveryDate.DateTime;
-                System.DateTime dtShipDate = ShipDate.DateTime;
+                System.DateTime Waybill_BeginDate = BeginDate.DateTime;
+                System.DateTime Waybill_DeliveryDate = DeliveryDate.DateTime;
+                System.DateTime Waybill_ShipDate = ShipDate.DateTime;
 
-                System.Guid uuidWaybillState_Guid = ((WaybillState.SelectedItem == null) ? System.Guid.Empty : ((CWaybillState)WaybillState.SelectedItem).ID);
-                System.Guid uuidWaybillShipMode_Guid = ((WaybillShipMode.SelectedItem == null) ? System.Guid.Empty : ((CWaybillShipMode)WaybillShipMode.SelectedItem).ID);
+                System.Guid Suppl_Guid = m_objSelectedWaybill.SupplID;
+                System.Guid WaybillState_Guid = ((WaybillState.SelectedItem == null) ? System.Guid.Empty : ((CWaybillState)WaybillState.SelectedItem).ID);
+                System.Guid WaybillShipMode_Guid = ((WaybillShipMode.SelectedItem == null) ? System.Guid.Empty : ((CWaybillShipMode)WaybillShipMode.SelectedItem).ID);
 
-                System.Boolean bMoneyBonus = (this.IsBonus.CheckState == CheckState.Checked);
-                System.Guid uuidDepart_Guid = ((Depart.SelectedItem == null) ? (System.Guid.Empty) : ((CDepart)Depart.SelectedItem).uuidID);
+                System.Boolean Waybill_Bonus = (this.IsBonus.CheckState == CheckState.Checked);
+                System.Guid Depart_Guid = ((Depart.SelectedItem == null) ? (System.Guid.Empty) : ((CDepart)Depart.SelectedItem).uuidID);
                 System.Guid uuidSalesman_Guid = ((SalesMan.SelectedItem == null) ? (System.Guid.Empty) : ((CSalesMan)SalesMan.SelectedItem).uuidID);
-                System.Guid uuidCustomer_Guid = ((Customer.SelectedItem == null) ? (System.Guid.Empty) : ((CCustomer)Customer.SelectedItem).ID);
-                System.Guid uuidCustomerChild_Guid = ((ChildDepart.SelectedItem == null) ? (System.Guid.Empty) : ((CChildDepart)ChildDepart.SelectedItem).ID);
+                System.Guid Customer_Guid = ((Customer.SelectedItem == null) ? (System.Guid.Empty) : ((CCustomer)Customer.SelectedItem).ID);
+                System.Guid CustomerChild_Guid = ((ChildDepart.SelectedItem == null) ? (System.Guid.Empty) : ((CChildDepart)ChildDepart.SelectedItem).ID);
 
-                System.Guid uuidPaymentType_Guid = ((PaymentType.SelectedItem == null) ? (System.Guid.Empty) : ((CPaymentType)PaymentType.SelectedItem).ID);
-                System.String strDescription = txtDescription.Text;
-                System.String strWaybillNum = WaybilllNum.Text;
+                System.Guid PaymentType_Guid = ((PaymentType.SelectedItem == null) ? (System.Guid.Empty) : ((CPaymentType)PaymentType.SelectedItem).ID);
+                System.String Waybill_Description = txtDescription.Text;
+                System.String Waybill_Num = WaybilllNum.Text;
 
 
-                System.Guid uuidRtt_Guid = ((Rtt.SelectedItem == null) ? (System.Guid.Empty) : ((CRtt)Rtt.SelectedItem).ID);
-                System.Guid uuidAddress_Guid = ((AddressDelivery.SelectedItem == null) ? (System.Guid.Empty) : ((CAddress)AddressDelivery.SelectedItem).ID);
-                System.Guid uuidStock_Guid = ((Stock.SelectedItem == null) ? (System.Guid.Empty) : ((CStock)Stock.SelectedItem).ID);
+                System.Guid Rtt_Guid = ((Rtt.SelectedItem == null) ? (System.Guid.Empty) : ((CRtt)Rtt.SelectedItem).ID);
+                System.Guid Address_Guid = ((AddressDelivery.SelectedItem == null) ? (System.Guid.Empty) : ((CAddress)AddressDelivery.SelectedItem).ID);
+                System.Guid Stock_Guid = ((Stock.SelectedItem == null) ? (System.Guid.Empty) : ((CStock)Stock.SelectedItem).ID);
+                System.Guid Company_Guid = ((Stock.SelectedItem == null) ? (System.Guid.Empty) : ((CStock)Stock.SelectedItem).Company.ID);
+                System.Boolean Waybill_ShowInDeliveryList = true;
+                System.Double Waybill_CurrencyRate = m_objSelectedWaybill.PricingCurrencyRate;
+                System.Guid WaybillParent_Guid = System.Guid.Empty;
+                
 
                 List<CWaybillItem> objItemList = new List<CWaybillItem>();
                 System.Guid uuidItemID = System.Guid.Empty;
@@ -2118,7 +2136,7 @@ namespace ERPMercuryProcessingOrder
                     {
                         uuidItemID = ((dataSet.Tables["OrderItems"].Rows[i]["OrderItemsID"] == System.DBNull.Value) ? System.Guid.NewGuid() : (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["OrderItemsID"]));
                     }
-                    uuidSupplItemID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["SupplItemID"]);
+                    uuidSupplItemID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["SupplItem_Guid"]);
                     uuidProductID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["ProductID"]);
                     uuidMeasureID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["MeasureID"]);
                     dblQuantity = System.Convert.ToDouble(dataSet.Tables["OrderItems"].Rows[i]["Quantity"]);
@@ -2132,7 +2150,8 @@ namespace ERPMercuryProcessingOrder
 
                     objItemList.Add(new CWaybillItem()
                     {
-                        ID = uuidItemID,
+                        ID = uuidItemID, 
+                        SupplItemID = uuidSupplItemID,
                         Product = new CProduct() { ID = uuidProductID },
                         Measure = new CMeasure() { ID = uuidMeasureID },
                         Quantity = dblQuantity,
@@ -2145,43 +2164,48 @@ namespace ERPMercuryProcessingOrder
                         PriceWithDiscountInAccountingCurrency = dblPriceWithDiscountInAccountingCurrency
                     });
                 }
-                //System.Data.DataTable addedCategories = ((gridControl.DataSource == null) ? null : COrderItem.ConvertListToTable(objOrderItemList, ref strErr));
-                //objItemList = null;
+                System.Data.DataTable WaybillTablePart = ((gridControl.DataSource == null) ? null : CWaybillItem.ConvertListToTable(objItemList, ref strErr));
+                objItemList = null;
 
-                //// проверка значений
-                //if (COrderRepository.CheckAllPropertiesForSave(Order_BeginDate, Depart_Guid, Salesman_Guid, Customer_Guid,
-                //    OrderType_Guid, PaymentType_Guid, Order_DeliveryDate, Rtt_Guid, Address_Guid, addedCategories, ref strErr) == true)
-                //{
-                //    if (m_bNewObject == true)
-                //    {
-                //        // новый заказ
-                //        System.Guid uuidOrderId = System.Guid.Empty;
-                //        System.Int32 iSupplId = 0;
-                //        bOkSave = COrderRepository.AddNewOrderToDB(m_objProfile, null, Order_BeginDate, OrderState_Guid,
-                //            Order_MoneyBonus, Depart_Guid, Salesman_Guid, Customer_Guid, CustomerChild_Guid, OrderType_Guid,
-                //            PaymentType_Guid, Order_Description, Order_DeliveryDate, Rtt_Guid, Address_Guid, Stock_Guid,
-                //            Parts_Guid, addedCategories, checkEditCalcPrices.Checked, Stmnt_Guid, ref uuidOrderId, ref iSupplId, ref strErr, checkSetOrderInQueue.Checked);
-                //        if (bOkSave == true)
-                //        {
-                //            m_objSelectedOrder.ID = uuidOrderId;
-                //            m_objSelectedOrder.Ib_ID = iSupplId;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        bOkSave = COrderRepository.EditOrderInDB(m_objProfile, null, Order_BeginDate, OrderState_Guid,
-                //            Order_MoneyBonus, Depart_Guid, Salesman_Guid, Customer_Guid, CustomerChild_Guid, OrderType_Guid,
-                //            PaymentType_Guid, Order_Description, Order_DeliveryDate, Rtt_Guid, Address_Guid, Stock_Guid,
-                //            Parts_Guid, addedCategories, m_objSelectedOrder.ID, ref strErr);
-                //    }
-                //}
+                // проверка значений
+                if (CWaybill.CheckAllPropertiesForSave(Suppl_Guid, Stock_Guid, Company_Guid, Depart_Guid,
+                        Customer_Guid, Rtt_Guid, Address_Guid, PaymentType_Guid, Waybill_Num,
+                        Waybill_BeginDate, Waybill_DeliveryDate, WaybillShipMode_Guid, WaybillTablePart, ref strErr) == true)
+                {
+                    if (m_bNewObject == true)
+                    {
+                        // новый накладная
+                        System.Guid Waybill_Guid = System.Guid.Empty;
+                        System.Int32 Waybill_Id = 0;
+
+                        bOkSave = CWaybill.AddNewWaybillToDB(m_objProfile, null, Suppl_Guid, Stock_Guid,
+                            Company_Guid, Depart_Guid, Customer_Guid, CustomerChild_Guid, Rtt_Guid, Address_Guid,
+                            PaymentType_Guid, Waybill_Num, Waybill_BeginDate, Waybill_DeliveryDate, WaybillParent_Guid, Waybill_Bonus, 
+                            WaybillState_Guid, WaybillShipMode_Guid, Waybill_ShipDate, 
+                            Waybill_Description, Waybill_CurrencyRate, Waybill_ShowInDeliveryList, WaybillTablePart,
+                            ref Waybill_Guid, ref Waybill_Id, ref SupplState_Guid, ref strErr, 
+                            checkSetOrderInQueue.Checked, checkEditForStock.Checked);
+                        if (bOkSave == true)
+                        {
+                            m_objSelectedWaybill.ID = Waybill_Guid;
+                            m_objSelectedWaybill.Ib_ID = Waybill_Id;
+                        }
+                    }
+                    //else
+                    //{
+                    //    bOkSave = COrderRepository.EditOrderInDB(m_objProfile, null, Order_BeginDate, OrderState_Guid,
+                    //        Order_MoneyBonus, Depart_Guid, Salesman_Guid, Customer_Guid, CustomerChild_Guid, OrderType_Guid,
+                    //        PaymentType_Guid, Order_Description, Order_DeliveryDate, Rtt_Guid, Address_Guid, Stock_Guid,
+                    //        Parts_Guid, addedCategories, m_objSelectedOrder.ID, ref strErr);
+                    //}
+                }
 
                 if (bOkSave == true)
                 {
-                    m_objSelectedWaybill.BeginDate = dtBeginDate;
-                    m_objSelectedWaybill.DeliveryDate = dtDeliveryDate;
-                    m_objSelectedWaybill.ShipDate = dtShipDate;
-                    m_objSelectedWaybill.IsBonus = bMoneyBonus;
+                    m_objSelectedWaybill.BeginDate = Waybill_BeginDate;
+                    m_objSelectedWaybill.DeliveryDate = Waybill_DeliveryDate;
+                    m_objSelectedWaybill.ShipDate = Waybill_ShipDate;
+                    m_objSelectedWaybill.IsBonus = Waybill_Bonus;
                     m_objSelectedWaybill.Depart = ((Depart.SelectedItem == null) ? null : (CDepart)Depart.SelectedItem);
                     m_objSelectedWaybill.SalesMan = ((SalesMan.SelectedItem == null) ? null : (CSalesMan)SalesMan.SelectedItem);
                     m_objSelectedWaybill.Customer = ((Customer.SelectedItem == null) ? null : (CCustomer)Customer.SelectedItem);
@@ -2190,7 +2214,7 @@ namespace ERPMercuryProcessingOrder
                     m_objSelectedWaybill.WaybillShipMode = ((WaybillShipMode.SelectedItem == null) ? null : (CWaybillShipMode)WaybillShipMode.SelectedItem);
                     m_objSelectedWaybill.PaymentType = ((PaymentType.SelectedItem == null) ? null : (CPaymentType)PaymentType.SelectedItem);
                     m_objSelectedWaybill.Description = txtDescription.Text;
-                    m_objSelectedWaybill.DocNum = strWaybillNum;
+                    m_objSelectedWaybill.DocNum = Waybill_Num;
                     m_objSelectedWaybill.DeliveryDate = DeliveryDate.DateTime;
                     m_objSelectedWaybill.Rtt = ((Rtt.SelectedItem == null) ? null : (CRtt)Rtt.SelectedItem);
                     m_objSelectedWaybill.AddressDelivery = ((AddressDelivery.SelectedItem == null) ? null : (CAddress)AddressDelivery.SelectedItem);
@@ -2223,13 +2247,12 @@ namespace ERPMercuryProcessingOrder
                     }
                 }
 
-                System.String strErr = "";
-                if (bSaveChanges(ref strErr) == true)
+                System.String strErr = System.String.Empty;
+                System.Guid SupplState_Guid = System.Guid.Empty;
+                if (bSaveChanges(ref SupplState_Guid, ref strErr) == true)
                 {
-                    SimulateChangeWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Save, m_bNewObject);
-                    System.String strInfo = System.String.Empty;
-
-                    DevExpress.XtraEditors.XtraMessageBox.Show(strInfo, "Внимание",
+                    SimulateChangeWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Save, m_bNewObject, SupplState_Guid);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание",
                         System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 }
                 else
@@ -3108,6 +3131,39 @@ namespace ERPMercuryProcessingOrder
         private void mitemClearRows_Click(object sender, EventArgs e)
         {
             dataSet.Tables["OrderItems"].Clear();
+            SetPropertiesModified(true);
+        }
+
+        /// <summary>
+        /// Удаляет выбранные в приложении записи
+        /// </summary>
+        private void DeleteSelectedRows()
+        {
+            try
+            {
+                int[] arr = gridView.GetSelectedRows();
+
+                if (arr.Length > 0)
+                {
+                    gridView.DeleteSelectedRows();
+
+                    SetPropertiesModified(true);
+                }
+                
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("DeleteSelectedRows. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
+
+        private void mitemDeleteSelectedRows_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedRows();
         }
 
         private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -3115,8 +3171,13 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 mitemExport.Enabled = (gridView.RowCount > 0);
+
+                // накладная формируется из заказа, записи можно только удалять
+                //mitemImport.Enabled = (m_bIsReadOnly == false);
+                mitemImport.Enabled = false;
+
                 mitemClearRows.Enabled = ((gridView.RowCount > 0) && (m_bIsReadOnly == false));
-                mitemImport.Enabled = (m_bIsReadOnly == false);
+                mitemDeleteSelectedRows.Enabled = ((gridView.GetSelectedRows().Count<int>() > 0) && (m_bIsReadOnly == false));
             }
             catch (System.Exception f)
             {
@@ -3129,8 +3190,7 @@ namespace ERPMercuryProcessingOrder
 
         }
         #endregion
-
-
+        
         #region Экспорт в MS Excel
 
         private void ExportToExcelWaybitmsList_1(string strFileName, string strSheetName, string strDocName,
@@ -3316,16 +3376,6 @@ namespace ERPMercuryProcessingOrder
 
         #endregion
 
-        private void mitmsExportToDBF_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnPrint_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
     }
 
     /// <summary>
@@ -3345,11 +3395,17 @@ namespace ERPMercuryProcessingOrder
         public System.Boolean IsNewWaybill
         { get { return m_bIsNewWaybill; } }
 
-        public ChangeWaybillPropertieEventArgs(CWaybill objWaybill, enumActionSaveCancel enActionType, System.Boolean bIsNewWaybill)
+        private readonly System.Guid m_uuidOrderCurrentStateGuid;
+        public System.Guid OrderCurrentStateGuid
+        { get { return m_uuidOrderCurrentStateGuid; } }
+
+        public ChangeWaybillPropertieEventArgs(CWaybill objWaybill, enumActionSaveCancel enActionType,
+            System.Boolean bIsNewWaybill, System.Guid uuidOrderCurrentStateGuid)
         {
             m_objWaybill = objWaybill;
             m_enActionType = enActionType;
             m_bIsNewWaybill = bIsNewWaybill;
+            m_uuidOrderCurrentStateGuid = uuidOrderCurrentStateGuid;
         }
     }
 

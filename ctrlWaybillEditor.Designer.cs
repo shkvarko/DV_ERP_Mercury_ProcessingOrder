@@ -60,6 +60,7 @@
             this.mitemImport = new System.Windows.Forms.ToolStripMenuItem();
             this.mitmsImportFromExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mitemDeleteSelectedRows = new System.Windows.Forms.ToolStripMenuItem();
             this.mitemClearRows = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanelBackground = new System.Windows.Forms.TableLayoutPanel();
             this.panelProgressBar = new DevExpress.XtraEditors.PanelControl();
@@ -152,6 +153,7 @@
             this.ShipDate = new DevExpress.XtraEditors.DateEdit();
             this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
             this.WaybillShipMode = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.checkEditForStock = new DevExpress.XtraEditors.CheckEdit();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.WaybillState = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -238,6 +240,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ShipDate.Properties.VistaTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WaybillShipMode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditForStock.Properties)).BeginInit();
             this.tableLayoutPanel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaybillState.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PaymentType.Properties)).BeginInit();
@@ -282,7 +285,7 @@
             this.repositoryItemCalcEditOrderedQuantity.AutoHeight = false;
             this.repositoryItemCalcEditOrderedQuantity.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repositoryItemCalcEditOrderedQuantity.DisplayFormat.FormatString = "### ##0.000";
+            this.repositoryItemCalcEditOrderedQuantity.DisplayFormat.FormatString = "### ##0";
             this.repositoryItemCalcEditOrderedQuantity.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.repositoryItemCalcEditOrderedQuantity.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             this.repositoryItemCalcEditOrderedQuantity.Name = "repositoryItemCalcEditOrderedQuantity";
@@ -318,7 +321,7 @@
             this.colQuantityReturned.Name = "colQuantityReturned";
             this.colQuantityReturned.OptionsColumn.AllowEdit = false;
             this.colQuantityReturned.OptionsColumn.ReadOnly = true;
-            this.colQuantityReturned.SummaryItem.DisplayFormat = "{0:### ### ##0.000}";
+            this.colQuantityReturned.SummaryItem.DisplayFormat = "{0:### ### ##0}";
             this.colQuantityReturned.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum;
             this.colQuantityReturned.Visible = true;
             this.colQuantityReturned.VisibleIndex = 3;
@@ -423,9 +426,10 @@
             this.toolStripSeparator1,
             this.mitemImport,
             this.toolStripSeparator2,
+            this.mitemDeleteSelectedRows,
             this.mitemClearRows});
             this.contextMenuStrip.Name = "contextMenuStripLicence";
-            this.contextMenuStrip.Size = new System.Drawing.Size(309, 82);
+            this.contextMenuStrip.Size = new System.Drawing.Size(329, 126);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             // 
             // mitemExport
@@ -438,7 +442,7 @@
             this.mitmsExportToDBF,
             this.mitmsExportToDBFCurrency});
             this.mitemExport.Name = "mitemExport";
-            this.mitemExport.Size = new System.Drawing.Size(308, 22);
+            this.mitemExport.Size = new System.Drawing.Size(328, 22);
             this.mitemExport.Text = "Экспорт";
             // 
             // mitmsExportToHTML
@@ -471,7 +475,6 @@
             this.mitmsExportToDBF.Name = "mitmsExportToDBF";
             this.mitmsExportToDBF.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToDBF.Text = "в DBF (цена в рублях)...";
-            this.mitmsExportToDBF.Click += new System.EventHandler(this.mitmsExportToDBF_Click);
             // 
             // mitmsExportToDBFCurrency
             // 
@@ -482,14 +485,14 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(305, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(325, 6);
             // 
             // mitemImport
             // 
             this.mitemImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mitmsImportFromExcel});
             this.mitemImport.Name = "mitemImport";
-            this.mitemImport.Size = new System.Drawing.Size(308, 22);
+            this.mitemImport.Size = new System.Drawing.Size(328, 22);
             this.mitemImport.Text = "Импорт";
             // 
             // mitmsImportFromExcel
@@ -501,13 +504,21 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(305, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(325, 6);
+            // 
+            // mitemDeleteSelectedRows
+            // 
+            this.mitemDeleteSelectedRows.Name = "mitemDeleteSelectedRows";
+            this.mitemDeleteSelectedRows.Size = new System.Drawing.Size(328, 22);
+            this.mitemDeleteSelectedRows.Text = "Удалить выделенные записи...";
+            this.mitemDeleteSelectedRows.Click += new System.EventHandler(this.mitemDeleteSelectedRows_Click);
             // 
             // mitemClearRows
             // 
             this.mitemClearRows.Name = "mitemClearRows";
-            this.mitemClearRows.Size = new System.Drawing.Size(308, 22);
-            this.mitemClearRows.Text = "Удалить записи в приложении к накладной...";
+            this.mitemClearRows.Size = new System.Drawing.Size(328, 22);
+            this.mitemClearRows.Text = "Удалить все записи в приложении к накладной...";
+            this.mitemClearRows.Click += new System.EventHandler(this.mitemClearRows_Click);
             // 
             // tableLayoutPanelBackground
             // 
@@ -1155,7 +1166,6 @@
             this.btnPrint.Text = "Печать";
             this.btnPrint.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.btnPrint.Visible = false;
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click_1);
             // 
             // btnSave
             // 
@@ -1532,6 +1542,7 @@
             this.tableLayoutPanel9.Controls.Add(this.ShipDate, 5, 0);
             this.tableLayoutPanel9.Controls.Add(this.labelControl22, 6, 0);
             this.tableLayoutPanel9.Controls.Add(this.WaybillShipMode, 7, 0);
+            this.tableLayoutPanel9.Controls.Add(this.checkEditForStock, 8, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
@@ -1648,6 +1659,16 @@
             this.WaybillShipMode.ToolTipController = this.toolTipController;
             this.WaybillShipMode.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.WaybillShipMode.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
+            // 
+            // checkEditForStock
+            // 
+            this.checkEditForStock.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkEditForStock.Location = new System.Drawing.Point(835, 3);
+            this.checkEditForStock.Name = "checkEditForStock";
+            this.checkEditForStock.Properties.Caption = "Уведомить склад";
+            this.checkEditForStock.Size = new System.Drawing.Size(155, 19);
+            this.checkEditForStock.TabIndex = 33;
+            this.checkEditForStock.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             // 
             // tableLayoutPanel11
             // 
@@ -2367,6 +2388,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ShipDate.Properties.VistaTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShipDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WaybillShipMode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditForStock.Properties)).EndInit();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaybillState.Properties)).EndInit();
@@ -2563,5 +2585,7 @@
         private System.Data.DataColumn QuantityWithReturn;
         private DevExpress.XtraEditors.LabelControl labelControl29;
         private DevExpress.XtraEditors.TextEdit WaybilllNum;
+        private System.Windows.Forms.ToolStripMenuItem mitemDeleteSelectedRows;
+        private DevExpress.XtraEditors.CheckEdit checkEditForStock;
     }
 }

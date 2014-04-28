@@ -77,7 +77,7 @@ namespace ERPMercuryProcessingOrder
 
             AddGridColumns();
 
-            dtBeginDate.DateTime = System.DateTime.Today; // new DateTime(System.DateTime.Today.Year, 1, 1);
+            dtBeginDate.DateTime = System.DateTime.Today.AddDays(-7); // new DateTime(System.DateTime.Today.Year, 1, 1);
             dtEndDate.DateTime = System.DateTime.Today; //new DateTime(System.DateTime.Today.Year, 12, 31);
 
         }
@@ -124,6 +124,22 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 tabControl.SelectedTabPage = tabPageViewer;
+                if (e.ActionType == ERP_Mercury.Common.enumActionSaveCancel.Save)
+                {
+                    ERP_Mercury.Common.COrder objOrder = GetSelectedOrder();
+                    if( (objOrder != null) && ( e.OrderCurrentStateGuid.CompareTo( System.Guid.Empty) != 0 ) )
+                    {
+                        if (objOrder.OrderState.ID.CompareTo(e.OrderCurrentStateGuid) != 0)
+                        {
+                            if ((m_objOrderStateList != null) && (m_objOrderStateList.Count > 0))
+                            {
+                                objOrder.OrderState = m_objOrderStateList.SingleOrDefault<ERP_Mercury.Common.COrderState>(x => x.ID.CompareTo(e.OrderCurrentStateGuid) == 0);
+                                gridControlAgreementList.RefreshDataSource();
+                            }
+                        }
+
+                    }
+                }
             }
             catch (System.Exception f)
             {
@@ -954,6 +970,7 @@ namespace ERPMercuryProcessingOrder
             AddGridColumn(ColumnView, "OrderStateName", "Состояние");
             AddGridColumn(ColumnView, "Num", "Номер");
             AddGridColumn(ColumnView, "BeginDate", "Дата заказа");
+            AddGridColumn(ColumnView, "DeliveryDate", "Дата достаки");
             AddGridColumn(ColumnView, "CustomerName", "Клиент");
             AddGridColumn(ColumnView, "CompanyAbbr", "Компания");
             AddGridColumn(ColumnView, "StockName", "Склад");
@@ -970,7 +987,7 @@ namespace ERPMercuryProcessingOrder
             AddGridColumn(ColumnView, "SumReservedWithDiscountInAccountingCurrency", "Сумма со скидкой, вал.");
             AddGridColumn(ColumnView, "DirectionDeliveryName", "Направление доставки");
             AddGridColumn(ColumnView, "DirectionDeliveryCityName", "Населенный пункт");
-            
+            AddGridColumn(ColumnView, "IsBonus", "Бонус");
             
             foreach (DevExpress.XtraGrid.Columns.GridColumn objColumn in ColumnView.Columns)
             {
@@ -1047,10 +1064,11 @@ namespace ERPMercuryProcessingOrder
                 System.Guid uuidCustomerId = (((cboxCustomer.SelectedItem == null) || (System.Convert.ToString(cboxCustomer.SelectedItem) == "") || (cboxCustomer.Text == strWaitCustomer)) ? System.Guid.Empty : ((ERP_Mercury.Common.CCustomer)cboxCustomer.SelectedItem).ID);
                 System.Guid uuidStockId = ((cboxStock.SelectedItem == null) ? System.Guid.Empty : ((ERP_Mercury.Common.CStock)cboxStock.SelectedItem).ID);
                 System.Guid uuidPaymentTypeId = ((cboxPaymentType.SelectedItem == null) ? System.Guid.Empty : ((ERP_Mercury.Common.CPaymentType)cboxPaymentType.SelectedItem).ID);
+                System.Boolean bSearchByOrderDeliveryDate = (radioGroupSearchByDeliveryDate.SelectedIndex > 0);
 
                 m_objOrderList = ERP_Mercury.Common.COrderRepository.GetOrderList(m_objProfile, dtBeginDate.DateTime,
-                    dtEndDate.DateTime, uuidCustomerId, uuidCompanyId, uuidStockId, uuidPaymentTypeId, 
-                    System.Guid.Empty );
+                    dtEndDate.DateTime, uuidCustomerId, uuidCompanyId, uuidStockId, uuidPaymentTypeId,
+                    System.Guid.Empty, bSearchByOrderDeliveryDate);
 
                 if (m_objOrderList != null)
                 {
@@ -1767,6 +1785,15 @@ namespace ERPMercuryProcessingOrder
                 ERP_Mercury.Common.CAddress.Init(m_objProfile, null, objItem.AddressDelivery, objItem.AddressDelivery.ID);
                 objItem.WaybillItemList = ERP_Mercury.Common.CWaybillItem.GetWaybillTablePart(m_objProfile, objItem.ID, ref strErr);
 
+                if (objItem.SalesMan == null)
+                {
+                    List<ERP_Mercury.Common.CSalesMan> objSalesManList = ERP_Mercury.Common.CSalesMan.GetSalesManListForDepart(m_objProfile, null, objItem.Depart.uuidID, ref strErr);
+                    if ((objSalesManList != null) && (objSalesManList.Count > 0))
+                    {
+                        objItem.SalesMan = objSalesManList[0];
+                    }
+                }
+
                 if (frmItemEditor == null)
                 {
                     frmItemEditor = new ctrlWaybillEditor(m_objProfile, m_objMenuItem, m_objCustomerList);
@@ -1945,6 +1972,7 @@ namespace ERPMercuryProcessingOrder
 
                 ERP_Mercury.Common.CWaybill objItem = objWaybillList[0];
                 objItem.SupplID = objOrder.ID;
+                objItem.DocNum = ( String.Format("{0}  бс", objOrder.Num ) );
                 List<ERP_Mercury.Common.CSalesMan> objSalesManList = ERP_Mercury.Common.CSalesMan.GetSalesManListForDepart(m_objProfile, null, objItem.Depart.uuidID, ref strErr);
                 if ((objSalesManList != null) && (objSalesManList.Count > 0))
                 {
@@ -1984,9 +2012,21 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 if (gridViewAgreementList.FocusedRowHandle < 0) { return; }
-                if (GetSelectedOrder() == null) { return; }
+                ERP_Mercury.Common.COrder objOrder = GetSelectedOrder();
+                if (objOrder == null) { return; }
 
-                TransformSupplToWaybill(GetSelectedOrder());
+                System.String strErr = System.String.Empty;
+
+                if (ERP_Mercury.Common.CWaybill.CanCreateWaybillFromSuppl(m_objProfile, objOrder.ID, ref strErr) == false)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Информация",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
+                    TransformSupplToWaybill(objOrder);
+                }
 
             }
             catch (System.Exception f)

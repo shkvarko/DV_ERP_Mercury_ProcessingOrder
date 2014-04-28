@@ -30,31 +30,31 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCreateWaybillFromSuppl));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblCustomerInfo = new System.Windows.Forms.Label();
-            this.lblSupplInfo = new System.Windows.Forms.Label();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.dtBeginDate = new DevExpress.XtraEditors.DateEdit();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.txtWaybilllNum = new DevExpress.XtraEditors.TextEdit();
-            this.label1 = new System.Windows.Forms.Label();
-            this.checkEditForStock = new DevExpress.XtraEditors.CheckEdit();
-            this.checkEditOpenWaybillAfterCreate = new DevExpress.XtraEditors.CheckEdit();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblCustomerInfo = new System.Windows.Forms.Label();
+            this.lblSupplInfo = new System.Windows.Forms.Label();
+            this.checkEditOpenWaybillAfterCreate = new DevExpress.XtraEditors.CheckEdit();
+            this.checkEditForStock = new DevExpress.XtraEditors.CheckEdit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
+            this.dtBeginDate = new DevExpress.XtraEditors.DateEdit();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.txtWaybilllNum = new DevExpress.XtraEditors.TextEdit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditOpenWaybillAfterCreate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditForStock.Properties)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDate.Properties.VistaTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDate.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtWaybilllNum.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkEditForStock.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkEditOpenWaybillAfterCreate.Properties)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWaybilllNum.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -81,142 +81,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(376, 216);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.lblCustomerInfo);
-            this.panel1.Controls.Add(this.lblSupplInfo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(370, 58);
-            this.panel1.TabIndex = 0;
-            // 
-            // lblCustomerInfo
-            // 
-            this.lblCustomerInfo.AutoSize = true;
-            this.lblCustomerInfo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.lblCustomerInfo.Location = new System.Drawing.Point(3, 10);
-            this.lblCustomerInfo.Name = "lblCustomerInfo";
-            this.lblCustomerInfo.Size = new System.Drawing.Size(98, 13);
-            this.lblCustomerInfo.TabIndex = 1;
-            this.lblCustomerInfo.Text = "lblCustomerInfo";
-            // 
-            // lblSupplInfo
-            // 
-            this.lblSupplInfo.AutoSize = true;
-            this.lblSupplInfo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.lblSupplInfo.Location = new System.Drawing.Point(3, 30);
-            this.lblSupplInfo.Name = "lblSupplInfo";
-            this.lblSupplInfo.Size = new System.Drawing.Size(74, 13);
-            this.lblSupplInfo.TabIndex = 0;
-            this.lblSupplInfo.Text = "lblSupplInfo";
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 107F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.labelControl8, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.dtBeginDate, 1, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 64);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(376, 24);
-            this.tableLayoutPanel4.TabIndex = 3;
-            // 
-            // labelControl8
-            // 
-            this.labelControl8.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelControl8.Location = new System.Drawing.Point(3, 5);
-            this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(88, 13);
-            this.labelControl8.TabIndex = 3;
-            this.labelControl8.Text = "Дата накладной:";
-            // 
-            // dtBeginDate
-            // 
-            this.dtBeginDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.dtBeginDate.EditValue = null;
-            this.dtBeginDate.Location = new System.Drawing.Point(110, 3);
-            this.dtBeginDate.Name = "dtBeginDate";
-            this.dtBeginDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtBeginDate.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.dtBeginDate.Size = new System.Drawing.Size(128, 20);
-            this.dtBeginDate.TabIndex = 2;
-            // 
-            // labelControl1
-            // 
-            this.labelControl1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelControl1.Location = new System.Drawing.Point(3, 5);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(93, 13);
-            this.labelControl1.TabIndex = 4;
-            this.labelControl1.Text = "Номер накладной:";
-            // 
-            // txtWaybilllNum
-            // 
-            this.txtWaybilllNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txtWaybilllNum.Location = new System.Drawing.Point(110, 3);
-            this.txtWaybilllNum.Name = "txtWaybilllNum";
-            this.txtWaybilllNum.Properties.Appearance.Options.UseTextOptions = true;
-            this.txtWaybilllNum.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.txtWaybilllNum.Size = new System.Drawing.Size(128, 20);
-            this.txtWaybilllNum.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(3, 123);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(182, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "после сохранения накладной:";
-            // 
-            // checkEditForStock
-            // 
-            this.checkEditForStock.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.checkEditForStock.Location = new System.Drawing.Point(3, 139);
-            this.checkEditForStock.Name = "checkEditForStock";
-            this.checkEditForStock.Properties.Caption = "Уведомить склад";
-            this.checkEditForStock.Size = new System.Drawing.Size(155, 19);
-            this.checkEditForStock.TabIndex = 32;
-            this.checkEditForStock.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            // 
-            // checkEditOpenWaybillAfterCreate
-            // 
-            this.checkEditOpenWaybillAfterCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.checkEditOpenWaybillAfterCreate.Location = new System.Drawing.Point(3, 163);
-            this.checkEditOpenWaybillAfterCreate.Name = "checkEditOpenWaybillAfterCreate";
-            this.checkEditOpenWaybillAfterCreate.Properties.Caption = "Открыть накладную";
-            this.checkEditOpenWaybillAfterCreate.Size = new System.Drawing.Size(136, 19);
-            this.checkEditOpenWaybillAfterCreate.TabIndex = 34;
-            this.checkEditOpenWaybillAfterCreate.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 107F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.labelControl1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txtWaybilllNum, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 88);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(376, 24);
-            this.tableLayoutPanel2.TabIndex = 5;
             // 
             // tableLayoutPanel3
             // 
@@ -261,6 +125,142 @@
             this.btnCancel.ToolTip = "Закрыть редактор заказа";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.lblCustomerInfo);
+            this.panel1.Controls.Add(this.lblSupplInfo);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(370, 58);
+            this.panel1.TabIndex = 0;
+            // 
+            // lblCustomerInfo
+            // 
+            this.lblCustomerInfo.AutoSize = true;
+            this.lblCustomerInfo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblCustomerInfo.Location = new System.Drawing.Point(3, 10);
+            this.lblCustomerInfo.Name = "lblCustomerInfo";
+            this.lblCustomerInfo.Size = new System.Drawing.Size(98, 13);
+            this.lblCustomerInfo.TabIndex = 1;
+            this.lblCustomerInfo.Text = "lblCustomerInfo";
+            // 
+            // lblSupplInfo
+            // 
+            this.lblSupplInfo.AutoSize = true;
+            this.lblSupplInfo.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblSupplInfo.Location = new System.Drawing.Point(3, 30);
+            this.lblSupplInfo.Name = "lblSupplInfo";
+            this.lblSupplInfo.Size = new System.Drawing.Size(74, 13);
+            this.lblSupplInfo.TabIndex = 0;
+            this.lblSupplInfo.Text = "lblSupplInfo";
+            // 
+            // checkEditOpenWaybillAfterCreate
+            // 
+            this.checkEditOpenWaybillAfterCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkEditOpenWaybillAfterCreate.Location = new System.Drawing.Point(3, 163);
+            this.checkEditOpenWaybillAfterCreate.Name = "checkEditOpenWaybillAfterCreate";
+            this.checkEditOpenWaybillAfterCreate.Properties.Caption = "Открыть накладную";
+            this.checkEditOpenWaybillAfterCreate.Size = new System.Drawing.Size(136, 19);
+            this.checkEditOpenWaybillAfterCreate.TabIndex = 34;
+            this.checkEditOpenWaybillAfterCreate.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            // 
+            // checkEditForStock
+            // 
+            this.checkEditForStock.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkEditForStock.Location = new System.Drawing.Point(3, 139);
+            this.checkEditForStock.Name = "checkEditForStock";
+            this.checkEditForStock.Properties.Caption = "Уведомить склад";
+            this.checkEditForStock.Size = new System.Drawing.Size(155, 19);
+            this.checkEditForStock.TabIndex = 32;
+            this.checkEditForStock.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(3, 123);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "после сохранения накладной:";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 107F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.labelControl8, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.dtBeginDate, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 64);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(376, 24);
+            this.tableLayoutPanel4.TabIndex = 3;
+            // 
+            // labelControl8
+            // 
+            this.labelControl8.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelControl8.Location = new System.Drawing.Point(3, 5);
+            this.labelControl8.Name = "labelControl8";
+            this.labelControl8.Size = new System.Drawing.Size(88, 13);
+            this.labelControl8.TabIndex = 3;
+            this.labelControl8.Text = "Дата накладной:";
+            // 
+            // dtBeginDate
+            // 
+            this.dtBeginDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.dtBeginDate.EditValue = null;
+            this.dtBeginDate.Location = new System.Drawing.Point(110, 3);
+            this.dtBeginDate.Name = "dtBeginDate";
+            this.dtBeginDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtBeginDate.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.dtBeginDate.Size = new System.Drawing.Size(128, 20);
+            this.dtBeginDate.TabIndex = 2;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 107F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.labelControl1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txtWaybilllNum, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 88);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(376, 24);
+            this.tableLayoutPanel2.TabIndex = 5;
+            // 
+            // labelControl1
+            // 
+            this.labelControl1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelControl1.Location = new System.Drawing.Point(3, 5);
+            this.labelControl1.Name = "labelControl1";
+            this.labelControl1.Size = new System.Drawing.Size(93, 13);
+            this.labelControl1.TabIndex = 4;
+            this.labelControl1.Text = "Номер накладной:";
+            // 
+            // txtWaybilllNum
+            // 
+            this.txtWaybilllNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.txtWaybilllNum.Location = new System.Drawing.Point(110, 3);
+            this.txtWaybilllNum.Name = "txtWaybilllNum";
+            this.txtWaybilllNum.Properties.Appearance.Options.UseTextOptions = true;
+            this.txtWaybilllNum.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            this.txtWaybilllNum.Size = new System.Drawing.Size(128, 20);
+            this.txtWaybilllNum.TabIndex = 5;
+            // 
             // frmCreateWaybillFromSuppl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -274,18 +274,18 @@
             this.Shown += new System.EventHandler(this.frmCreateWaybillFromSuppl_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditOpenWaybillAfterCreate.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditForStock.Properties)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDate.Properties.VistaTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDate.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtWaybilllNum.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkEditForStock.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.checkEditOpenWaybillAfterCreate.Properties)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtWaybilllNum.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

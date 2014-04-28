@@ -580,6 +580,18 @@ namespace ERPMercuryProcessingOrder
                 ERP_Mercury.Common.CAddress.Init(m_objProfile, null, m_objSelectedItem.AddressDelivery, m_objSelectedItem.AddressDelivery.ID);
                 m_objSelectedItem.WaybillItemList = ERP_Mercury.Common.CWaybillItem.GetWaybillTablePart(m_objProfile, m_objSelectedItem.ID, ref strErr);
 
+                if (m_objSelectedItem.SalesMan == null)
+                {
+                    List<ERP_Mercury.Common.CSalesMan> objSalesManList = ERP_Mercury.Common.CSalesMan.GetSalesManListForDepart(m_objProfile,
+                        null, m_objSelectedItem.Depart.uuidID, ref strErr);
+                    if ((objSalesManList != null) && (objSalesManList.Count > 0))
+                    {
+                        m_objSelectedItem.SalesMan = objSalesManList[0];
+                    }
+                    objSalesManList = null;
+                }
+
+
                 if (frmItemEditor == null)
                 {
                     frmItemEditor = new ctrlWaybillEditor(m_objProfile, m_objMenuItem, m_objCustomerList);
@@ -741,7 +753,7 @@ namespace ERPMercuryProcessingOrder
                     frmItemEditor = new ctrlWaybillEditor(m_objProfile, m_objMenuItem, m_objCustomerList);
                     tableLayoutPanelItemEditor.Controls.Add( frmItemEditor, 0, 0 );
                     frmItemEditor.Dock = DockStyle.Fill;
-                    //frmItemEditor.ChangeOrderForCustomerProperties += OnChangeOrderPropertie;
+                    //frmItemEditor.ChangeWaybillForCustomerProperties += this.OnChangeItemPropertie;
                 }
 
                 ERP_Mercury.Common.CCompany objSelectedCompany = (((cboxCompany.SelectedItem == null) || (System.Convert.ToString(cboxCompany.SelectedItem) == "")) ? null : ((ERP_Mercury.Common.CCompany)cboxCompany.SelectedItem));

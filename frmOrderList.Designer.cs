@@ -36,6 +36,7 @@
             this.tabPageViewer = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panelControlSearchCondition = new DevExpress.XtraEditors.PanelControl();
+            this.radioGroupSearchByDeliveryDate = new DevExpress.XtraEditors.RadioGroup();
             this.barBtnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
             this.cboxPaymentType = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -46,8 +47,6 @@
             this.cboxCompany = new DevExpress.XtraEditors.ComboBoxEdit();
             this.cboxCustomer = new DevExpress.XtraEditors.ComboBoxEdit();
             this.dtEndDate = new DevExpress.XtraEditors.DateEdit();
-            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
             this.dtBeginDate = new DevExpress.XtraEditors.DateEdit();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -109,6 +108,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuCreateOrderBlank = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuTransformSupplToWaybillInManualMode = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTransformSupplToWaybillInAutoMode = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGoToWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.gridViewAgreementList = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -124,7 +124,6 @@
             this.tabPageWaybill = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.menuTransformSupplToWaybillInManualMode = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -132,6 +131,7 @@
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSearchCondition)).BeginInit();
             this.panelControlSearchCondition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radioGroupSearchByDeliveryDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxPaymentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxStock.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxCompany.Properties)).BeginInit();
@@ -186,7 +186,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(989, 639);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1035, 639);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel1, null);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
@@ -196,7 +196,7 @@
             this.tabControl.Location = new System.Drawing.Point(3, 3);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedTabPage = this.tabPageViewer;
-            this.tabControl.Size = new System.Drawing.Size(983, 633);
+            this.tabControl.Size = new System.Drawing.Size(1029, 633);
             this.tabControl.TabIndex = 0;
             this.tabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.tabPageViewer,
@@ -209,7 +209,7 @@
             // 
             this.tabPageViewer.Controls.Add(this.tableLayoutPanel4);
             this.tabPageViewer.Name = "tabPageViewer";
-            this.tabPageViewer.Size = new System.Drawing.Size(974, 602);
+            this.tabPageViewer.Size = new System.Drawing.Size(1020, 602);
             this.tabPageViewer.Text = "tabPageViewer";
             // 
             // tableLayoutPanel4
@@ -224,14 +224,15 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(974, 602);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1020, 602);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel4, null);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // panelControlSearchCondition
             // 
+            this.panelControlSearchCondition.Controls.Add(this.radioGroupSearchByDeliveryDate);
             this.panelControlSearchCondition.Controls.Add(this.barBtnRefresh);
             this.panelControlSearchCondition.Controls.Add(this.labelControl14);
             this.panelControlSearchCondition.Controls.Add(this.cboxPaymentType);
@@ -242,23 +243,31 @@
             this.panelControlSearchCondition.Controls.Add(this.cboxCompany);
             this.panelControlSearchCondition.Controls.Add(this.cboxCustomer);
             this.panelControlSearchCondition.Controls.Add(this.dtEndDate);
-            this.panelControlSearchCondition.Controls.Add(this.labelControl9);
-            this.panelControlSearchCondition.Controls.Add(this.labelControl8);
             this.panelControlSearchCondition.Controls.Add(this.dtBeginDate);
             this.panelControlSearchCondition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControlSearchCondition.Location = new System.Drawing.Point(1, 32);
             this.panelControlSearchCondition.Margin = new System.Windows.Forms.Padding(1);
             this.panelControlSearchCondition.Name = "panelControlSearchCondition";
-            this.panelControlSearchCondition.Size = new System.Drawing.Size(972, 53);
+            this.panelControlSearchCondition.Size = new System.Drawing.Size(1018, 57);
             this.toolTipController.SetSuperTip(this.panelControlSearchCondition, null);
             this.panelControlSearchCondition.TabIndex = 1;
+            // 
+            // radioGroupSearchByDeliveryDate
+            // 
+            this.radioGroupSearchByDeliveryDate.Location = new System.Drawing.Point(54, 5);
+            this.radioGroupSearchByDeliveryDate.Name = "radioGroupSearchByDeliveryDate";
+            this.radioGroupSearchByDeliveryDate.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
+            new DevExpress.XtraEditors.Controls.RadioGroupItem(null, "по дате заказа"),
+            new DevExpress.XtraEditors.Controls.RadioGroupItem(null, "по дате доставки")});
+            this.radioGroupSearchByDeliveryDate.Size = new System.Drawing.Size(226, 25);
+            this.radioGroupSearchByDeliveryDate.TabIndex = 12;
             // 
             // barBtnRefresh
             // 
             this.barBtnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.barBtnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("barBtnRefresh.Image")));
             this.barBtnRefresh.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.barBtnRefresh.Location = new System.Drawing.Point(7, 14);
+            this.barBtnRefresh.Location = new System.Drawing.Point(7, 16);
             this.barBtnRefresh.Margin = new System.Windows.Forms.Padding(1);
             this.barBtnRefresh.Name = "barBtnRefresh";
             this.barBtnRefresh.Size = new System.Drawing.Size(35, 35);
@@ -270,7 +279,7 @@
             // 
             // labelControl14
             // 
-            this.labelControl14.Location = new System.Drawing.Point(576, 5);
+            this.labelControl14.Location = new System.Drawing.Point(593, 19);
             this.labelControl14.Name = "labelControl14";
             this.labelControl14.Size = new System.Drawing.Size(73, 13);
             this.labelControl14.TabIndex = 11;
@@ -278,7 +287,7 @@
             // 
             // cboxPaymentType
             // 
-            this.cboxPaymentType.Location = new System.Drawing.Point(576, 21);
+            this.cboxPaymentType.Location = new System.Drawing.Point(593, 34);
             this.cboxPaymentType.Name = "cboxPaymentType";
             this.cboxPaymentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -291,7 +300,7 @@
             // 
             // labelControl12
             // 
-            this.labelControl12.Location = new System.Drawing.Point(408, 4);
+            this.labelControl12.Location = new System.Drawing.Point(425, 19);
             this.labelControl12.Name = "labelControl12";
             this.labelControl12.Size = new System.Drawing.Size(32, 13);
             this.labelControl12.TabIndex = 9;
@@ -299,7 +308,7 @@
             // 
             // cboxStock
             // 
-            this.cboxStock.Location = new System.Drawing.Point(408, 21);
+            this.cboxStock.Location = new System.Drawing.Point(425, 34);
             this.cboxStock.Name = "cboxStock";
             this.cboxStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -312,7 +321,7 @@
             // 
             // labelControl11
             // 
-            this.labelControl11.Location = new System.Drawing.Point(715, 5);
+            this.labelControl11.Location = new System.Drawing.Point(732, 19);
             this.labelControl11.Name = "labelControl11";
             this.labelControl11.Size = new System.Drawing.Size(37, 13);
             this.labelControl11.TabIndex = 7;
@@ -320,7 +329,7 @@
             // 
             // labelControl10
             // 
-            this.labelControl10.Location = new System.Drawing.Point(267, 5);
+            this.labelControl10.Location = new System.Drawing.Point(286, 19);
             this.labelControl10.Name = "labelControl10";
             this.labelControl10.Size = new System.Drawing.Size(49, 13);
             this.labelControl10.TabIndex = 6;
@@ -328,7 +337,7 @@
             // 
             // cboxCompany
             // 
-            this.cboxCompany.Location = new System.Drawing.Point(267, 21);
+            this.cboxCompany.Location = new System.Drawing.Point(286, 34);
             this.cboxCompany.Name = "cboxCompany";
             this.cboxCompany.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -344,11 +353,11 @@
             // 
             this.cboxCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cboxCustomer.Location = new System.Drawing.Point(715, 20);
+            this.cboxCustomer.Location = new System.Drawing.Point(732, 34);
             this.cboxCustomer.Name = "cboxCustomer";
             this.cboxCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboxCustomer.Size = new System.Drawing.Size(251, 20);
+            this.cboxCustomer.Size = new System.Drawing.Size(281, 20);
             this.cboxCustomer.TabIndex = 6;
             this.cboxCustomer.ToolTip = "Клиент";
             this.cboxCustomer.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
@@ -357,42 +366,26 @@
             // dtEndDate
             // 
             this.dtEndDate.EditValue = null;
-            this.dtEndDate.Location = new System.Drawing.Point(160, 21);
+            this.dtEndDate.Location = new System.Drawing.Point(170, 34);
             this.dtEndDate.Name = "dtEndDate";
             this.dtEndDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtEndDate.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.dtEndDate.Size = new System.Drawing.Size(100, 20);
+            this.dtEndDate.Size = new System.Drawing.Size(110, 20);
             this.dtEndDate.TabIndex = 2;
             this.dtEndDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
-            // 
-            // labelControl9
-            // 
-            this.labelControl9.Location = new System.Drawing.Point(160, 5);
-            this.labelControl9.Name = "labelControl9";
-            this.labelControl9.Size = new System.Drawing.Size(12, 13);
-            this.labelControl9.TabIndex = 2;
-            this.labelControl9.Text = "по";
-            // 
-            // labelControl8
-            // 
-            this.labelControl8.Location = new System.Drawing.Point(54, 5);
-            this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(71, 13);
-            this.labelControl8.TabIndex = 0;
-            this.labelControl8.Text = "Дата заказа с";
             // 
             // dtBeginDate
             // 
             this.dtBeginDate.EditValue = null;
-            this.dtBeginDate.Location = new System.Drawing.Point(54, 21);
+            this.dtBeginDate.Location = new System.Drawing.Point(54, 34);
             this.dtBeginDate.Name = "dtBeginDate";
             this.dtBeginDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtBeginDate.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.dtBeginDate.Size = new System.Drawing.Size(100, 20);
+            this.dtBeginDate.Size = new System.Drawing.Size(110, 20);
             this.dtBeginDate.TabIndex = 1;
             this.dtBeginDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
@@ -404,13 +397,13 @@
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 87);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 91);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 514F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(972, 514);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 510F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1018, 510);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel2, null);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
@@ -441,7 +434,7 @@
             this.tableLayoutPanel3.Controls.Add(this.labelControl17, 0, 20);
             this.tableLayoutPanel3.Controls.Add(this.txtSupplDescrpn, 0, 21);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(686, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(732, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 22;
@@ -467,7 +460,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(286, 514);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(286, 510);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel3, null);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
@@ -699,7 +692,7 @@
             this.txtSupplDescrpn.Name = "txtSupplDescrpn";
             this.txtSupplDescrpn.Properties.ReadOnly = true;
             this.txtSupplDescrpn.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.txtSupplDescrpn.Size = new System.Drawing.Size(280, 30);
+            this.txtSupplDescrpn.Size = new System.Drawing.Size(280, 26);
             this.txtSupplDescrpn.TabIndex = 27;
             this.txtSupplDescrpn.ToolTipController = this.toolTipController;
             // 
@@ -716,7 +709,7 @@
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 127F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(686, 514);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(732, 510);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel6, null);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
@@ -746,9 +739,9 @@
             this.pnlInfo.Controls.Add(this.label2);
             this.pnlInfo.Controls.Add(this.label1);
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlInfo.Location = new System.Drawing.Point(3, 390);
+            this.pnlInfo.Location = new System.Drawing.Point(3, 386);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(680, 121);
+            this.pnlInfo.Size = new System.Drawing.Size(726, 121);
             this.toolTipController.SetSuperTip(this.pnlInfo, null);
             this.pnlInfo.TabIndex = 3;
             // 
@@ -1002,7 +995,7 @@
             this.gridControlAgreementList.Location = new System.Drawing.Point(3, 3);
             this.gridControlAgreementList.MainView = this.gridViewAgreementList;
             this.gridControlAgreementList.Name = "gridControlAgreementList";
-            this.gridControlAgreementList.Size = new System.Drawing.Size(680, 381);
+            this.gridControlAgreementList.Size = new System.Drawing.Size(726, 377);
             this.gridControlAgreementList.TabIndex = 2;
             this.gridControlAgreementList.ToolTipController = this.toolTipController;
             this.gridControlAgreementList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1102,6 +1095,13 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(320, 6);
             // 
+            // menuTransformSupplToWaybillInManualMode
+            // 
+            this.menuTransformSupplToWaybillInManualMode.Name = "menuTransformSupplToWaybillInManualMode";
+            this.menuTransformSupplToWaybillInManualMode.Size = new System.Drawing.Size(323, 22);
+            this.menuTransformSupplToWaybillInManualMode.Text = "Перевести заказ в накладную (ручной режим)...";
+            this.menuTransformSupplToWaybillInManualMode.Click += new System.EventHandler(this.menuTransformSupplToWaybillInManualMode_Click);
+            // 
             // menuTransformSupplToWaybillInAutoMode
             // 
             this.menuTransformSupplToWaybillInAutoMode.Name = "menuTransformSupplToWaybillInAutoMode";
@@ -1159,7 +1159,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(974, 31);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1020, 31);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel5, null);
             this.tableLayoutPanel5.TabIndex = 2;
             // 
@@ -1243,7 +1243,7 @@
             // 
             this.tabPageEditor.Controls.Add(this.tableLayoutPanelAgreementEditor);
             this.tabPageEditor.Name = "tabPageEditor";
-            this.tabPageEditor.Size = new System.Drawing.Size(974, 602);
+            this.tabPageEditor.Size = new System.Drawing.Size(1020, 602);
             this.tabPageEditor.Text = "tabPageEditor";
             // 
             // tableLayoutPanelAgreementEditor
@@ -1258,7 +1258,7 @@
             this.tableLayoutPanelAgreementEditor.RowCount = 1;
             this.tableLayoutPanelAgreementEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelAgreementEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 602F));
-            this.tableLayoutPanelAgreementEditor.Size = new System.Drawing.Size(974, 602);
+            this.tableLayoutPanelAgreementEditor.Size = new System.Drawing.Size(1020, 602);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelAgreementEditor, null);
             this.tableLayoutPanelAgreementEditor.TabIndex = 1;
             // 
@@ -1266,7 +1266,7 @@
             // 
             this.tabPageWaybill.Controls.Add(this.tableLayoutPanelWaybillEditor);
             this.tabPageWaybill.Name = "tabPageWaybill";
-            this.tabPageWaybill.Size = new System.Drawing.Size(974, 602);
+            this.tabPageWaybill.Size = new System.Drawing.Size(1020, 602);
             this.tabPageWaybill.Text = "tabPageWaybill";
             // 
             // tableLayoutPanelWaybillEditor
@@ -1278,7 +1278,7 @@
             this.tableLayoutPanelWaybillEditor.Name = "tableLayoutPanelWaybillEditor";
             this.tableLayoutPanelWaybillEditor.RowCount = 1;
             this.tableLayoutPanelWaybillEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelWaybillEditor.Size = new System.Drawing.Size(974, 602);
+            this.tableLayoutPanelWaybillEditor.Size = new System.Drawing.Size(1020, 602);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelWaybillEditor, null);
             this.tableLayoutPanelWaybillEditor.TabIndex = 0;
             // 
@@ -1287,19 +1287,12 @@
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
             // 
-            // menuTransformSupplToWaybillInManualMode
-            // 
-            this.menuTransformSupplToWaybillInManualMode.Name = "menuTransformSupplToWaybillInManualMode";
-            this.menuTransformSupplToWaybillInManualMode.Size = new System.Drawing.Size(323, 22);
-            this.menuTransformSupplToWaybillInManualMode.Text = "Перевести заказ в накладную (ручной режим)...";
-            this.menuTransformSupplToWaybillInManualMode.Click += new System.EventHandler(this.menuTransformSupplToWaybillInManualMode_Click);
-            // 
             // frmOrderList
             // 
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(989, 639);
+            this.ClientSize = new System.Drawing.Size(1035, 639);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "frmOrderList";
             this.toolTipController.SetSuperTip(this, null);
@@ -1314,6 +1307,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSearchCondition)).EndInit();
             this.panelControlSearchCondition.ResumeLayout(false);
             this.panelControlSearchCondition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radioGroupSearchByDeliveryDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxPaymentType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxStock.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxCompany.Properties)).EndInit();
@@ -1375,8 +1369,6 @@
         private DevExpress.XtraEditors.ComboBoxEdit cboxCompany;
         private DevExpress.XtraEditors.ComboBoxEdit cboxCustomer;
         private DevExpress.XtraEditors.DateEdit dtEndDate;
-        private DevExpress.XtraEditors.LabelControl labelControl9;
-        private DevExpress.XtraEditors.LabelControl labelControl8;
         private DevExpress.XtraEditors.DateEdit dtBeginDate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
@@ -1458,5 +1450,6 @@
         private DevExpress.XtraTab.XtraTabPage tabPageWaybill;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelWaybillEditor;
         private System.Windows.Forms.ToolStripMenuItem menuTransformSupplToWaybillInManualMode;
+        private DevExpress.XtraEditors.RadioGroup radioGroupSearchByDeliveryDate;
     }
 }
