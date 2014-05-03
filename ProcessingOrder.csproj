@@ -118,6 +118,12 @@
     <Compile Include="frmGroupList.designer.cs">
       <DependentUpon>frmGroupList.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmJoinDepart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmJoinDepart.Designer.cs">
+      <DependentUpon>frmJoinDepart.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmOrderList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGroupList.resx">
       <DependentUpon>frmGroupList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmJoinDepart.resx">
+      <DependentUpon>frmJoinDepart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmOrderList.resx">
       <DependentUpon>frmOrderList.cs</DependentUpon>
