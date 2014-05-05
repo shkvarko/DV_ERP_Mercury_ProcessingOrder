@@ -54,6 +54,8 @@
             this.Depart = new DevExpress.XtraEditors.ComboBoxEdit();
             this.btnUnionWaybill = new DevExpress.XtraEditors.SimpleButton();
             this.controlNavigator = new DevExpress.XtraEditors.ControlNavigator();
+            this.gridControlList = new DevExpress.XtraGrid.GridControl();
+            this.gridViewList = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelControlSearchCondition = new DevExpress.XtraEditors.PanelControl();
             this.IsBonus = new DevExpress.XtraEditors.CheckEdit();
             this.barBtnRefresh = new DevExpress.XtraEditors.SimpleButton();
@@ -69,8 +71,6 @@
             this.dtBeginDate = new DevExpress.XtraEditors.DateEdit();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.gridControlList = new DevExpress.XtraGrid.GridControl();
-            this.gridViewList = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip.SuspendLayout();
@@ -83,6 +83,8 @@
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaybilllNum.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Depart.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSearchCondition)).BeginInit();
             this.panelControlSearchCondition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.IsBonus.Properties)).BeginInit();
@@ -95,8 +97,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDate.Properties)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
             this.SuspendLayout();
             // 
@@ -318,6 +318,7 @@
             this.btnUnionWaybill.ToolTip = "объединить накладные";
             this.btnUnionWaybill.ToolTipController = this.toolTipController;
             this.btnUnionWaybill.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnUnionWaybill.Click += new System.EventHandler(this.btnUnionWaybill_Click);
             // 
             // controlNavigator
             // 
@@ -334,6 +335,32 @@
             this.controlNavigator.Text = "controlNavigator";
             this.controlNavigator.TextLocation = DevExpress.XtraEditors.NavigatorButtonsTextLocation.Center;
             this.controlNavigator.ToolTipController = this.toolTipController;
+            // 
+            // gridControlList
+            // 
+            this.gridControlList.ContextMenuStrip = this.contextMenuStrip;
+            this.gridControlList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlList.EmbeddedNavigator.Name = "";
+            this.gridControlList.Location = new System.Drawing.Point(3, 3);
+            this.gridControlList.MainView = this.gridViewList;
+            this.gridControlList.Name = "gridControlList";
+            this.gridControlList.Size = new System.Drawing.Size(954, 302);
+            this.gridControlList.TabIndex = 2;
+            this.gridControlList.ToolTipController = this.toolTipController;
+            this.gridControlList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewList});
+            // 
+            // gridViewList
+            // 
+            this.gridViewList.GridControl = this.gridControlList;
+            this.gridViewList.Name = "gridViewList";
+            this.gridViewList.OptionsBehavior.Editable = false;
+            this.gridViewList.OptionsDetail.EnableMasterViewMode = false;
+            this.gridViewList.OptionsDetail.ShowDetailTabs = false;
+            this.gridViewList.OptionsDetail.SmartDetailExpand = false;
+            this.gridViewList.OptionsView.ShowFooter = true;
+            this.gridViewList.OptionsView.ShowGroupPanel = false;
+            this.gridViewList.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewList_FocusedRowChanged);
             // 
             // panelControlSearchCondition
             // 
@@ -520,32 +547,6 @@
             this.toolTipController.SetSuperTip(this.tableLayoutPanel6, null);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
-            // gridControlList
-            // 
-            this.gridControlList.ContextMenuStrip = this.contextMenuStrip;
-            this.gridControlList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlList.EmbeddedNavigator.Name = "";
-            this.gridControlList.Location = new System.Drawing.Point(3, 3);
-            this.gridControlList.MainView = this.gridViewList;
-            this.gridControlList.Name = "gridControlList";
-            this.gridControlList.Size = new System.Drawing.Size(954, 302);
-            this.gridControlList.TabIndex = 2;
-            this.gridControlList.ToolTipController = this.toolTipController;
-            this.gridControlList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewList});
-            // 
-            // gridViewList
-            // 
-            this.gridViewList.GridControl = this.gridControlList;
-            this.gridViewList.Name = "gridViewList";
-            this.gridViewList.OptionsBehavior.Editable = false;
-            this.gridViewList.OptionsDetail.EnableMasterViewMode = false;
-            this.gridViewList.OptionsDetail.ShowDetailTabs = false;
-            this.gridViewList.OptionsDetail.SmartDetailExpand = false;
-            this.gridViewList.OptionsView.ShowFooter = true;
-            this.gridViewList.OptionsView.ShowGroupPanel = false;
-            this.gridViewList.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewList_FocusedRowChanged);
-            // 
             // imageCollection
             // 
             this.imageCollection.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection.ImageStream")));
@@ -576,6 +577,8 @@
             this.panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaybilllNum.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Depart.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSearchCondition)).EndInit();
             this.panelControlSearchCondition.ResumeLayout(false);
             this.panelControlSearchCondition.PerformLayout();
@@ -589,8 +592,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDate.Properties)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
             this.ResumeLayout(false);
 

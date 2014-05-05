@@ -45,6 +45,7 @@ namespace ERPMercuryProcessingOrder
         private const System.Int32 iThreadSleepTime = 1000;
         private const System.String strWaitCustomer = "ждите... идет заполнение списка";
         private System.Boolean m_bThreadFinishJob;
+        private const int m_iMinCountWaybillsInUnion = 2;
         #endregion
 
         #region Конструктор
@@ -846,6 +847,119 @@ namespace ERPMercuryProcessingOrder
             ChangeConditionForSearch();
         }
         #endregion
+
+        #region Создание объединения накладных
+
+        private void CreateJoinDepart()
+        {
+            try
+            {
+                if (gridViewList.RowCount < m_iMinCountWaybillsInUnion)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        String.Format("Минимально количество накладных в объединении: {0}\nДобавьте, пожалуйста, накладные в объединение.", m_iMinCountWaybillsInUnion), "Внимание!",
+                       System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                ERP_Mercury.Common.CWaybill objMainWaybill =  GetSelectedItem();
+
+                if( objMainWaybill == null  )
+                {
+                    gridViewList.FocusedRowHandle = 0;
+                    objMainWaybill =  GetSelectedItem();
+                }
+
+                if ((WaybilllNum.Text.Trim().Length == 0) || (Depart.SelectedItem == null))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Укажите, пожалуйста, номер и подразделение для объединения накладных.", "Внимание!",
+                       System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Количество накладных в объединении:\t" + gridViewList.RowCount.ToString() +
+                        "\nОбщее количество:\t\t" + gridViewList.Columns["Quantity"].SummaryText +
+                        "\nСумма с учетом скидки:\t" + gridViewList.Columns["SumWithDiscount"].SummaryText +
+                        "\n\nПодтвердите, пожалуйста, начало операции.", "Внимание!",
+                       System.Windows.Forms.MessageBoxButtons.YesNoCancel, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    System.Guid MainWaybill_Guid = objMainWaybill.ID;
+                    System.Guid MainDepart_Guid = ((CDepart)Depart.SelectedItem).uuidID;
+                    System.String MainWaybill_Num = WaybilllNum.Text;
+
+                    List<System.Guid> ChildWaybillList = new List<Guid>();
+                    System.Guid ChildWaybill_Guid = System.Guid.Empty;
+
+                    for (System.Int32 i = 0; i < gridViewList.RowCount; i++)
+                    {
+                        ChildWaybill_Guid = (System.Guid)(((DevExpress.XtraGrid.Views.Grid.GridView)gridControlList.MainView)).GetRowCellValue(i, "ID");
+                        if ((ChildWaybill_Guid.CompareTo(System.Guid.Empty) != 0) && (ChildWaybill_Guid.CompareTo(MainWaybill_Guid) != 0))
+                        {
+                            ChildWaybillList.Add(ChildWaybill_Guid);
+                        }
+                    }
+
+                    System.String strErr = System.String.Empty;
+
+                    if (CreateJoinDepart(MainWaybill_Guid, MainDepart_Guid, MainWaybill_Num, ChildWaybillList, ref strErr) == true)
+                    {
+                        LoadList();
+
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Объединение накладных успешно завершено.", "Сообщение",
+                           System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            strErr, "Внимание!",
+                           System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
+                        return;
+                    }
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("CreateJoinDepart. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+            return;
+        }
+
+        private System.Boolean CreateJoinDepart( System.Guid MainWaybill_Guid, System.Guid MainDepart_Guid, System.String MainWaybill_Num,
+            List<System.Guid> ChildWaybillList, ref System.String strErr )
+        {
+            System.Boolean bRet = false;
+            try
+            {
+                bRet = CWaybill.JoinWaybillInDB(m_objProfile, null, MainWaybill_Guid, MainDepart_Guid, MainWaybill_Num, ChildWaybillList, ref strErr);
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("CreateJoinDepart. Текст ошибки: " + f.Message);
+            }
+
+            return bRet;
+        }
+
+        private void btnUnionWaybill_Click(object sender, EventArgs e)
+        {
+            CreateJoinDepart();
+        }
+
+        #endregion
+
 
     }
 
