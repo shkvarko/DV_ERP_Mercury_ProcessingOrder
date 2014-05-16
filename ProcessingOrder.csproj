@@ -94,6 +94,12 @@
   <ItemGroup>
     <Compile Include="CProcessingOrderModuleInfo.cs" />
     <Compile Include="CSuppl.cs" />
+    <Compile Include="ctrlBackWaybillEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrlBackWaybillEditor.Designer.cs">
+      <DependentUpon>ctrlBackWaybillEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="ctrlWaybillEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -105,6 +111,12 @@
     </Compile>
     <Compile Include="ctrlWaybillPaymentsList.Designer.cs">
       <DependentUpon>ctrlWaybillPaymentsList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBackWaybillList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBackWaybillList.Designer.cs">
+      <DependentUpon>frmBackWaybillList.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCreateWaybillFromSuppl.cs">
       <SubType>Form</SubType>
@@ -171,11 +183,17 @@
     <None Include="UniXP.snk" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ctrlBackWaybillEditor.resx">
+      <DependentUpon>ctrlBackWaybillEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ctrlWaybillEditor.resx">
       <DependentUpon>ctrlWaybillEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ctrlWaybillPaymentsList.resx">
       <DependentUpon>ctrlWaybillPaymentsList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBackWaybillList.resx">
+      <DependentUpon>frmBackWaybillList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCreateWaybillFromSuppl.resx">
       <DependentUpon>frmCreateWaybillFromSuppl.cs</DependentUpon>
