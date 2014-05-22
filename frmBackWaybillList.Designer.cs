@@ -334,10 +334,11 @@
             this.barBtnRefresh.ToolTip = "Обновить список заказов";
             this.barBtnRefresh.ToolTipController = this.toolTipController;
             this.barBtnRefresh.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.barBtnRefresh.Click += new System.EventHandler(this.barBtnRefresh_Click);
             // 
             // labelControl14
             // 
-            this.labelControl14.Location = new System.Drawing.Point(576, 5);
+            this.labelControl14.Location = new System.Drawing.Point(661, 5);
             this.labelControl14.Name = "labelControl14";
             this.labelControl14.Size = new System.Drawing.Size(73, 13);
             this.labelControl14.TabIndex = 11;
@@ -345,7 +346,7 @@
             // 
             // cboxPaymentType
             // 
-            this.cboxPaymentType.Location = new System.Drawing.Point(576, 21);
+            this.cboxPaymentType.Location = new System.Drawing.Point(660, 21);
             this.cboxPaymentType.Name = "cboxPaymentType";
             this.cboxPaymentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -354,10 +355,11 @@
             this.cboxPaymentType.TabIndex = 5;
             this.cboxPaymentType.ToolTip = "Форма оплаты";
             this.cboxPaymentType.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxPaymentType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // labelControl12
             // 
-            this.labelControl12.Location = new System.Drawing.Point(408, 4);
+            this.labelControl12.Location = new System.Drawing.Point(493, 5);
             this.labelControl12.Name = "labelControl12";
             this.labelControl12.Size = new System.Drawing.Size(32, 13);
             this.labelControl12.TabIndex = 9;
@@ -365,7 +367,7 @@
             // 
             // cboxStock
             // 
-            this.cboxStock.Location = new System.Drawing.Point(408, 21);
+            this.cboxStock.Location = new System.Drawing.Point(492, 21);
             this.cboxStock.Name = "cboxStock";
             this.cboxStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -374,10 +376,11 @@
             this.cboxStock.TabIndex = 4;
             this.cboxStock.ToolTip = "Склад отгрузки";
             this.cboxStock.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxStock.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // labelControl11
             // 
-            this.labelControl11.Location = new System.Drawing.Point(715, 5);
+            this.labelControl11.Location = new System.Drawing.Point(800, 5);
             this.labelControl11.Name = "labelControl11";
             this.labelControl11.Size = new System.Drawing.Size(37, 13);
             this.labelControl11.TabIndex = 7;
@@ -393,28 +396,30 @@
             // 
             // cboxCompany
             // 
-            this.cboxCompany.Location = new System.Drawing.Point(267, 21);
+            this.cboxCompany.Location = new System.Drawing.Point(266, 21);
             this.cboxCompany.Name = "cboxCompany";
             this.cboxCompany.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboxCompany.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboxCompany.Size = new System.Drawing.Size(133, 20);
+            this.cboxCompany.Size = new System.Drawing.Size(220, 20);
             this.cboxCompany.TabIndex = 3;
             this.cboxCompany.ToolTip = "Компания";
             this.cboxCompany.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxCompany.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // cboxCustomer
             // 
             this.cboxCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cboxCustomer.Location = new System.Drawing.Point(715, 20);
+            this.cboxCustomer.Location = new System.Drawing.Point(799, 20);
             this.cboxCustomer.Name = "cboxCustomer";
             this.cboxCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboxCustomer.Size = new System.Drawing.Size(365, 20);
+            this.cboxCustomer.Size = new System.Drawing.Size(280, 20);
             this.cboxCustomer.TabIndex = 6;
             this.cboxCustomer.ToolTip = "Клиент";
             this.cboxCustomer.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxCustomer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // dtEndDate
             // 
@@ -427,6 +432,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton()});
             this.dtEndDate.Size = new System.Drawing.Size(100, 20);
             this.dtEndDate.TabIndex = 2;
+            this.dtEndDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // labelControl9
             // 
@@ -455,6 +461,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton()});
             this.dtBeginDate.Size = new System.Drawing.Size(100, 20);
             this.dtBeginDate.TabIndex = 1;
+            this.dtBeginDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // tableLayoutPanel2
             // 
@@ -486,16 +493,16 @@
             this.tableLayoutPanel3.Controls.Add(this.labelControl7, 0, 8);
             this.tableLayoutPanel3.Controls.Add(this.txtDepart, 0, 9);
             this.tableLayoutPanel3.Controls.Add(this.txtDocNum, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.labelControl17, 0, 16);
-            this.tableLayoutPanel3.Controls.Add(this.txtDescrpn, 0, 17);
+            this.tableLayoutPanel3.Controls.Add(this.labelControl17, 0, 14);
+            this.tableLayoutPanel3.Controls.Add(this.txtDescrpn, 0, 15);
             this.tableLayoutPanel3.Controls.Add(this.labelControl1, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.labelControl3, 0, 6);
             this.tableLayoutPanel3.Controls.Add(this.txtChildDepartCode, 0, 7);
             this.tableLayoutPanel3.Controls.Add(this.txtCustomer, 0, 5);
-            this.tableLayoutPanel3.Controls.Add(this.labelControl6, 0, 14);
             this.tableLayoutPanel3.Controls.Add(this.labelControl13, 0, 12);
-            this.tableLayoutPanel3.Controls.Add(this.txtWaybillStateName, 0, 15);
             this.tableLayoutPanel3.Controls.Add(this.txtPaymentType, 0, 13);
+            this.tableLayoutPanel3.Controls.Add(this.labelControl6, 0, 16);
+            this.tableLayoutPanel3.Controls.Add(this.txtWaybillStateName, 0, 17);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(800, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -516,11 +523,9 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(286, 417);
@@ -616,7 +621,7 @@
             this.labelControl17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelControl17.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.labelControl17.Appearance.Options.UseFont = true;
-            this.labelControl17.Location = new System.Drawing.Point(3, 331);
+            this.labelControl17.Location = new System.Drawing.Point(3, 290);
             this.labelControl17.Name = "labelControl17";
             this.labelControl17.Size = new System.Drawing.Size(70, 13);
             this.labelControl17.TabIndex = 26;
@@ -625,7 +630,7 @@
             // txtDescrpn
             // 
             this.txtDescrpn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDescrpn.Location = new System.Drawing.Point(3, 348);
+            this.txtDescrpn.Location = new System.Drawing.Point(3, 307);
             this.txtDescrpn.Name = "txtDescrpn";
             this.txtDescrpn.Properties.ReadOnly = true;
             this.txtDescrpn.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -680,7 +685,7 @@
             this.labelControl6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelControl6.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.labelControl6.Appearance.Options.UseFont = true;
-            this.labelControl6.Location = new System.Drawing.Point(3, 290);
+            this.labelControl6.Location = new System.Drawing.Point(3, 379);
             this.labelControl6.Name = "labelControl6";
             this.labelControl6.Size = new System.Drawing.Size(130, 13);
             this.labelControl6.TabIndex = 18;
@@ -701,7 +706,7 @@
             // txtWaybillStateName
             // 
             this.txtWaybillStateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtWaybillStateName.Location = new System.Drawing.Point(3, 307);
+            this.txtWaybillStateName.Location = new System.Drawing.Point(3, 396);
             this.txtWaybillStateName.Name = "txtWaybillStateName";
             this.txtWaybillStateName.Properties.ReadOnly = true;
             this.txtWaybillStateName.Size = new System.Drawing.Size(280, 20);
@@ -793,7 +798,7 @@
             // 
             // txtQuantityReturn
             // 
-            this.txtQuantityReturn.Location = new System.Drawing.Point(370, 10);
+            this.txtQuantityReturn.Location = new System.Drawing.Point(388, 10);
             this.txtQuantityReturn.Name = "txtQuantityReturn";
             this.txtQuantityReturn.Properties.Appearance.Options.UseTextOptions = true;
             this.txtQuantityReturn.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -806,19 +811,19 @@
             // 
             // txtSupplNum
             // 
-            this.txtSupplNum.Location = new System.Drawing.Point(123, 10);
+            this.txtSupplNum.Location = new System.Drawing.Point(104, 10);
             this.txtSupplNum.Name = "txtSupplNum";
             this.txtSupplNum.Properties.Appearance.Options.UseTextOptions = true;
             this.txtSupplNum.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.txtSupplNum.Properties.ReadOnly = true;
-            this.txtSupplNum.Size = new System.Drawing.Size(150, 20);
+            this.txtSupplNum.Size = new System.Drawing.Size(195, 20);
             this.txtSupplNum.TabIndex = 3;
             this.txtSupplNum.ToolTipController = this.toolTipController;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(293, 14);
+            this.label2.Location = new System.Drawing.Point(305, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 13);
             this.toolTipController.SetSuperTip(this.label2, null);
@@ -848,6 +853,7 @@
             this.gridControlList.ToolTipController = this.toolTipController;
             this.gridControlList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewList});
+            this.gridControlList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.gridControlGrid_MouseDoubleClick);
             // 
             // gridViewList
             // 
@@ -908,6 +914,7 @@
             this.barBtnAdd.ToolTip = "Создать новый заказ";
             this.barBtnAdd.ToolTipController = this.toolTipController;
             this.barBtnAdd.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.barBtnAdd.Click += new System.EventHandler(this.barBtnAdd_Click);
             // 
             // barbtnImportProduct
             // 
@@ -937,6 +944,7 @@
             this.barBtnEdit.ToolTipController = this.toolTipController;
             this.barBtnEdit.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.barBtnEdit.Visible = false;
+            this.barBtnEdit.Click += new System.EventHandler(this.barBtnEdit_Click);
             // 
             // barBtnDelete
             // 
@@ -951,6 +959,7 @@
             this.barBtnDelete.ToolTip = "Удалить заказ";
             this.barBtnDelete.ToolTipController = this.toolTipController;
             this.barBtnDelete.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.barBtnDelete.Click += new System.EventHandler(this.barBtnDelete_Click);
             // 
             // barBtnCopy
             // 
@@ -1007,7 +1016,7 @@
             this.tableLayoutPanelItemEditor.Name = "tableLayoutPanelItemEditor";
             this.tableLayoutPanelItemEditor.RowCount = 1;
             this.tableLayoutPanelItemEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelItemEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 564F));
+            this.tableLayoutPanelItemEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 474F));
             this.tableLayoutPanelItemEditor.Size = new System.Drawing.Size(1079, 474);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelItemEditor, null);
             this.tableLayoutPanelItemEditor.TabIndex = 2;
@@ -1068,6 +1077,8 @@
             this.Name = "frmBackWaybillList";
             this.toolTipController.SetSuperTip(this, null);
             this.Text = "frmBackWaybillList";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmList_FormClosing);
+            this.Shown += new System.EventHandler(this.frmList_Shown);
             this.contextMenuStrip.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();

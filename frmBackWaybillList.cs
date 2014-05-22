@@ -155,7 +155,7 @@ namespace ERPMercuryProcessingOrder
                         }
                     case ERP_Mercury.Common.enumActionSaveCancel.Save:
                         {
-                            if (e.IsNewWaybill == true)
+                            if (e.IsNewDocument == true)
                             {
                                 m_objSelectedItem = null;
                                 LoadList();
@@ -559,7 +559,7 @@ namespace ERPMercuryProcessingOrder
                     frmItemEditor.ChangeBackWaybillForCustomerProperties += this.OnChangeItemPropertie;
                 }
 
-                frmItemEditor.EditBackWaybill(objItem, false);
+                frmItemEditor.EditBackWaybill(objItem);
 
                 tabControl.SelectedTabPage = tabPageEditor;
                 tabControlItemDetail.SelectedTabPage = tabPageItemEditor;
@@ -919,7 +919,7 @@ namespace ERPMercuryProcessingOrder
             AddGridColumn(ColumnView, "DocNum", "Номер");
             AddGridColumn(ColumnView, "BeginDate", "Дата");
             AddGridColumn(ColumnView, "WaybillBackReasonName", "Причина возврата");
-            AddGridColumn(ColumnView, "ShipDate", "Дата отгрузки");
+  //          AddGridColumn(ColumnView, "ShipDate", "Дата отгрузки");
             AddGridColumn(ColumnView, "WaybillShipModeName", "Вид отгрузки");
             AddGridColumn(ColumnView, "CustomerName", "Клиент");
             AddGridColumn(ColumnView, "ChildDepartCode", "Код дочернего");
@@ -936,7 +936,7 @@ namespace ERPMercuryProcessingOrder
                 objColumn.OptionsColumn.AllowEdit = false;
                 //objColumn.OptionsColumn.AllowFocus = false;
                 objColumn.OptionsColumn.ReadOnly = true;
-                if (objColumn.FieldName == "CustomerName")
+                if ((objColumn.FieldName == "CustomerName") || (objColumn.FieldName == "DocNum") || (objColumn.FieldName == "WaybillBackReasonName"))
                 {
                     objColumn.BestFit();
                     //objColumn.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
@@ -1450,4 +1450,16 @@ namespace ERPMercuryProcessingOrder
         #endregion
 
     }
+
+    public class ViewBackWaybillList : PlugIn.IClassTypeView
+    {
+        public override void Run(UniXP.Common.MENUITEM objMenuItem, System.String strCaption)
+        {
+            frmBackWaybillList obj = new frmBackWaybillList(objMenuItem);
+            obj.Text = strCaption;
+            obj.MdiParent = objMenuItem.objProfile.m_objMDIManager.MdiParent;
+            obj.Visible = true;
+        }
+    }
+
 }

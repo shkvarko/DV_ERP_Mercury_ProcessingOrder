@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition1 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition2 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition3 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition4 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition5 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition6 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition7 = new DevExpress.XtraGrid.StyleFormatCondition();
-            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition8 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition9 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition10 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition11 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition12 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition13 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition14 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition15 = new DevExpress.XtraGrid.StyleFormatCondition();
+            DevExpress.XtraGrid.StyleFormatCondition styleFormatCondition16 = new DevExpress.XtraGrid.StyleFormatCondition();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ctrlWaybillEditor));
             this.colQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCalcEditOrderedQuantity = new DevExpress.XtraEditors.Repository.RepositoryItemCalcEdit();
@@ -848,55 +848,55 @@
             this.colOrderItems_PartsArticle,
             this.colOrderItems_QuantityInstock});
             this.gridView.CustomizationFormBounds = new System.Drawing.Rectangle(1062, 711, 208, 189);
-            styleFormatCondition1.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition1.Appearance.Options.UseBackColor = true;
-            styleFormatCondition1.Column = this.colQuantity;
-            styleFormatCondition1.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition1.Value1 = 0D;
-            styleFormatCondition2.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition2.Appearance.Options.UseBackColor = true;
-            styleFormatCondition2.Column = this.colPriceImporter;
-            styleFormatCondition2.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition2.Value1 = "0";
-            styleFormatCondition3.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition3.Appearance.Options.UseBackColor = true;
-            styleFormatCondition3.Column = this.colQuantityReturned;
-            styleFormatCondition3.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition3.Value1 = "0";
-            styleFormatCondition4.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition4.Appearance.Options.UseBackColor = true;
-            styleFormatCondition4.Column = this.colPrice;
-            styleFormatCondition4.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition4.Value1 = "0";
-            styleFormatCondition5.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition5.Appearance.Options.UseBackColor = true;
-            styleFormatCondition5.Column = this.colPriceWithDiscount;
-            styleFormatCondition5.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition5.Value1 = "0";
-            styleFormatCondition6.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition6.Appearance.Options.UseBackColor = true;
-            styleFormatCondition6.Column = this.colPriceInAccountingCurrency;
-            styleFormatCondition6.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition6.Value1 = "0";
-            styleFormatCondition7.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition7.Appearance.Options.UseBackColor = true;
-            styleFormatCondition7.Column = this.colPriceWithDiscountInAccountingCurrency;
-            styleFormatCondition7.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
-            styleFormatCondition7.Value1 = "0";
-            styleFormatCondition8.Appearance.BackColor = System.Drawing.Color.Red;
-            styleFormatCondition8.Appearance.Options.UseBackColor = true;
-            styleFormatCondition8.Column = this.colNDSPercent;
-            styleFormatCondition8.Condition = DevExpress.XtraGrid.FormatConditionEnum.Less;
-            styleFormatCondition8.Value1 = "0";
+            styleFormatCondition9.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition9.Appearance.Options.UseBackColor = true;
+            styleFormatCondition9.Column = this.colQuantity;
+            styleFormatCondition9.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition9.Value1 = 0D;
+            styleFormatCondition10.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition10.Appearance.Options.UseBackColor = true;
+            styleFormatCondition10.Column = this.colPriceImporter;
+            styleFormatCondition10.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition10.Value1 = "0";
+            styleFormatCondition11.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition11.Appearance.Options.UseBackColor = true;
+            styleFormatCondition11.Column = this.colQuantityReturned;
+            styleFormatCondition11.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition11.Value1 = "0";
+            styleFormatCondition12.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition12.Appearance.Options.UseBackColor = true;
+            styleFormatCondition12.Column = this.colPrice;
+            styleFormatCondition12.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition12.Value1 = "0";
+            styleFormatCondition13.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition13.Appearance.Options.UseBackColor = true;
+            styleFormatCondition13.Column = this.colPriceWithDiscount;
+            styleFormatCondition13.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition13.Value1 = "0";
+            styleFormatCondition14.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition14.Appearance.Options.UseBackColor = true;
+            styleFormatCondition14.Column = this.colPriceInAccountingCurrency;
+            styleFormatCondition14.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition14.Value1 = "0";
+            styleFormatCondition15.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition15.Appearance.Options.UseBackColor = true;
+            styleFormatCondition15.Column = this.colPriceWithDiscountInAccountingCurrency;
+            styleFormatCondition15.Condition = DevExpress.XtraGrid.FormatConditionEnum.LessOrEqual;
+            styleFormatCondition15.Value1 = "0";
+            styleFormatCondition16.Appearance.BackColor = System.Drawing.Color.Red;
+            styleFormatCondition16.Appearance.Options.UseBackColor = true;
+            styleFormatCondition16.Column = this.colNDSPercent;
+            styleFormatCondition16.Condition = DevExpress.XtraGrid.FormatConditionEnum.Less;
+            styleFormatCondition16.Value1 = "0";
             this.gridView.FormatConditions.AddRange(new DevExpress.XtraGrid.StyleFormatCondition[] {
-            styleFormatCondition1,
-            styleFormatCondition2,
-            styleFormatCondition3,
-            styleFormatCondition4,
-            styleFormatCondition5,
-            styleFormatCondition6,
-            styleFormatCondition7,
-            styleFormatCondition8});
+            styleFormatCondition9,
+            styleFormatCondition10,
+            styleFormatCondition11,
+            styleFormatCondition12,
+            styleFormatCondition13,
+            styleFormatCondition14,
+            styleFormatCondition15,
+            styleFormatCondition16});
             this.gridView.GridControl = this.gridControl;
             this.gridView.GroupSummary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
             new DevExpress.XtraGrid.GridGroupSummaryItem(DevExpress.Data.SummaryItemType.Count, "OrderID", null, "")});
@@ -943,8 +943,8 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.repositoryItemLookUpEditProduct.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("ProductFullName", "Наименование товара", 127),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("CustomerOrderStockQty", "Остаток", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0.000", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("CustomerOrderResQty", "в Резерве", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0.000", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None)});
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("CustomerOrderStockQty", "Остаток", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None),
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("CustomerOrderResQty", "в Резерве", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None)});
             this.repositoryItemLookUpEditProduct.DisplayMember = "ProductFullName";
             this.repositoryItemLookUpEditProduct.DropDownRows = 10;
             this.repositoryItemLookUpEditProduct.Name = "repositoryItemLookUpEditProduct";
