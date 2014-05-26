@@ -79,6 +79,8 @@
             this.BackWaybItems_QuantitySrc = new System.Data.DataColumn();
             this.BackWaybItem_Id = new System.Data.DataColumn();
             this.WaybItem_Guid = new System.Data.DataColumn();
+            this.BackWaybItems_Waybill_Num = new System.Data.DataColumn();
+            this.BackWaybItems_Waybill_BeginDate = new System.Data.DataColumn();
             this.Product = new System.Data.DataTable();
             this.Product_ProductGuid = new System.Data.DataColumn();
             this.Product_ProductFullName = new System.Data.DataColumn();
@@ -89,6 +91,9 @@
             this.Product_MeasureName = new System.Data.DataColumn();
             this.Product_WaybItem_PriceInAccountingCurrency = new System.Data.DataColumn();
             this.Product_WaybItem_Guid = new System.Data.DataColumn();
+            this.Product_WaybItem_LeavQuantity = new System.Data.DataColumn();
+            this.Product_WaybillNum = new System.Data.DataColumn();
+            this.Product_WaybillDate = new System.Data.DataColumn();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colBackWaybItem_Guid = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colProductID = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -100,13 +105,15 @@
             this.colBackWaybItems_PartsName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBackWaybItems_PartsArticle = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colBackWaybItems_QuantitySrc = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colWaybItem_Guid = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colBackWaybItems_Waybill_Num = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colBackWaybItems_Waybill_BeginDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemSpinEditDiscount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
-            this.checkSetOrderInQueue = new DevExpress.XtraEditors.CheckEdit();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.Stock = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -146,10 +153,6 @@
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.controlNavigator = new DevExpress.XtraEditors.ControlNavigator();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.Product_WaybItem_LeavQuantity = new System.Data.DataColumn();
-            this.Product_WaybillNum = new System.Data.DataColumn();
-            this.Product_WaybillDate = new System.Data.DataColumn();
-            this.colWaybItem_Guid = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCalcEditOrderedQuantity)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanelBackground.SuspendLayout();
@@ -164,7 +167,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemLookUpEditProduct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEditDiscount)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.checkSetOrderInQueue.Properties)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Stock.Properties)).BeginInit();
@@ -305,36 +307,42 @@
             this.mitmsExportToHTML.Name = "mitmsExportToHTML";
             this.mitmsExportToHTML.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToHTML.Text = "в HTML...";
+            this.mitmsExportToHTML.Click += new System.EventHandler(this.sbExportToHTML_Click);
             // 
             // mitmsExportToXML
             // 
             this.mitmsExportToXML.Name = "mitmsExportToXML";
             this.mitmsExportToXML.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToXML.Text = "в XML...";
+            this.mitmsExportToXML.Click += new System.EventHandler(this.sbExportToXML_Click);
             // 
             // mitmsExportToXLS
             // 
             this.mitmsExportToXLS.Name = "mitmsExportToXLS";
             this.mitmsExportToXLS.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToXLS.Text = "в MS Excel...";
+            this.mitmsExportToXLS.Click += new System.EventHandler(this.sbExportToXLS_Click);
             // 
             // mitmsExportToTXT
             // 
             this.mitmsExportToTXT.Name = "mitmsExportToTXT";
             this.mitmsExportToTXT.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToTXT.Text = "в TXT...";
+            this.mitmsExportToTXT.Click += new System.EventHandler(this.sbExportToTXT_Click);
             // 
             // mitmsExportToDBF
             // 
             this.mitmsExportToDBF.Name = "mitmsExportToDBF";
             this.mitmsExportToDBF.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToDBF.Text = "в DBF (цена в рублях)...";
+            this.mitmsExportToDBF.Click += new System.EventHandler(this.sbExportToDBF_Click);
             // 
             // mitmsExportToDBFCurrency
             // 
             this.mitmsExportToDBFCurrency.Name = "mitmsExportToDBFCurrency";
             this.mitmsExportToDBFCurrency.Size = new System.Drawing.Size(233, 22);
             this.mitmsExportToDBFCurrency.Text = "в DBF (цена в валюте учета)...";
+            this.mitmsExportToDBFCurrency.Click += new System.EventHandler(this.sbExportToDBFCurrency_Click);
             // 
             // toolStripSeparator1
             // 
@@ -365,12 +373,14 @@
             this.mitemDeleteSelectedRows.Name = "mitemDeleteSelectedRows";
             this.mitemDeleteSelectedRows.Size = new System.Drawing.Size(328, 22);
             this.mitemDeleteSelectedRows.Text = "Удалить выделенные записи...";
+            this.mitemDeleteSelectedRows.Click += new System.EventHandler(this.mitemDeleteSelectedRows_Click);
             // 
             // mitemClearRows
             // 
             this.mitemClearRows.Name = "mitemClearRows";
             this.mitemClearRows.Size = new System.Drawing.Size(328, 22);
             this.mitemClearRows.Text = "Удалить все записи в приложении к накладной...";
+            this.mitemClearRows.Click += new System.EventHandler(this.mitemClearRows_Click);
             // 
             // tableLayoutPanelBackground
             // 
@@ -441,8 +451,8 @@
             this.dataSet.DataSetName = "dataSet";
             this.dataSet.Relations.AddRange(new System.Data.DataRelation[] {
             new System.Data.DataRelation("rlOrderItmsProduct", "Product", "OrderItems", new string[] {
-                        "Product_ProductID"}, new string[] {
-                        "ProductID"}, false)});
+                        "WaybItem_Guid"}, new string[] {
+                        "WaybItem_Guid"}, false)});
             this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
             this.OrderItems,
             this.Product});
@@ -464,7 +474,13 @@
             this.BackWaybItems_PartsName,
             this.BackWaybItems_QuantitySrc,
             this.BackWaybItem_Id,
-            this.WaybItem_Guid});
+            this.WaybItem_Guid,
+            this.BackWaybItems_Waybill_Num,
+            this.BackWaybItems_Waybill_BeginDate});
+            this.OrderItems.Constraints.AddRange(new System.Data.Constraint[] {
+            new System.Data.ForeignKeyConstraint("rlOrderItmsProduct", "Product", new string[] {
+                        "WaybItem_Guid"}, new string[] {
+                        "WaybItem_Guid"}, System.Data.AcceptRejectRule.None, System.Data.Rule.None, System.Data.Rule.None)});
             this.OrderItems.TableName = "OrderItems";
             // 
             // BackWaybItem_Guid
@@ -553,6 +569,17 @@
             this.WaybItem_Guid.ColumnName = "WaybItem_Guid";
             this.WaybItem_Guid.DataType = typeof(System.Guid);
             // 
+            // BackWaybItems_Waybill_Num
+            // 
+            this.BackWaybItems_Waybill_Num.Caption = "№ отгрузки";
+            this.BackWaybItems_Waybill_Num.ColumnName = "BackWaybItems_Waybill_Num";
+            // 
+            // BackWaybItems_Waybill_BeginDate
+            // 
+            this.BackWaybItems_Waybill_BeginDate.Caption = "Дата отгрузки";
+            this.BackWaybItems_Waybill_BeginDate.ColumnName = "BackWaybItems_Waybill_BeginDate";
+            this.BackWaybItems_Waybill_BeginDate.DataType = typeof(System.DateTime);
+            // 
             // Product
             // 
             this.Product.Columns.AddRange(new System.Data.DataColumn[] {
@@ -568,6 +595,9 @@
             this.Product_WaybItem_LeavQuantity,
             this.Product_WaybillNum,
             this.Product_WaybillDate});
+            this.Product.Constraints.AddRange(new System.Data.Constraint[] {
+            new System.Data.UniqueConstraint("Constraint1", new string[] {
+                        "WaybItem_Guid"}, false)});
             this.Product.TableName = "Product";
             // 
             // Product_ProductGuid
@@ -618,8 +648,25 @@
             // 
             // Product_WaybItem_Guid
             // 
-            this.Product_WaybItem_Guid.ColumnName = "Product_WaybItem_Guid";
+            this.Product_WaybItem_Guid.ColumnName = "WaybItem_Guid";
             this.Product_WaybItem_Guid.DataType = typeof(System.Guid);
+            // 
+            // Product_WaybItem_LeavQuantity
+            // 
+            this.Product_WaybItem_LeavQuantity.Caption = "К возврату, шт.";
+            this.Product_WaybItem_LeavQuantity.ColumnName = "Product_WaybItem_LeavQuantity";
+            this.Product_WaybItem_LeavQuantity.DataType = typeof(decimal);
+            // 
+            // Product_WaybillNum
+            // 
+            this.Product_WaybillNum.Caption = "№ отгрузки";
+            this.Product_WaybillNum.ColumnName = "Product_WaybillNum";
+            // 
+            // Product_WaybillDate
+            // 
+            this.Product_WaybillDate.Caption = "Дата отгрузки";
+            this.Product_WaybillDate.ColumnName = "Product_WaybillDate";
+            this.Product_WaybillDate.DataType = typeof(System.DateTime);
             // 
             // gridView
             // 
@@ -638,7 +685,9 @@
             this.colBackWaybItems_PartsName,
             this.colBackWaybItems_PartsArticle,
             this.colBackWaybItems_QuantitySrc,
-            this.colWaybItem_Guid});
+            this.colWaybItem_Guid,
+            this.colBackWaybItems_Waybill_Num,
+            this.colBackWaybItems_Waybill_BeginDate});
             this.gridView.CustomizationFormBounds = new System.Drawing.Rectangle(1062, 711, 208, 189);
             styleFormatCondition1.Appearance.BackColor = System.Drawing.Color.Red;
             styleFormatCondition1.Appearance.Options.UseBackColor = true;
@@ -694,6 +743,14 @@
             this.gridView.OptionsView.ColumnAutoWidth = false;
             this.gridView.OptionsView.ShowFooter = true;
             this.gridView.OptionsView.ShowGroupPanel = false;
+            this.gridView.CustomDrawRowIndicator += new DevExpress.XtraGrid.Views.Grid.RowIndicatorCustomDrawEventHandler(this.gridView_CustomDrawRowIndicator);
+            this.gridView.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridView_CustomDrawCell);
+            this.gridView.InitNewRow += new DevExpress.XtraGrid.Views.Grid.InitNewRowEventHandler(this.gridView_InitNewRow);
+            this.gridView.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridView_CellValueChanged);
+            this.gridView.CellValueChanging += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridView_CellValueChanging);
+            this.gridView.InvalidRowException += new DevExpress.XtraGrid.Views.Base.InvalidRowExceptionEventHandler(this.gridView_InvalidRowException);
+            this.gridView.ValidateRow += new DevExpress.XtraGrid.Views.Base.ValidateRowEventHandler(this.gridView_ValidateRow);
+            this.gridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridView_KeyDown);
             // 
             // colBackWaybItem_Guid
             // 
@@ -709,7 +766,7 @@
             this.colProductID.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colProductID.Caption = "Наименование товара";
             this.colProductID.ColumnEdit = this.repositoryItemLookUpEditProduct;
-            this.colProductID.FieldName = "ProductID";
+            this.colProductID.FieldName = "WaybItem_Guid";
             this.colProductID.Name = "colProductID";
             this.colProductID.Visible = true;
             this.colProductID.VisibleIndex = 0;
@@ -724,8 +781,7 @@
             this.repositoryItemLookUpEditProduct.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Product_ProductFullName", "Наименование товара", 127),
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Product_WaybItem_Quantity", "К возврату", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Product_WaybItem_Price", "Цена", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0.00", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None),
-            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Product_WaybItem_Guid", "Ссылка на позицию в отгрузке", 20, DevExpress.Utils.FormatType.None, "", false, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None)});
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Product_WaybItem_Price", "Цена", 30, DevExpress.Utils.FormatType.Numeric, "### ### ##0.00", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None)});
             this.repositoryItemLookUpEditProduct.DisplayMember = "Product_ProductFullName";
             this.repositoryItemLookUpEditProduct.DropDownRows = 10;
             this.repositoryItemLookUpEditProduct.Name = "repositoryItemLookUpEditProduct";
@@ -734,7 +790,7 @@
             this.repositoryItemLookUpEditProduct.PopupWidth = 500;
             this.repositoryItemLookUpEditProduct.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.repositoryItemLookUpEditProduct.ValidateOnEnterKey = true;
-            this.repositoryItemLookUpEditProduct.ValueMember = "Product_WaybItem_Guid";
+            this.repositoryItemLookUpEditProduct.ValueMember = "WaybItem_Guid";
             // 
             // colMeasureID
             // 
@@ -813,6 +869,35 @@
             this.colBackWaybItems_QuantitySrc.FieldName = "BackWaybItems_QuantitySrc";
             this.colBackWaybItems_QuantitySrc.Name = "colBackWaybItems_QuantitySrc";
             // 
+            // colWaybItem_Guid
+            // 
+            this.colWaybItem_Guid.Caption = "colWaybItem_Guid";
+            this.colWaybItem_Guid.FieldName = "WaybItem_Guid";
+            this.colWaybItem_Guid.Name = "colWaybItem_Guid";
+            // 
+            // colBackWaybItems_Waybill_Num
+            // 
+            this.colBackWaybItems_Waybill_Num.Caption = "№ отгрузки";
+            this.colBackWaybItems_Waybill_Num.FieldName = "BackWaybItems_Waybill_Num";
+            this.colBackWaybItems_Waybill_Num.Name = "colBackWaybItems_Waybill_Num";
+            this.colBackWaybItems_Waybill_Num.OptionsColumn.AllowEdit = false;
+            this.colBackWaybItems_Waybill_Num.OptionsColumn.ReadOnly = true;
+            this.colBackWaybItems_Waybill_Num.Visible = true;
+            this.colBackWaybItems_Waybill_Num.VisibleIndex = 8;
+            this.colBackWaybItems_Waybill_Num.Width = 80;
+            // 
+            // colBackWaybItems_Waybill_BeginDate
+            // 
+            this.colBackWaybItems_Waybill_BeginDate.Caption = "Дата отгрузки";
+            this.colBackWaybItems_Waybill_BeginDate.DisplayFormat.FormatString = "d";
+            this.colBackWaybItems_Waybill_BeginDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.colBackWaybItems_Waybill_BeginDate.FieldName = "BackWaybItems_Waybill_BeginDate";
+            this.colBackWaybItems_Waybill_BeginDate.Name = "colBackWaybItems_Waybill_BeginDate";
+            this.colBackWaybItems_Waybill_BeginDate.OptionsColumn.AllowEdit = false;
+            this.colBackWaybItems_Waybill_BeginDate.OptionsColumn.ReadOnly = true;
+            this.colBackWaybItems_Waybill_BeginDate.Visible = true;
+            this.colBackWaybItems_Waybill_BeginDate.VisibleIndex = 9;
+            // 
             // repositoryItemSpinEditDiscount
             // 
             this.repositoryItemSpinEditDiscount.AutoHeight = false;
@@ -838,7 +923,6 @@
             this.tableLayoutPanel1.Controls.Add(this.btnEdit, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnPrint, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnSave, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.checkSetOrderInQueue, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 571);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
@@ -861,6 +945,7 @@
             this.btnCancel.Text = "Выход";
             this.btnCancel.ToolTip = "Закрыть редактор заказа";
             this.btnCancel.ToolTipController = this.toolTipController;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnEdit
             // 
@@ -874,6 +959,7 @@
             this.btnEdit.Text = "Редактировать";
             this.btnEdit.ToolTipController = this.toolTipController;
             this.btnEdit.Visible = false;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnPrint
             // 
@@ -900,18 +986,6 @@
             this.btnSave.Text = "ОК";
             this.btnSave.ToolTip = "Сохранить изменения";
             this.btnSave.ToolTipController = this.toolTipController;
-            // 
-            // checkSetOrderInQueue
-            // 
-            this.checkSetOrderInQueue.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.checkSetOrderInQueue.Location = new System.Drawing.Point(758, 6);
-            this.checkSetOrderInQueue.Name = "checkSetOrderInQueue";
-            this.checkSetOrderInQueue.Properties.Caption = "в очередь на обработку";
-            this.checkSetOrderInQueue.Size = new System.Drawing.Size(150, 19);
-            this.checkSetOrderInQueue.TabIndex = 4;
-            this.checkSetOrderInQueue.ToolTip = "заказ будет помещён в очередь для последующей автоматической обработки и формиров" +
-    "ания резерва";
-            this.checkSetOrderInQueue.ToolTipController = this.toolTipController;
             // 
             // tableLayoutPanel2
             // 
@@ -976,6 +1050,7 @@
             this.Stock.ToolTip = "Склад отгрузки";
             this.Stock.ToolTipController = this.toolTipController;
             this.Stock.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.Stock.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // labelControl9
             // 
@@ -1010,6 +1085,7 @@
             this.Depart.ToolTip = "Подразделение";
             this.Depart.ToolTipController = this.toolTipController;
             this.Depart.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.Depart.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // labelControl11
             // 
@@ -1035,6 +1111,7 @@
             this.SalesMan.ToolTip = "Торговый представитель";
             this.SalesMan.ToolTipController = this.toolTipController;
             this.SalesMan.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.SalesMan.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // tableLayoutPanel3
             // 
@@ -1083,6 +1160,7 @@
             this.Customer.ToolTip = "Клиент";
             this.Customer.ToolTipController = this.toolTipController;
             this.Customer.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.Customer.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // labelControl1
             // 
@@ -1108,6 +1186,7 @@
             this.ChildDepart.ToolTip = "Дочернее подразделение клиента";
             this.ChildDepart.ToolTipController = this.toolTipController;
             this.ChildDepart.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.ChildDepart.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // tableLayoutPanel7
             // 
@@ -1135,6 +1214,8 @@
             this.txtDescription.TabIndex = 26;
             this.txtDescription.ToolTip = "Примечание";
             this.txtDescription.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.txtDescription.EditValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
+            this.txtDescription.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtOrderPropertie_EditValueChanging);
             // 
             // labelControl12
             // 
@@ -1198,6 +1279,8 @@
             this.ShipDate.ToolTipController = this.toolTipController;
             this.ShipDate.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.ShipDate.Visible = false;
+            this.ShipDate.EditValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
+            this.ShipDate.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtOrderPropertie_EditValueChanging);
             // 
             // WaybillState
             // 
@@ -1215,6 +1298,7 @@
             this.WaybillState.ToolTipController = this.toolTipController;
             this.WaybillState.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.WaybillState.Visible = false;
+            this.WaybillState.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // labelControl21
             // 
@@ -1260,6 +1344,8 @@
             this.BeginDate.ToolTip = "Дата оформления";
             this.BeginDate.ToolTipController = this.toolTipController;
             this.BeginDate.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.BeginDate.EditValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
+            this.BeginDate.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtOrderPropertie_EditValueChanging);
             // 
             // WaybilllNum
             // 
@@ -1270,6 +1356,8 @@
             this.WaybilllNum.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.WaybilllNum.Size = new System.Drawing.Size(135, 20);
             this.WaybilllNum.TabIndex = 31;
+            this.WaybilllNum.EditValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
+            this.WaybilllNum.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.txtOrderPropertie_EditValueChanging);
             // 
             // labelControl29
             // 
@@ -1295,6 +1383,7 @@
             this.PaymentType.ToolTip = "Форма оплаты заказа";
             this.PaymentType.ToolTipController = this.toolTipController;
             this.PaymentType.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.PaymentType.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // labelControl4
             // 
@@ -1331,6 +1420,7 @@
             this.WaybillShipMode.ToolTipController = this.toolTipController;
             this.WaybillShipMode.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.WaybillShipMode.Visible = false;
+            this.WaybillShipMode.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // tableLayoutPanel8
             // 
@@ -1382,6 +1472,7 @@
             this.cboxProductTradeMark.ToolTip = "Товарная марка";
             this.cboxProductTradeMark.ToolTipController = this.toolTipController;
             this.cboxProductTradeMark.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxProductTradeMark.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // pictureFilter
             // 
@@ -1425,6 +1516,7 @@
             this.cboxProductType.ToolTip = "Товарная группа";
             this.cboxProductType.ToolTipController = this.toolTipController;
             this.cboxProductType.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxProductType.SelectedValueChanged += new System.EventHandler(this.cboxOrderPropertie_SelectedValueChanged);
             // 
             // tableLayoutPanel6
             // 
@@ -1463,28 +1555,6 @@
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsx)|*.xlsx|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
             // 
-            // Product_WaybItem_LeavQuantity
-            // 
-            this.Product_WaybItem_LeavQuantity.Caption = "К возврату, шт.";
-            this.Product_WaybItem_LeavQuantity.ColumnName = "Product_WaybItem_LeavQuantity";
-            this.Product_WaybItem_LeavQuantity.DataType = typeof(decimal);
-            // 
-            // Product_WaybillNum
-            // 
-            this.Product_WaybillNum.Caption = "№ отгрузки";
-            this.Product_WaybillNum.ColumnName = "Product_WaybillNum";
-            // 
-            // Product_WaybillDate
-            // 
-            this.Product_WaybillDate.Caption = "Дата отгрузки";
-            this.Product_WaybillDate.ColumnName = "Product_WaybillDate";
-            this.Product_WaybillDate.DataType = typeof(System.DateTime);
-            // 
-            // colWaybItem_Guid
-            // 
-            this.colWaybItem_Guid.Caption = "colWaybItem_Guid";
-            this.colWaybItem_Guid.Name = "colWaybItem_Guid";
-            // 
             // ctrlBackWaybillEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1507,7 +1577,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemLookUpEditProduct)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEditDiscount)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.checkSetOrderInQueue.Properties)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -1610,7 +1679,6 @@
         private DevExpress.XtraEditors.SimpleButton btnEdit;
         private DevExpress.XtraEditors.SimpleButton btnPrint;
         private DevExpress.XtraEditors.SimpleButton btnSave;
-        private DevExpress.XtraEditors.CheckEdit checkSetOrderInQueue;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private DevExpress.XtraEditors.ComboBoxEdit Stock;
@@ -1655,5 +1723,9 @@
         private System.Data.DataColumn Product_WaybillNum;
         private System.Data.DataColumn Product_WaybillDate;
         private DevExpress.XtraGrid.Columns.GridColumn colWaybItem_Guid;
+        private System.Data.DataColumn BackWaybItems_Waybill_Num;
+        private System.Data.DataColumn BackWaybItems_Waybill_BeginDate;
+        private DevExpress.XtraGrid.Columns.GridColumn colBackWaybItems_Waybill_Num;
+        private DevExpress.XtraGrid.Columns.GridColumn colBackWaybItems_Waybill_BeginDate;
     }
 }

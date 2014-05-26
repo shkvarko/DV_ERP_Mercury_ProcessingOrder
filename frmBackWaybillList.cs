@@ -595,26 +595,6 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
-        private void gridControlGrid_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                this.Cursor = Cursors.WaitCursor;
-
-                EditItem(GetSelectedItem());
-
-            }//try
-            catch (System.Exception f)
-            {
-                SendMessageToLog("Ошибка редактирования заказа. Текст ошибки: " + f.Message);
-            }
-            finally
-            {
-                this.Cursor = Cursors.Default;
-            }
-
-            return;
-        }
         /// <summary>
         /// Возвращает ссылку на выбранный в списке заказ
         /// </summary>
@@ -641,6 +621,82 @@ namespace ERPMercuryProcessingOrder
             }
 
             return objRet;
+        }
+
+        #endregion
+
+        #region Просмотр документа в редакторе
+        /// <summary>
+        /// Загружает свойства записи в редактор для просмотра
+        /// </summary>
+        /// <param name="objItem">запись журнала</param>
+        private void ViewItem(ERP_Mercury.Common.CBackWaybill objItem)
+        {
+            if (objItem == null) { return; }
+            System.String strErr = System.String.Empty;
+
+            try
+            {
+                m_objSelectedItem = objItem;
+
+                //m_objSelectedItem.WaybillItemList = ERP_Mercury.Common.CBackWaybillItem.GetWaybillTablePart(m_objProfile, m_objSelectedItem.ID,
+                //    System.DateTime.MinValue, System.DateTime.MinValue, ref strErr, false);
+
+                if (m_objSelectedItem.SalesMan == null)
+                {
+                    List<ERP_Mercury.Common.CSalesMan> objSalesManList = ERP_Mercury.Common.CSalesMan.GetSalesManListForDepart(m_objProfile,
+                        null, m_objSelectedItem.Depart.uuidID, ref strErr);
+                    if ((objSalesManList != null) && (objSalesManList.Count > 0))
+                    {
+                        m_objSelectedItem.SalesMan = objSalesManList[0];
+                    }
+                    objSalesManList = null;
+                }
+
+
+                if (frmItemEditor == null)
+                {
+                    frmItemEditor = new ctrlBackWaybillEditor(m_objMenuItem);
+                    tableLayoutPanelItemEditor.Controls.Add(frmItemEditor, 0, 0);
+                    frmItemEditor.Dock = DockStyle.Fill;
+                    frmItemEditor.ChangeBackWaybillForCustomerProperties += this.OnChangeItemPropertie;
+                }
+
+                frmItemEditor.ViewBackWaybill(objItem);
+
+                tabControl.SelectedTabPage = tabPageEditor;
+                tabControlItemDetail.SelectedTabPage = tabPageItemEditor;
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка просмотра документа. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
+
+        private void gridControlGrid_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+
+                ViewItem(GetSelectedItem());
+
+            }//try
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка просмотра документа. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+
+            return;
         }
 
         #endregion
