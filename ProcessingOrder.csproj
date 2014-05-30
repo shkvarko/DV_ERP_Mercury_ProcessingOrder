@@ -166,6 +166,12 @@
     <Compile Include="frmRulePoolStep.designer.cs">
       <DependentUpon>frmRulePoolStep.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmWaybillBackReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWaybillBackReason.Designer.cs">
+      <DependentUpon>frmWaybillBackReason.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmWaybillList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmRulePoolStep.resx">
       <DependentUpon>frmRulePoolStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWaybillBackReason.resx">
+      <DependentUpon>frmWaybillBackReason.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmWaybillList.resx">
       <DependentUpon>frmWaybillList.cs</DependentUpon>

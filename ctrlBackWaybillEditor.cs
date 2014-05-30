@@ -147,8 +147,8 @@ namespace ERPMercuryProcessingOrder
             m_uuidSrcStockID = System.Guid.Empty;
             m_uuidSrcCustomerID = System.Guid.Empty;
             m_uuidSrcPaymentID = System.Guid.Empty;
-            m_dtSrcBeginDate = System.DateTime.MinValue;
-            m_dtSrcEndDate = System.DateTime.MinValue;
+            m_dtSrcBeginDate = System.DateTime.Today;
+            m_dtSrcEndDate = System.DateTime.Today;
 
             m_objSelectedWaybill = null;
             m_objSrcBackWaybillItemList = null;
@@ -251,6 +251,7 @@ namespace ERPMercuryProcessingOrder
             {
                 Customer.Properties.Appearance.BackColor = ((Customer.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 WaybillState.Properties.Appearance.BackColor = ((WaybillState.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
+                WaybillBackReason.Properties.Appearance.BackColor = ((WaybillBackReason.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 PaymentType.Properties.Appearance.BackColor = ((PaymentType.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 Depart.Properties.Appearance.BackColor = ((Depart.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 SalesMan.Properties.Appearance.BackColor = ((SalesMan.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
@@ -260,6 +261,7 @@ namespace ERPMercuryProcessingOrder
 
                 if (Customer.SelectedItem == null) { bRet = false; }
                 if (WaybillState.SelectedItem == null) { bRet = false; }
+                if (WaybillBackReason.SelectedItem == null) { bRet = false; }
                 if (PaymentType.SelectedItem == null) { bRet = false; }
                 if (SalesMan.SelectedItem == null) { bRet = false; }
                 if (Depart.SelectedItem == null) { bRet = false; }
@@ -318,6 +320,31 @@ namespace ERPMercuryProcessingOrder
             {
                 if (m_bDisableEvents == true) { return; }
 
+                if ((sender == Customer) && (Customer.SelectedItem != null))
+                {
+                    CCustomer objCustomer = (CCustomer)Customer.SelectedItem;
+                    // список дочерних подразделений
+                    LoadChildDeprtForCustomer(objCustomer.ID);
+                }
+
+                if (sender == Depart)
+                {
+                    LoadSalesManListForDepart((CDepart)Depart.SelectedItem);
+                }
+
+                if (sender == Customer)
+                {
+                    ChildDepart.SelectedItem = null;
+
+                    //if ((ChildDepart.Properties.Items.Count > 0) && (PaymentType.SelectedItem != null))
+                    //{
+                    //    if (((CPaymentType)PaymentType.SelectedItem).ID == m_iPaymentType2)
+                    //    {
+                    //        ChildDepart.SelectedItem = ChildDepart.Properties.Items[0];
+                    //    }
+                    //}
+                }
+                
                 SetPropertiesModified(true);
             }//try
             catch (System.Exception f)
@@ -409,16 +436,21 @@ namespace ERPMercuryProcessingOrder
                     {
                         objItem = m_objSrcBackWaybillItemList.Cast<CSrcBackWaybillItem>().Single<CSrcBackWaybillItem>(x => x.WaybItemID.CompareTo((System.Guid)e.Value) == 0);
 
-                        gridView.SetRowCellValue(e.RowHandle, colProductID, objItem.Product.ID);
                         gridView.SetRowCellValue(e.RowHandle, colMeasureID, objItem.Measure.ID);
                         gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_MeasureName, objItem.Measure.ShortName);
-                        gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_QuantitySrc, objItem.LeavQuantity);
-                        gridView.SetRowCellValue(e.RowHandle, colQuantity, objItem.LeavQuantity);
                         gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_PartsArticle, objItem.Product.Article);
                         gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_PartsName, objItem.Product.Name);
                         gridView.SetRowCellValue(e.RowHandle, colPriceImporter, objItem.PriceImporter);
                         gridView.SetRowCellValue(e.RowHandle, colPrice, objItem.Price);
                         gridView.SetRowCellValue(e.RowHandle, colPriceInAccountingCurrency, objItem.PriceInAccountingCurrency);
+                        gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_Waybill_Num, objItem.WaybillNum);
+                        gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_Waybill_BeginDate, objItem.WaybillDate);
+
+                        gridView.SetRowCellValue(e.RowHandle, colProductID, objItem.Product.ID);
+
+                        gridView.SetRowCellValue(e.RowHandle, colBackWaybItems_QuantitySrc, objItem.LeavQuantity);
+                        gridView.SetRowCellValue(e.RowHandle, colQuantity, objItem.LeavQuantity);
+
 
                         gridView.UpdateCurrentRow();
 
@@ -533,6 +565,8 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
+                if (e.RowHandle < 0) { return; }
+
                 if ((gridView.GetRowCellValue(e.RowHandle, colBackWaybItems_QuantitySrc) != null) &&
                     (gridView.GetRowCellValue(e.RowHandle, colQuantity) != null))
                 {
@@ -586,7 +620,7 @@ namespace ERPMercuryProcessingOrder
 
                 // Состояние накладной
                 WaybillState.Properties.Items.Clear();
-                WaybillState.Properties.Items.AddRange(CWaybillState.GetWaybillStateList(m_objProfile, ref strErr));
+                WaybillState.Properties.Items.AddRange(CBackWaybillState.GetBackWaybillStateList(m_objProfile, ref strErr));
 
                 // Вид отгрузки
                 WaybillShipMode.Properties.Items.Clear();
@@ -598,6 +632,10 @@ namespace ERPMercuryProcessingOrder
                 // Подразделение
                 Depart.Properties.Items.Clear();
                 Depart.Properties.Items.AddRange(CDepart.GetDepartList(m_objProfile, null));
+
+                // Причины возврата
+                WaybillBackReason.Properties.Items.Clear();
+                WaybillBackReason.Properties.Items.AddRange( CWaybillBackReason.GetWaybillBackReasonList( m_objProfile, ref strErr ) );
 
                 // Товары
                 dataSet.Tables["Product"].Clear();
@@ -900,7 +938,9 @@ namespace ERPMercuryProcessingOrder
                     // новый документ
 
                     // выпадающий список с товарами
-                    m_objSrcBackWaybillItemList = CSrcBackWaybillItem.GetSrcBackWaybillItemList(m_objProfile, m_uuidSrcWaybillID, m_uuidSrcCustomerID, m_uuidSrcStockID, m_uuidSrcPaymentID, m_dtSrcBeginDate, m_dtSrcEndDate, ref strErr);
+                    m_objSrcBackWaybillItemList = CSrcBackWaybillItem.GetSrcBackWaybillItemList(m_objProfile, 
+                        m_uuidSrcWaybillID, m_uuidSrcCustomerID, m_uuidSrcStockID, m_uuidSrcPaymentID, 
+                        m_dtSrcBeginDate, m_dtSrcEndDate, ref strErr);
 
                     // табличная часть документа
                     if (m_objSelectedWaybill.WaybillItemList == null)
@@ -1165,6 +1205,7 @@ namespace ERPMercuryProcessingOrder
                 PaymentType.Properties.ReadOnly = bSet;
                 WaybillState.Properties.ReadOnly = bSet;
                 WaybillShipMode.Properties.ReadOnly = bSet;
+                WaybillBackReason.Properties.ReadOnly = bSet;
                 Depart.Properties.ReadOnly = bSet;
                 SalesMan.Properties.ReadOnly = bSet;
                 Stock.Properties.ReadOnly = bSet;
@@ -1274,6 +1315,7 @@ namespace ERPMercuryProcessingOrder
                 ChildDepart.SelectedItem = null;
                 PaymentType.SelectedItem = null;
                 WaybillShipMode.SelectedItem = null;
+                WaybillBackReason.SelectedItem = null;
                 WaybillState.SelectedItem = null;
                 Depart.SelectedItem = null;
                 SalesMan.SelectedItem = null;
@@ -1308,6 +1350,7 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 m_objSelectedWaybill = objBackWaybill;
+                m_uuidSrcWaybillID = System.Guid.Empty;
 
                 ClearControls();
 
@@ -1353,8 +1396,11 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 m_objSelectedWaybill = objBackWaybill;
+                m_uuidSrcWaybillID = System.Guid.Empty;
 
                 ClearControls();
+
+                LoadComboBoxItems();
 
                 // шапка накладной
                 LoadComboBoxAndSetValues(m_objSelectedWaybill);
@@ -1385,6 +1431,10 @@ namespace ERPMercuryProcessingOrder
 
         #region Новая накладная
 
+        /// <summary>
+        /// Устанавливает значения в шапке документа и обновляет выпадающие списки
+        /// </summary>
+        /// <param name="objBackWaybill">документ</param>
         private void LoadComboBoxAndSetValues(CBackWaybill objBackWaybill)
         {
             if (objBackWaybill == null) { return; }
@@ -1393,8 +1443,6 @@ namespace ERPMercuryProcessingOrder
                 m_uuidSrcCustomerID = ((objBackWaybill.Customer != null) ? objBackWaybill.Customer.ID : System.Guid.Empty);
                 m_uuidSrcStockID = ((objBackWaybill.Stock != null) ? objBackWaybill.Stock.ID : System.Guid.Empty);
                 m_uuidSrcPaymentID = ((objBackWaybill.PaymentType != null) ? objBackWaybill.PaymentType.ID : System.Guid.Empty);
-
-                LoadComboBoxItems();
 
                 Stock.SelectedItem = (objBackWaybill.Stock == null) ? null : Stock.Properties.Items.Cast<CStock>().SingleOrDefault<CStock>(x => x.ID.CompareTo(objBackWaybill.Stock.ID) == 0);
 
@@ -1420,7 +1468,9 @@ namespace ERPMercuryProcessingOrder
                 WaybilllNum.Text = objBackWaybill.DocNum;
 
                 WaybillShipMode.SelectedItem = (objBackWaybill.WaybillShipMode == null) ? null : WaybillShipMode.Properties.Items.Cast<CWaybillShipMode>().SingleOrDefault<CWaybillShipMode>(x => x.ID.CompareTo(objBackWaybill.WaybillShipMode.ID) == 0);
-                WaybillState.SelectedItem = (objBackWaybill.WaybillState == null) ? null : WaybillState.Properties.Items.Cast<CWaybillState>().SingleOrDefault<CWaybillState>(x => x.ID.CompareTo(objBackWaybill.WaybillState.ID) == 0);
+                WaybillState.SelectedItem = (objBackWaybill.BackWaybillState == null) ? null : WaybillState.Properties.Items.Cast<CBackWaybillState>().SingleOrDefault<CBackWaybillState>(x => x.ID.CompareTo(objBackWaybill.BackWaybillState.ID) == 0);
+                WaybillBackReason.SelectedItem = (objBackWaybill.WaybillBackReason == null) ? null : WaybillBackReason.Properties.Items.Cast<CWaybillBackReason>().SingleOrDefault<CWaybillBackReason>(x => x.ID.CompareTo(objBackWaybill.WaybillBackReason.ID) == 0);
+                
                 Depart.SelectedItem = (objBackWaybill.Depart == null) ? null : Depart.Properties.Items.Cast<CDepart>().SingleOrDefault<CDepart>(x => x.uuidID.CompareTo(objBackWaybill.Depart.uuidID) == 0);
                 LoadSalesManListForDepart((CDepart)Depart.SelectedItem);
 
@@ -1447,35 +1497,37 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
-        /// <summary>
-        /// Новая накладная
-        /// </summary>
-        /// <param name="Waybill_Guid">УИ накладной на отгрузку</param>
-        /// <param name="objCustomer"></param>
-        /// <param name="objCompany"></param>
-        /// <param name="objStock"></param>
-        /// <param name="objPaymentType"></param>
-        /// <param name="dtWaybillBeginDate"></param>
-        /// <param name="dtWaybillEndDate"></param>
-        public void NewBackWaybill( System.Guid Waybill_Guid, CCustomer objCustomer, CCompany objCompany, CStock objStock, CPaymentType objPaymentType,
-            System.DateTime dtWaybillBeginDate, System.DateTime dtWaybillEndDate)
+
+        public void NewBackWaybillFromWaybill( CWaybill objWaybill, CWaybillBackReason objWaybillBackReason )
         {
             try
             {
                 m_bNewObject = true;
                 m_bDisableEvents = true;
 
-                m_dtSrcBeginDate = dtWaybillBeginDate;
-                m_dtSrcEndDate = dtWaybillEndDate;
+                m_uuidSrcWaybillID = objWaybill.ID;
+                m_dtSrcBeginDate = System.DateTime.Today;
+                m_dtSrcEndDate = System.DateTime.Today;
+
+                LoadComboBoxItems();
 
                 m_objSelectedWaybill = new CBackWaybill()
                 {
                     BeginDate = System.DateTime.Today,
                     WaybillItemList = new List<CBackWaybillItem>(),
-                    Customer = objCustomer,
-                    PaymentType = objPaymentType, 
-                    Stock = objStock,
-                    Company = objCompany
+                    Customer = objWaybill.Customer,
+                    PaymentType = objWaybill.PaymentType,
+                    Stock = objWaybill.Stock,
+                    Company = objWaybill.Company,
+                    Currency = objWaybill.Currency,
+                    ChildDepart = objWaybill.ChildDepart,
+                    Depart = objWaybill.Depart,
+                    PricingCurrencyRate = objWaybill.PricingCurrencyRate,
+                    SalesMan = objWaybill.SalesMan,
+                    WaybillID = objWaybill.ID, 
+                    WaybillBackReason = objWaybillBackReason, 
+                    WaybillShipMode = objWaybill.WaybillShipMode,
+                    BackWaybillState = ( ( WaybillState.Properties.Items.Count > 0 ) ? WaybillState.Properties.Items.Cast<CBackWaybillState>().SingleOrDefault<CBackWaybillState>(x=>x.IsDefault == true) : null )
                 };
 
                 ClearControls();
@@ -1495,7 +1547,7 @@ namespace ERPMercuryProcessingOrder
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка создания накладной. Текст ошибки: " + f.Message);
+                SendMessageToLog(String.Format("Ошибка создания накладной на возврат товара: {0}", f.Message));
             }
             finally
             {
@@ -1505,6 +1557,61 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
+        public void NewBackWaybillFromWaybillList(CCustomer objCustomer, CChildDepart objChildDepart, 
+            CCompany objCompany, CStock objStock, CPaymentType objPaymentType,  CCurrency objCurrency,
+            System.DateTime dtWaybillBeginDate, System.DateTime dtWaybillEndDate, CWaybillBackReason objWaybillBackReason)
+        {
+            try
+            {
+                m_bNewObject = true;
+                m_bDisableEvents = true;
+
+                m_uuidSrcWaybillID = System.Guid.Empty;
+                m_dtSrcBeginDate = dtWaybillBeginDate;
+                m_dtSrcEndDate = dtWaybillEndDate;
+
+                LoadComboBoxItems();
+
+                m_objSelectedWaybill = new CBackWaybill()
+                {
+                    BeginDate = System.DateTime.Today,
+                    WaybillItemList = new List<CBackWaybillItem>(),
+                    Customer = objCustomer,
+                    PaymentType = objPaymentType,
+                    Stock = objStock,
+                    Company = objCompany,
+                    Currency = objCurrency,
+                    ChildDepart = objChildDepart,
+                    WaybillBackReason = objWaybillBackReason,
+                    BackWaybillState = ((WaybillState.Properties.Items.Count > 0) ? WaybillState.Properties.Items.Cast<CBackWaybillState>().SingleOrDefault<CBackWaybillState>(x => x.IsDefault == true) : null)
+                };
+
+                ClearControls();
+
+                LoadComboBoxAndSetValues(m_objSelectedWaybill);
+
+                // выпадающий список для табличной части
+                StartThreadWithLoadData();
+
+                btnEdit.Enabled = false;
+                btnCancel.Enabled = true;
+                btnCancel.Focus();
+
+                SetModeReadOnly(false);
+
+                SetPropertiesModified(true);
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog(String.Format("Ошибка создания накладной на возврат товара: {0}", f.Message));
+            }
+            finally
+            {
+                tableLayoutPanelBackground.ResumeLayout(false);
+                m_bDisableEvents = false;
+            }
+            return;
+        }
         #endregion
 
         #region Отмена
@@ -1650,11 +1757,16 @@ namespace ERPMercuryProcessingOrder
                     bOK = false;
                     gridView.SetColumnError(colQuantity, "недопустимое количество", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
                 }
-                if (gridView.GetDataRow(e.RowHandle)["ProductID"] == System.DBNull.Value)
+                if (gridView.GetDataRow(e.RowHandle)["WaybItem_Guid"] == System.DBNull.Value)
                 {
                     bOK = false;
-                    gridView.SetColumnError(colProductID, "укажите, пожалуйста, товар", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    gridView.SetColumnError(colProductID, "укажите, пожалуйста, строку из накладной на отгрузку", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
                 }
+                //if (gridView.GetDataRow(e.RowHandle)["ProductID"] == System.DBNull.Value)
+                //{
+                //    bOK = false;
+                //    gridView.SetColumnError(colProductID, "укажите, пожалуйста, товар", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                //}
                 if (gridView.GetDataRow(e.RowHandle)["MeasureID"] == System.DBNull.Value)
                 {
                     bOK = false;
@@ -1686,10 +1798,14 @@ namespace ERPMercuryProcessingOrder
                     {
                         bRet = false;
                     }
-                    if (gridView.GetDataRow(iRowHandle)["ProductID"] == System.DBNull.Value)
+                    if (gridView.GetDataRow(iRowHandle)["WaybItem_Guid"] == System.DBNull.Value)
                     {
                         bRet = false;
                     }
+                    //if (gridView.GetDataRow(iRowHandle)["ProductID"] == System.DBNull.Value)
+                    //{
+                    //    bRet = false;
+                    //}
                     if (gridView.GetDataRow(iRowHandle)["MeasureID"] == System.DBNull.Value)
                     {
                         bRet = false;
@@ -2096,6 +2212,7 @@ namespace ERPMercuryProcessingOrder
 
         }
         #endregion
+
 
     }
 

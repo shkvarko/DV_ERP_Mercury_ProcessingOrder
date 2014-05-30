@@ -25,6 +25,8 @@ namespace ERPMercuryProcessingOrder
         private ctrlWaybillEditor frmItemEditor;
         private ERP_Mercury.Common.ctrlOrderForCustomer m_frmParentDocument;
         private ctrlWaybillPaymentsList m_frmPaymentHistory;
+        private ctrlBackWaybillEditor m_frmBackWaybillEditor;
+
         private DevExpress.XtraGrid.Views.Base.ColumnView ColumnView
         {
             get { return gridControlList.MainView as DevExpress.XtraGrid.Views.Base.ColumnView; }
@@ -75,6 +77,8 @@ namespace ERPMercuryProcessingOrder
 
             m_frmParentDocument = null;
             m_frmPaymentHistory = null;
+            m_frmBackWaybillEditor = null;
+
             frmItemEditor = null;
 
             AddGridColumns();
@@ -205,6 +209,22 @@ namespace ERPMercuryProcessingOrder
             catch (System.Exception f)
             {
                 SendMessageToLog("OnChangePaymentHistoryPropertie. Текст ошибки: " + f.Message);
+            }
+            finally // очищаем занимаемые ресурсы
+            {
+            }
+
+            return;
+        }
+        private void OnChangebackWaybillEditorPropertie(Object sender, ChangeBackWaybillPropertieEventArgs e)
+        {
+            try
+            {
+                CloseEditorForBackWaybill();
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("OnChangebackWaybillEditorPropertie. Текст ошибки: " + f.Message);
             }
             finally // очищаем занимаемые ресурсы
             {
@@ -1641,6 +1661,7 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
+        #region Контекстное меню
         private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             try
@@ -1649,6 +1670,9 @@ namespace ERPMercuryProcessingOrder
 
                 menuItemPaymentHistory.Enabled = (objSelectedItem != null);
                 menuGoToSuppl.Enabled = (objSelectedItem != null);
+                menuItemBackWaybill.Enabled = (objSelectedItem != null);
+
+                objSelectedItem = null;
 
             }//try
             catch (System.Exception f)
@@ -1661,8 +1685,105 @@ namespace ERPMercuryProcessingOrder
 
             return;
         }
+        #endregion
+
+        #region Возврат товара
+        private void CloseEditorForBackWaybill()
+        {
+            try
+            {
+                ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
+                this.SuspendLayout();
+
+                tabControl.SelectedTabPage = tabPageViewer;
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog(String.Format("CloseEditorForBackWaybill. Текст ошибки: {0}", f.Message));
+            }
+            finally // очищаем занимаемые ресурсы
+            {
+                ((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();
+                this.ResumeLayout(false);
+            }
+
+            return;
+        }
+        /// <summary>
+        /// Открывает редактор документа на возврат товара для заданной накладной
+        /// </summary>
+        /// <param name="objItem">накладная</param>
+        private void ShowEditorForBackWaybill(ERP_Mercury.Common.CWaybill objItem)
+        {
+            if (objItem == null) { return; }
+
+            try
+            {
+                // проверка, можно ли оформить возврат товара
+                System.String strErr = System.String.Empty;
+                if (CBackWaybill.CanCreateWaybillFromSuppl(m_objProfile, objItem.ID, ref strErr) == false)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Возврат по документу {0} от {1} отклонен.\n{2}", objItem.DocNum, objItem.BeginDate.ToShortDateString(), strErr),
+                        "Внимание",  System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                // причина возврата
+                DialogResult objRet = System.Windows.Forms.DialogResult.None;
+                CWaybillBackReason objWaybillBackReason = null;
+
+                using( frmWaybillBackReason objFrmWaybillBackReason = new frmWaybillBackReason( m_objMenuItem ) )
+                {
+                    objFrmWaybillBackReason.SetSrcForBackWaybillByWaybill( objItem );
+                    objRet = objFrmWaybillBackReason.ShowDialog();
+                    objWaybillBackReason = objFrmWaybillBackReason.WaybillBackReason;
+                }
+
+                if( ( objRet == System.Windows.Forms.DialogResult.OK ) && ( objWaybillBackReason != null ) )
+                {
+                    if (m_frmBackWaybillEditor == null)
+                    {
+                        m_frmBackWaybillEditor = new ctrlBackWaybillEditor(m_objMenuItem);
+                        tableLayoutPanelItemBackWaybillEditor.Controls.Add(m_frmBackWaybillEditor, 0, 0);
+                        m_frmBackWaybillEditor.Dock = DockStyle.Fill;
+                        m_frmBackWaybillEditor.ChangeBackWaybillForCustomerProperties += OnChangebackWaybillEditorPropertie;
+                    }
+
+                    m_frmBackWaybillEditor.NewBackWaybillFromWaybill(objItem, objWaybillBackReason);
 
 
+                    tabControl.SelectedTabPage = tabPageEditor;
+                    tabControlItemDetail.SelectedTabPage = tabPageItemBackWaybillEditor;
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("ShowEditorForBackWaybill. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
+        private void menuItemBackWaybill_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowEditorForBackWaybill(GetSelectedItem());
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("menuItemBackWaybill_Click. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
+        #endregion
 
     }
 

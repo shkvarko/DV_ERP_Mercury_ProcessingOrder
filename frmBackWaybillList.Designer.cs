@@ -71,16 +71,16 @@
             this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
             this.txtDepart = new DevExpress.XtraEditors.TextEdit();
             this.txtDocNum = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
-            this.txtDescrpn = new DevExpress.XtraEditors.MemoEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.txtChildDepartCode = new DevExpress.XtraEditors.TextEdit();
             this.txtCustomer = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl13 = new DevExpress.XtraEditors.LabelControl();
-            this.txtWaybillStateName = new DevExpress.XtraEditors.TextEdit();
             this.txtPaymentType = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl17 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
+            this.txtDescrpn = new DevExpress.XtraEditors.MemoEdit();
+            this.txtWaybillStateName = new DevExpress.XtraEditors.TextEdit();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlInfo = new System.Windows.Forms.Panel();
             this.txtSumReturn = new DevExpress.XtraEditors.TextEdit();
@@ -130,11 +130,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtStock.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDepart.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDocNum.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDescrpn.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtChildDepartCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCustomer.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtWaybillStateName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPaymentType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDescrpn.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWaybillStateName.Properties)).BeginInit();
             this.tableLayoutPanel6.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSumReturn.Properties)).BeginInit();
@@ -493,16 +493,16 @@
             this.tableLayoutPanel3.Controls.Add(this.labelControl7, 0, 8);
             this.tableLayoutPanel3.Controls.Add(this.txtDepart, 0, 9);
             this.tableLayoutPanel3.Controls.Add(this.txtDocNum, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.labelControl17, 0, 14);
-            this.tableLayoutPanel3.Controls.Add(this.txtDescrpn, 0, 15);
             this.tableLayoutPanel3.Controls.Add(this.labelControl1, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.labelControl3, 0, 6);
             this.tableLayoutPanel3.Controls.Add(this.txtChildDepartCode, 0, 7);
             this.tableLayoutPanel3.Controls.Add(this.txtCustomer, 0, 5);
             this.tableLayoutPanel3.Controls.Add(this.labelControl13, 0, 12);
             this.tableLayoutPanel3.Controls.Add(this.txtPaymentType, 0, 13);
-            this.tableLayoutPanel3.Controls.Add(this.labelControl6, 0, 16);
-            this.tableLayoutPanel3.Controls.Add(this.txtWaybillStateName, 0, 17);
+            this.tableLayoutPanel3.Controls.Add(this.labelControl17, 0, 16);
+            this.tableLayoutPanel3.Controls.Add(this.labelControl6, 0, 14);
+            this.tableLayoutPanel3.Controls.Add(this.txtDescrpn, 0, 17);
+            this.tableLayoutPanel3.Controls.Add(this.txtWaybillStateName, 0, 15);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(800, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -523,11 +523,9 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(286, 417);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel3, null);
             this.tableLayoutPanel3.TabIndex = 5;
@@ -616,28 +614,6 @@
             this.txtDocNum.TabIndex = 25;
             this.txtDocNum.ToolTipController = this.toolTipController;
             // 
-            // labelControl17
-            // 
-            this.labelControl17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl17.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl17.Appearance.Options.UseFont = true;
-            this.labelControl17.Location = new System.Drawing.Point(3, 290);
-            this.labelControl17.Name = "labelControl17";
-            this.labelControl17.Size = new System.Drawing.Size(70, 13);
-            this.labelControl17.TabIndex = 26;
-            this.labelControl17.Text = "Примечание";
-            // 
-            // txtDescrpn
-            // 
-            this.txtDescrpn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDescrpn.Location = new System.Drawing.Point(3, 307);
-            this.txtDescrpn.Name = "txtDescrpn";
-            this.txtDescrpn.Properties.ReadOnly = true;
-            this.txtDescrpn.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.txtDescrpn.Size = new System.Drawing.Size(280, 66);
-            this.txtDescrpn.TabIndex = 27;
-            this.txtDescrpn.ToolTipController = this.toolTipController;
-            // 
             // labelControl1
             // 
             this.labelControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -680,18 +656,6 @@
             this.txtCustomer.Size = new System.Drawing.Size(280, 20);
             this.txtCustomer.TabIndex = 4;
             // 
-            // labelControl6
-            // 
-            this.labelControl6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl6.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl6.Appearance.Options.UseFont = true;
-            this.labelControl6.Location = new System.Drawing.Point(3, 379);
-            this.labelControl6.Name = "labelControl6";
-            this.labelControl6.Size = new System.Drawing.Size(130, 13);
-            this.labelControl6.TabIndex = 18;
-            this.labelControl6.Text = "Состояние документа";
-            this.labelControl6.Visible = false;
-            // 
             // labelControl13
             // 
             this.labelControl13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -703,17 +667,6 @@
             this.labelControl13.TabIndex = 14;
             this.labelControl13.Text = "Форма оплаты";
             // 
-            // txtWaybillStateName
-            // 
-            this.txtWaybillStateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtWaybillStateName.Location = new System.Drawing.Point(3, 396);
-            this.txtWaybillStateName.Name = "txtWaybillStateName";
-            this.txtWaybillStateName.Properties.ReadOnly = true;
-            this.txtWaybillStateName.Size = new System.Drawing.Size(280, 20);
-            this.txtWaybillStateName.TabIndex = 19;
-            this.txtWaybillStateName.ToolTipController = this.toolTipController;
-            this.txtWaybillStateName.Visible = false;
-            // 
             // txtPaymentType
             // 
             this.txtPaymentType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -723,6 +676,49 @@
             this.txtPaymentType.Properties.ReadOnly = true;
             this.txtPaymentType.Size = new System.Drawing.Size(280, 20);
             this.txtPaymentType.TabIndex = 15;
+            // 
+            // labelControl17
+            // 
+            this.labelControl17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl17.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl17.Appearance.Options.UseFont = true;
+            this.labelControl17.Location = new System.Drawing.Point(3, 331);
+            this.labelControl17.Name = "labelControl17";
+            this.labelControl17.Size = new System.Drawing.Size(70, 13);
+            this.labelControl17.TabIndex = 26;
+            this.labelControl17.Text = "Примечание";
+            // 
+            // labelControl6
+            // 
+            this.labelControl6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl6.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl6.Appearance.Options.UseFont = true;
+            this.labelControl6.Location = new System.Drawing.Point(3, 290);
+            this.labelControl6.Name = "labelControl6";
+            this.labelControl6.Size = new System.Drawing.Size(130, 13);
+            this.labelControl6.TabIndex = 18;
+            this.labelControl6.Text = "Состояние документа";
+            // 
+            // txtDescrpn
+            // 
+            this.txtDescrpn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDescrpn.Location = new System.Drawing.Point(3, 348);
+            this.txtDescrpn.Name = "txtDescrpn";
+            this.txtDescrpn.Properties.ReadOnly = true;
+            this.txtDescrpn.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.txtDescrpn.Size = new System.Drawing.Size(280, 66);
+            this.txtDescrpn.TabIndex = 27;
+            this.txtDescrpn.ToolTipController = this.toolTipController;
+            // 
+            // txtWaybillStateName
+            // 
+            this.txtWaybillStateName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtWaybillStateName.Location = new System.Drawing.Point(3, 307);
+            this.txtWaybillStateName.Name = "txtWaybillStateName";
+            this.txtWaybillStateName.Properties.ReadOnly = true;
+            this.txtWaybillStateName.Size = new System.Drawing.Size(280, 20);
+            this.txtWaybillStateName.TabIndex = 19;
+            this.txtWaybillStateName.ToolTipController = this.toolTipController;
             // 
             // tableLayoutPanel6
             // 
@@ -1103,11 +1099,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtStock.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDepart.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDocNum.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDescrpn.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtChildDepartCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCustomer.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtWaybillStateName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPaymentType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDescrpn.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWaybillStateName.Properties)).EndInit();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();

@@ -760,25 +760,54 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
-                this.SuspendLayout();
+                //((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
+                //this.SuspendLayout();
 
-                if (frmItemEditor == null)
+                // причина возврата
+                DialogResult objRet = System.Windows.Forms.DialogResult.None;
+                CWaybillBackReason objWaybillBackReason = null;
+
+                CCompany objSelectedCompany = null;
+                CStock objSelectedStock = null;
+                CCustomer objSelectedCustomer = null;
+                CChildDepart objSelectedChildDepart = null;
+                CPaymentType objSelectedPaymentType = null;
+                CCurrency objSelectedCurrency = null;
+                System.DateTime dtBeginWaybillDate = System.DateTime.Today;
+                System.DateTime dtEndWaybillDate = System.DateTime.Today;
+
+                using (frmWaybillBackReason objFrmWaybillBackReason = new frmWaybillBackReason(m_objMenuItem))
                 {
-                    frmItemEditor = new ctrlBackWaybillEditor( m_objMenuItem );
-                    tableLayoutPanelItemEditor.Controls.Add(frmItemEditor, 0, 0);
-                    frmItemEditor.Dock = DockStyle.Fill;
-                    //frmItemEditor.ChangeWaybillForCustomerProperties += this.OnChangeItemPropertie;
+                    objFrmWaybillBackReason.SetSrcForBackWaybillByWaybillList( this.m_objCustomerList );
+                    objRet = objFrmWaybillBackReason.ShowDialog();
+                    objWaybillBackReason = objFrmWaybillBackReason.WaybillBackReason;
+                    objSelectedCustomer = objFrmWaybillBackReason.Customer;
+                    objSelectedChildDepart = objFrmWaybillBackReason.ChildDepart;
+                    objSelectedStock = objFrmWaybillBackReason.Stock;
+                    objSelectedCompany = objFrmWaybillBackReason.Stock.Company;
+                    objSelectedPaymentType = objFrmWaybillBackReason.PaymentType;
+                    objSelectedCurrency = objFrmWaybillBackReason.Currency;
+                    dtBeginWaybillDate = objFrmWaybillBackReason.WaybillBeginDate;
+                    dtEndWaybillDate = objFrmWaybillBackReason.WaybillEndDate;
                 }
 
-                ERP_Mercury.Common.CCompany objSelectedCompany = (((cboxCompany.SelectedItem == null) || (System.Convert.ToString(cboxCompany.SelectedItem) == "")) ? null : ((ERP_Mercury.Common.CCompany)cboxCompany.SelectedItem));
-                ERP_Mercury.Common.CStock objSelectedStock = (((cboxStock.SelectedItem == null) || (System.Convert.ToString(cboxStock.SelectedItem) == "")) ? null : ((ERP_Mercury.Common.CStock)cboxStock.SelectedItem));
-                ERP_Mercury.Common.CCustomer objSelectedCustomer = (((cboxCustomer.SelectedItem == null) || (System.Convert.ToString(cboxCustomer.SelectedItem) == "") || (cboxCustomer.Text == strWaitCustomer)) ? null : ((ERP_Mercury.Common.CCustomer)cboxCustomer.SelectedItem));
-                ERP_Mercury.Common.CPaymentType objSelectedPayment = (((cboxPaymentType.SelectedItem == null) || (System.Convert.ToString(cboxPaymentType.SelectedItem) == "")) ? null : ((ERP_Mercury.Common.CPaymentType)cboxPaymentType.SelectedItem));
+                if ((objRet == System.Windows.Forms.DialogResult.OK) && (objWaybillBackReason != null))
+                {
+                    if (frmItemEditor == null)
+                    {
+                        frmItemEditor = new ctrlBackWaybillEditor(m_objMenuItem);
+                        tableLayoutPanelItemEditor.Controls.Add(frmItemEditor, 0, 0);
+                        frmItemEditor.Dock = DockStyle.Fill;
+                        frmItemEditor.ChangeBackWaybillForCustomerProperties += OnChangeItemPropertie;
+                    }
 
-                //frmItemEditor.NewItem(objSelectedCustomer, objSelectedCompany, objSelectedStock, objSelectedPayment);
+                    frmItemEditor.NewBackWaybillFromWaybillList(objSelectedCustomer,
+                        objSelectedChildDepart, objSelectedCompany,
+                        objSelectedStock, objSelectedPaymentType, objSelectedCurrency,
+                        dtBeginWaybillDate, dtEndWaybillDate, objWaybillBackReason);
 
-                tabControl.SelectedTabPage = tabPageEditor;
+                    tabControl.SelectedTabPage = tabPageEditor;
+                }
 
             }
             catch (System.Exception f)
@@ -787,8 +816,8 @@ namespace ERPMercuryProcessingOrder
             }
             finally
             {
-                ((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();
-                this.ResumeLayout(false);
+                //((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();
+                //this.ResumeLayout(false);
                 tabControl.SelectedTabPage = tabPageEditor;
             }
             return;
@@ -1199,7 +1228,7 @@ namespace ERPMercuryProcessingOrder
                     txtDepart.Text = (String.Format("{0} {1}", objItem.DepartCode, objItem.SalesManName));
                     txtStock.Text = String.Format("{0} [{1}]", objItem.StockName, objItem.CompanyAcronym);
                     txtPaymentType.Text = objItem.PaymentTypeName;
-                    txtWaybillStateName.Text = objItem.WaybillStateName;
+                    txtWaybillStateName.Text = objItem.BackWaybillStateName;
                     txtChildDepartCode.Text = objItem.ChildDepartCode;
                     txtWaybillBackReason.Text = objItem.WaybillBackReasonName;
                     txtDescrpn.Text = objItem.Description;
@@ -1279,9 +1308,9 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 System.Drawing.Image img = null;
-                if (e.Column.FieldName == "WaybillStateName")
+                if (e.Column.FieldName == "BackWaybillStateName")
                 {
-                    ERP_Mercury.Common.enPDASupplState SupplState = (ERP_Mercury.Common.enPDASupplState)gridViewList.GetRowCellValue(e.RowHandle, gridViewList.Columns["WaybillStateId"]);
+                    ERP_Mercury.Common.enPDASupplState SupplState = (ERP_Mercury.Common.enPDASupplState)gridViewList.GetRowCellValue(e.RowHandle, gridViewList.Columns["BackWaybillStateId"]);
                     System.Int32 iImgIndx = -1;
                     switch (SupplState)
                     {

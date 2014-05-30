@@ -125,7 +125,11 @@
             this.tableLayoutPanelItemParentDocument = new System.Windows.Forms.TableLayoutPanel();
             this.tabPageItemPayments = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelItemPaymentsHistory = new System.Windows.Forms.TableLayoutPanel();
+            this.tabPageItemBackWaybillEditor = new DevExpress.XtraTab.XtraTabPage();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.tableLayoutPanelItemBackWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemBackWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -178,6 +182,7 @@
             this.tabPageItemEditor.SuspendLayout();
             this.tabPageItemParentDocument.SuspendLayout();
             this.tabPageItemPayments.SuspendLayout();
+            this.tabPageItemBackWaybillEditor.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip
@@ -193,9 +198,11 @@
             this.toolStripMenuItem1,
             this.menuCreateOrderBlank,
             this.menuGoToSuppl,
-            this.menuItemPaymentHistory});
+            this.menuItemPaymentHistory,
+            this.toolStripMenuItem2,
+            this.menuItemBackWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(308, 214);
+            this.contextMenuStrip.Size = new System.Drawing.Size(308, 264);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             this.contextMenuStrip.Click += new System.EventHandler(this.contextMenuStrip_Click);
@@ -1233,7 +1240,7 @@
             // 
             this.tabPageEditor.Controls.Add(this.tabControlItemDetail);
             this.tabPageEditor.Name = "tabPageEditor";
-            this.tabPageEditor.Size = new System.Drawing.Size(969, 595);
+            this.tabPageEditor.Size = new System.Drawing.Size(1088, 595);
             this.tabPageEditor.Text = "tabPageEditor";
             // 
             // tabControlItemDetail
@@ -1243,19 +1250,20 @@
             this.tabControlItemDetail.Margin = new System.Windows.Forms.Padding(1);
             this.tabControlItemDetail.Name = "tabControlItemDetail";
             this.tabControlItemDetail.SelectedTabPage = this.tabPageItemEditor;
-            this.tabControlItemDetail.Size = new System.Drawing.Size(969, 595);
+            this.tabControlItemDetail.Size = new System.Drawing.Size(1088, 595);
             this.tabControlItemDetail.TabIndex = 0;
             this.tabControlItemDetail.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.tabPageItemEditor,
             this.tabPageItemParentDocument,
-            this.tabPageItemPayments});
+            this.tabPageItemPayments,
+            this.tabPageItemBackWaybillEditor});
             this.tabControlItemDetail.Text = "xtraTabControl1";
             // 
             // tabPageItemEditor
             // 
             this.tabPageItemEditor.Controls.Add(this.tableLayoutPanelItemEditor);
             this.tabPageItemEditor.Name = "tabPageItemEditor";
-            this.tabPageItemEditor.Size = new System.Drawing.Size(960, 564);
+            this.tabPageItemEditor.Size = new System.Drawing.Size(1079, 564);
             this.tabPageItemEditor.Text = "Накладная";
             // 
             // tableLayoutPanelItemEditor
@@ -1271,7 +1279,7 @@
             this.tableLayoutPanelItemEditor.RowCount = 1;
             this.tableLayoutPanelItemEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelItemEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 564F));
-            this.tableLayoutPanelItemEditor.Size = new System.Drawing.Size(960, 564);
+            this.tableLayoutPanelItemEditor.Size = new System.Drawing.Size(1079, 564);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelItemEditor, null);
             this.tableLayoutPanelItemEditor.TabIndex = 2;
             // 
@@ -1279,7 +1287,7 @@
             // 
             this.tabPageItemParentDocument.Controls.Add(this.tableLayoutPanelItemParentDocument);
             this.tabPageItemParentDocument.Name = "tabPageItemParentDocument";
-            this.tabPageItemParentDocument.Size = new System.Drawing.Size(960, 564);
+            this.tabPageItemParentDocument.Size = new System.Drawing.Size(1079, 564);
             this.tabPageItemParentDocument.Text = "Заказ";
             // 
             // tableLayoutPanelItemParentDocument
@@ -1292,7 +1300,7 @@
             this.tableLayoutPanelItemParentDocument.Name = "tableLayoutPanelItemParentDocument";
             this.tableLayoutPanelItemParentDocument.RowCount = 1;
             this.tableLayoutPanelItemParentDocument.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelItemParentDocument.Size = new System.Drawing.Size(960, 564);
+            this.tableLayoutPanelItemParentDocument.Size = new System.Drawing.Size(1079, 564);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelItemParentDocument, null);
             this.tableLayoutPanelItemParentDocument.TabIndex = 0;
             // 
@@ -1300,7 +1308,7 @@
             // 
             this.tabPageItemPayments.Controls.Add(this.tableLayoutPanelItemPaymentsHistory);
             this.tabPageItemPayments.Name = "tabPageItemPayments";
-            this.tabPageItemPayments.Size = new System.Drawing.Size(960, 564);
+            this.tabPageItemPayments.Size = new System.Drawing.Size(1079, 564);
             this.tabPageItemPayments.Text = "Оплаты";
             // 
             // tableLayoutPanelItemPaymentsHistory
@@ -1313,14 +1321,46 @@
             this.tableLayoutPanelItemPaymentsHistory.Name = "tableLayoutPanelItemPaymentsHistory";
             this.tableLayoutPanelItemPaymentsHistory.RowCount = 1;
             this.tableLayoutPanelItemPaymentsHistory.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelItemPaymentsHistory.Size = new System.Drawing.Size(960, 564);
+            this.tableLayoutPanelItemPaymentsHistory.Size = new System.Drawing.Size(1079, 564);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelItemPaymentsHistory, null);
             this.tableLayoutPanelItemPaymentsHistory.TabIndex = 0;
+            // 
+            // tabPageItemBackWaybillEditor
+            // 
+            this.tabPageItemBackWaybillEditor.Controls.Add(this.tableLayoutPanelItemBackWaybillEditor);
+            this.tabPageItemBackWaybillEditor.Name = "tabPageItemBackWaybillEditor";
+            this.tabPageItemBackWaybillEditor.Size = new System.Drawing.Size(1079, 564);
+            this.tabPageItemBackWaybillEditor.Text = "Возврат товара";
             // 
             // openFileDialog
             // 
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
+            // 
+            // tableLayoutPanelItemBackWaybillEditor
+            // 
+            this.tableLayoutPanelItemBackWaybillEditor.ColumnCount = 1;
+            this.tableLayoutPanelItemBackWaybillEditor.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelItemBackWaybillEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelItemBackWaybillEditor.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelItemBackWaybillEditor.Name = "tableLayoutPanelItemBackWaybillEditor";
+            this.tableLayoutPanelItemBackWaybillEditor.RowCount = 1;
+            this.tableLayoutPanelItemBackWaybillEditor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelItemBackWaybillEditor.Size = new System.Drawing.Size(1079, 564);
+            this.toolTipController.SetSuperTip(this.tableLayoutPanelItemBackWaybillEditor, null);
+            this.tableLayoutPanelItemBackWaybillEditor.TabIndex = 0;
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(304, 6);
+            // 
+            // menuItemBackWaybill
+            // 
+            this.menuItemBackWaybill.Name = "menuItemBackWaybill";
+            this.menuItemBackWaybill.Size = new System.Drawing.Size(307, 22);
+            this.menuItemBackWaybill.Text = "Возврат товара от клиента...";
+            this.menuItemBackWaybill.Click += new System.EventHandler(this.menuItemBackWaybill_Click);
             // 
             // frmWaybillList
             // 
@@ -1389,6 +1429,7 @@
             this.tabPageItemEditor.ResumeLayout(false);
             this.tabPageItemParentDocument.ResumeLayout(false);
             this.tabPageItemPayments.ResumeLayout(false);
+            this.tabPageItemBackWaybillEditor.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1491,5 +1532,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuGoToSuppl;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelItemPaymentsHistory;
         private System.Windows.Forms.ToolStripMenuItem menuItemPaymentHistory;
+        private DevExpress.XtraTab.XtraTabPage tabPageItemBackWaybillEditor;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelItemBackWaybillEditor;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem menuItemBackWaybill;
     }
 }

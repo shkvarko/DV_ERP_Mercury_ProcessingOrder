@@ -744,6 +744,8 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
+                if (e.RowHandle < 0) { return; }
+
                 if ((gridView.GetRowCellValue(e.RowHandle, colQuantityReturned) != null) &&
                     (gridView.GetRowCellValue(e.RowHandle, colQuantity) != null))
                 {

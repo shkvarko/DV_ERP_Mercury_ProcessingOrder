@@ -954,6 +954,7 @@
             this.repositoryItemLookUpEditProduct.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.repositoryItemLookUpEditProduct.ValidateOnEnterKey = true;
             this.repositoryItemLookUpEditProduct.ValueMember = "ProductID";
+            this.repositoryItemLookUpEditProduct.CloseUp += new DevExpress.XtraEditors.Controls.CloseUpEventHandler(this.repositoryItemLookUpEditProduct_CloseUp);
             // 
             // colMeasureID
             // 
