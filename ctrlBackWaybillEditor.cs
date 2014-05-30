@@ -249,6 +249,7 @@ namespace ERPMercuryProcessingOrder
             System.Boolean bRet = true;
             try
             {
+                WaybilllNum.Properties.Appearance.BackColor = ((WaybilllNum.Text.Trim().Length == 0) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 Customer.Properties.Appearance.BackColor = ((Customer.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 WaybillState.Properties.Appearance.BackColor = ((WaybillState.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 WaybillBackReason.Properties.Appearance.BackColor = ((WaybillBackReason.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
@@ -1653,6 +1654,210 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
+        #region Сохранить изменения
+        /// <summary>
+        /// Сохраняет изменения в базе данных
+        /// </summary>
+        /// <param name="strErr">текст ошибки</param>
+        /// <returns>true - удачное завершение операции;false - ошибка</returns>
+        private System.Boolean bSaveChanges(ref System.String strErr)
+        {
+            System.Boolean bRet = false;
+            System.Boolean bOkSave = false;
+            Cursor = Cursors.WaitCursor;
+            try
+            {
+
+                System.DateTime BackWaybill_BeginDate = BeginDate.DateTime;
+                System.DateTime BackWaybill_ShipDate = ShipDate.DateTime;
+                System.String BackWaybill_Num = WaybilllNum.Text;
+
+                System.Guid Waybill_Guid = m_objSelectedWaybill.WaybillID;
+                System.Guid BackWaybillParent_Guid = System.Guid.Empty;
+                System.Guid BackWaybillState_Guid = ((WaybillState.SelectedItem == null) ? System.Guid.Empty : ((CBackWaybillState)WaybillState.SelectedItem).ID);
+                System.Guid WaybillShipMode_Guid = ((WaybillShipMode.SelectedItem == null) ? System.Guid.Empty : ((CWaybillShipMode)WaybillShipMode.SelectedItem).ID);
+                System.Guid PaymentType_Guid = ((PaymentType.SelectedItem == null) ? (System.Guid.Empty) : ((CPaymentType)PaymentType.SelectedItem).ID);
+                System.Guid WaybillBackReason_Guid = ((WaybillBackReason.SelectedItem == null) ? (System.Guid.Empty) : ((CWaybillBackReason)WaybillBackReason.SelectedItem).ID);
+
+                System.Guid Depart_Guid = ((Depart.SelectedItem == null) ? (System.Guid.Empty) : ((CDepart)Depart.SelectedItem).uuidID);
+                System.Guid uuidSalesman_Guid = ((SalesMan.SelectedItem == null) ? (System.Guid.Empty) : ((CSalesMan)SalesMan.SelectedItem).uuidID);
+                System.Guid Customer_Guid = ((Customer.SelectedItem == null) ? (System.Guid.Empty) : ((CCustomer)Customer.SelectedItem).ID);
+                System.Guid CustomerChild_Guid = ((ChildDepart.SelectedItem == null) ? (System.Guid.Empty) : ((CChildDepart)ChildDepart.SelectedItem).ID);
+                System.String BackWaybill_Description = txtDescription.Text;
+
+                System.Guid Stock_Guid = ((Stock.SelectedItem == null) ? (System.Guid.Empty) : ((CStock)Stock.SelectedItem).ID);
+                System.Guid Company_Guid = ((Stock.SelectedItem == null) ? (System.Guid.Empty) : ((CStock)Stock.SelectedItem).Company.ID);
+                System.Double BackWaybill_CurrencyRate = m_objSelectedWaybill.PricingCurrencyRate;
+
+                List<CBackWaybillItem> objItemList = new List<CBackWaybillItem>();
+                System.Guid uuidItemID = System.Guid.Empty;
+                System.Guid uuidWaybItemID = System.Guid.Empty;
+                System.Guid uuidProductID = System.Guid.Empty;
+                System.Guid uuidMeasureID = System.Guid.Empty;
+                System.Double dblQuantity = 0;
+
+                System.Double dblPriceImporter = 0;
+                System.Double dblPrice = 0;
+                System.Double dblDiscountPercent = 0;
+                System.Double dblPriceWithDiscount = 0;
+                System.Double dblNDSPercent = 0;
+                System.Double dblPriceInAccountingCurrency = 0;
+                System.Double dblPriceWithDiscountInAccountingCurrency = 0;
+
+                dataSet.Tables["OrderItems"].AcceptChanges();
+
+                for (System.Int32 i = 0; i < dataSet.Tables["OrderItems"].Rows.Count; i++)
+                {
+                    if ((dataSet.Tables["OrderItems"].Rows[i]["WaybItem_Guid"] == System.DBNull.Value) ||
+                        (dataSet.Tables["OrderItems"].Rows[i]["MeasureID"] == System.DBNull.Value) ||
+                        (dataSet.Tables["OrderItems"].Rows[i]["Quantity"] == System.DBNull.Value))
+                    {
+                        continue;
+                    }
+                    if (m_bNewObject == true)
+                    {
+                        uuidItemID = System.Guid.NewGuid();
+                    }
+                    else
+                    {
+                        uuidItemID = ((dataSet.Tables["OrderItems"].Rows[i]["BackWaybItem_Guid"] == System.DBNull.Value) ? System.Guid.NewGuid() : (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["BackWaybItem_Guid"]));
+                    }
+                    uuidWaybItemID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["WaybItem_Guid"]);
+                    if (dataSet.Tables["OrderItems"].Rows[i]["ProductID"] == System.DBNull.Value)
+                    {
+                        if ((m_objSrcBackWaybillItemList != null) && (m_objSrcBackWaybillItemList.Count > 0))
+                        {
+                            uuidProductID = m_objSrcBackWaybillItemList.SingleOrDefault<CSrcBackWaybillItem>(x => x.WaybItemID.CompareTo(uuidWaybItemID) == 0).Product.ID;
+                        }
+                    }
+                    else
+                    {
+                        uuidProductID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["ProductID"]);
+                    }
+                    uuidMeasureID = (System.Guid)(dataSet.Tables["OrderItems"].Rows[i]["MeasureID"]);
+                    dblQuantity = System.Convert.ToDouble(dataSet.Tables["OrderItems"].Rows[i]["Quantity"]);
+                    dblPriceImporter = System.Convert.ToDouble(dataSet.Tables["OrderItems"].Rows[i]["PriceImporter"]);
+                    dblPrice = System.Convert.ToDouble(dataSet.Tables["OrderItems"].Rows[i]["Price"]);
+                    dblDiscountPercent = 0;
+                    dblPriceWithDiscount = dblPrice;
+                    dblNDSPercent = 0;
+                    dblPriceInAccountingCurrency = System.Convert.ToDouble(dataSet.Tables["OrderItems"].Rows[i]["PriceInAccountingCurrency"]);
+                    dblPriceWithDiscountInAccountingCurrency = dblPriceInAccountingCurrency;
+
+                    objItemList.Add(new CBackWaybillItem()
+                    {
+                        ID = uuidItemID,
+                        WaybItemID = uuidWaybItemID,
+                        Product = new CProduct() { ID = uuidProductID },
+                        Measure = new CMeasure() { ID = uuidMeasureID },
+                        Quantity = dblQuantity,
+                        PriceImporter = dblPriceImporter,
+                        Price = dblPrice,
+                        DiscountPercent = dblDiscountPercent,
+                        NDSPercent = dblNDSPercent,
+                        PriceWithDiscount = dblPriceWithDiscount,
+                        PriceInAccountingCurrency = dblPriceInAccountingCurrency,
+                        PriceWithDiscountInAccountingCurrency = dblPriceWithDiscountInAccountingCurrency
+                    });
+                }
+                System.Data.DataTable WaybillTablePart = ((gridControl.DataSource == null) ? null : CBackWaybillItem.ConvertListToTable(objItemList, ref strErr));
+                objItemList = null;
+
+                // проверка значений
+                if (CBackWaybill.CheckAllPropertiesForSave(Stock_Guid, Company_Guid, Depart_Guid, Customer_Guid, 
+                        PaymentType_Guid, WaybillBackReason_Guid, BackWaybillState_Guid,
+                        BackWaybill_Num, BackWaybill_BeginDate, 
+                        WaybillShipMode_Guid, WaybillTablePart, ref strErr) == true)
+                {
+                    if (m_bNewObject == true)
+                    {
+                        // новый накладная
+                        System.Guid BackWaybill_Guid = System.Guid.Empty;
+                        System.Int32 BackWaybill_Id = 0;
+
+                        bOkSave = CBackWaybill.AddNewWaybillToDB(m_objProfile, Waybill_Guid, Stock_Guid, Company_Guid, Depart_Guid,
+                            Customer_Guid, CustomerChild_Guid,
+                            PaymentType_Guid, WaybillBackReason_Guid, BackWaybill_Num,
+                            BackWaybill_BeginDate, BackWaybillParent_Guid,
+                            BackWaybillState_Guid, WaybillShipMode_Guid, BackWaybill_ShipDate,
+                            BackWaybill_Description, BackWaybill_CurrencyRate,
+                            WaybillTablePart,
+                            ref BackWaybill_Guid, ref BackWaybill_Id, ref strErr);
+                        if (bOkSave == true)
+                        {
+                            m_objSelectedWaybill.ID = BackWaybill_Guid;
+                            m_objSelectedWaybill.Ib_ID = BackWaybill_Id;
+                        }
+                    }
+                    //else
+                    //{
+                    //    bOkSave = COrderRepository.EditOrderInDB(m_objProfile, null, Order_BeginDate, OrderState_Guid,
+                    //        Order_MoneyBonus, Depart_Guid, Salesman_Guid, Customer_Guid, CustomerChild_Guid, OrderType_Guid,
+                    //        PaymentType_Guid, Order_Description, Order_DeliveryDate, Rtt_Guid, Address_Guid, Stock_Guid,
+                    //        Parts_Guid, addedCategories, m_objSelectedOrder.ID, ref strErr);
+                    //}
+                }
+
+                if (bOkSave == true)
+                {
+                    m_objSelectedWaybill.BeginDate = BackWaybill_BeginDate;
+                    m_objSelectedWaybill.ShipDate = BackWaybill_ShipDate;
+                    m_objSelectedWaybill.Depart = ((Depart.SelectedItem == null) ? null : (CDepart)Depart.SelectedItem);
+                    m_objSelectedWaybill.SalesMan = ((SalesMan.SelectedItem == null) ? null : (CSalesMan)SalesMan.SelectedItem);
+                    m_objSelectedWaybill.Customer = ((Customer.SelectedItem == null) ? null : (CCustomer)Customer.SelectedItem);
+                    m_objSelectedWaybill.ChildDepart = ((ChildDepart.SelectedItem == null) ? null : (CChildDepart)ChildDepart.SelectedItem);
+                    m_objSelectedWaybill.BackWaybillState = ((WaybillState.SelectedItem == null) ? null : (CBackWaybillState)WaybillState.SelectedItem);
+                    m_objSelectedWaybill.WaybillShipMode = ((WaybillShipMode.SelectedItem == null) ? null : (CWaybillShipMode)WaybillShipMode.SelectedItem);
+                    m_objSelectedWaybill.WaybillBackReason = ((WaybillBackReason.SelectedItem == null) ? null : (CWaybillBackReason)WaybillBackReason.SelectedItem);
+                    m_objSelectedWaybill.PaymentType = ((PaymentType.SelectedItem == null) ? null : (CPaymentType)PaymentType.SelectedItem);
+                    m_objSelectedWaybill.Description = txtDescription.Text;
+                    m_objSelectedWaybill.DocNum = BackWaybill_Num;
+                    m_objSelectedWaybill.Stock = ((Stock.SelectedItem == null) ? null : (CStock)Stock.SelectedItem);
+                }
+
+                bRet = bOkSave;
+            }
+            catch (System.Exception f)
+            {
+                strErr = f.Message;
+                SendMessageToLog("Ошибка сохранения изменений в заказе. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+            return bRet;
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                System.String strErr = System.String.Empty;
+                if (bSaveChanges( ref strErr) == true)
+                {
+                    SimulateChangeBackWaybillProperties(m_objSelectedWaybill, enumActionSaveCancel.Save, m_bNewObject, m_objSelectedWaybill.BackWaybillState.ID);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка сохранения изменений в накладной на возврат товара. Текст ошибки: " + f.Message);
+            }
+            return;
+        }
+
+        #endregion
+
+
         #region запись в DBGrid
 
         private void gridView_KeyDown(object sender, KeyEventArgs e)
@@ -1682,7 +1887,7 @@ namespace ERPMercuryProcessingOrder
                 }
                 else if (e.KeyCode == Keys.Up)
                 {
-                    if (gridView.GetDataRow(gridView.FocusedRowHandle)["ProductID"] == System.DBNull.Value)
+                    if (gridView.GetDataRow(gridView.FocusedRowHandle)["WaybItem_Guid"] == System.DBNull.Value)
                     {
                         gridView.CancelUpdateCurrentRow();
                         e.Handled = true;

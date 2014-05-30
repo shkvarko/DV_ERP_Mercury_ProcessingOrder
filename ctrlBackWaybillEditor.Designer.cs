@@ -992,6 +992,7 @@
             this.btnSave.Text = "ОК";
             this.btnSave.ToolTip = "Сохранить изменения";
             this.btnSave.ToolTipController = this.toolTipController;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // tableLayoutPanel2
             // 
