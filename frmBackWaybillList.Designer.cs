@@ -34,15 +34,9 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuCalcPrice = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuClearPrices = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuReturnSupplStateToAutoProcessPrices = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuMakeSupplDeleted = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuEventLog = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSetBackWaybillToStock = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuCreateOrderBlank = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuGoToSuppl = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemPaymentHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDeleteWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new DevExpress.XtraTab.XtraTabControl();
             this.tabPageViewer = new DevExpress.XtraTab.XtraTabPage();
@@ -158,91 +152,43 @@
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRefresh,
             this.toolStripSeparator1,
-            this.menuCalcPrice,
-            this.menuClearPrices,
-            this.menuReturnSupplStateToAutoProcessPrices,
-            this.menuMakeSupplDeleted,
-            this.menuEventLog,
+            this.menuSetBackWaybillToStock,
             this.toolStripMenuItem1,
-            this.menuCreateOrderBlank,
-            this.menuGoToSuppl,
-            this.menuItemPaymentHistory});
+            this.menuDeleteWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(308, 214);
+            this.contextMenuStrip.Size = new System.Drawing.Size(221, 82);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
+            this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(307, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(220, 22);
             this.menuRefresh.Text = "Обновить";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(304, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(217, 6);
             // 
-            // menuCalcPrice
+            // menuSetBackWaybillToStock
             // 
-            this.menuCalcPrice.Name = "menuCalcPrice";
-            this.menuCalcPrice.Size = new System.Drawing.Size(307, 22);
-            this.menuCalcPrice.Text = "Пересчитать цены в заказе";
-            this.menuCalcPrice.Visible = false;
-            // 
-            // menuClearPrices
-            // 
-            this.menuClearPrices.Name = "menuClearPrices";
-            this.menuClearPrices.Size = new System.Drawing.Size(307, 22);
-            this.menuClearPrices.Text = "Обнулить цены для ручной обработки";
-            this.menuClearPrices.Visible = false;
-            // 
-            // menuReturnSupplStateToAutoProcessPrices
-            // 
-            this.menuReturnSupplStateToAutoProcessPrices.Name = "menuReturnSupplStateToAutoProcessPrices";
-            this.menuReturnSupplStateToAutoProcessPrices.Size = new System.Drawing.Size(307, 22);
-            this.menuReturnSupplStateToAutoProcessPrices.Text = "Вернуть заказ на автоматический расчет цен";
-            this.menuReturnSupplStateToAutoProcessPrices.Visible = false;
-            // 
-            // menuMakeSupplDeleted
-            // 
-            this.menuMakeSupplDeleted.Name = "menuMakeSupplDeleted";
-            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(307, 22);
-            this.menuMakeSupplDeleted.Text = "Удалить заказ";
-            this.menuMakeSupplDeleted.ToolTipText = "Изменить состояние заказа на \"удален\"";
-            this.menuMakeSupplDeleted.Visible = false;
-            // 
-            // menuEventLog
-            // 
-            this.menuEventLog.Name = "menuEventLog";
-            this.menuEventLog.Size = new System.Drawing.Size(307, 22);
-            this.menuEventLog.Text = "Журнал событий";
-            this.menuEventLog.Visible = false;
+            this.menuSetBackWaybillToStock.Name = "menuSetBackWaybillToStock";
+            this.menuSetBackWaybillToStock.Size = new System.Drawing.Size(220, 22);
+            this.menuSetBackWaybillToStock.Text = "Поставить на приход...";
+            this.menuSetBackWaybillToStock.Click += new System.EventHandler(this.menuSetBackWaybillToStock_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(304, 6);
-            this.toolStripMenuItem1.Visible = false;
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(217, 6);
             // 
-            // menuCreateOrderBlank
+            // menuDeleteWaybill
             // 
-            this.menuCreateOrderBlank.Name = "menuCreateOrderBlank";
-            this.menuCreateOrderBlank.Size = new System.Drawing.Size(307, 22);
-            this.menuCreateOrderBlank.Text = "Формирование бланка заказа";
-            this.menuCreateOrderBlank.ToolTipText = "Формирование бланка заказа в MS Excel";
-            this.menuCreateOrderBlank.Visible = false;
-            // 
-            // menuGoToSuppl
-            // 
-            this.menuGoToSuppl.Name = "menuGoToSuppl";
-            this.menuGoToSuppl.Size = new System.Drawing.Size(307, 22);
-            this.menuGoToSuppl.Text = "Перейти к заказу...";
-            // 
-            // menuItemPaymentHistory
-            // 
-            this.menuItemPaymentHistory.Name = "menuItemPaymentHistory";
-            this.menuItemPaymentHistory.Size = new System.Drawing.Size(307, 22);
-            this.menuItemPaymentHistory.Text = "Журнал оплат...";
+            this.menuDeleteWaybill.Name = "menuDeleteWaybill";
+            this.menuDeleteWaybill.Size = new System.Drawing.Size(220, 22);
+            this.menuDeleteWaybill.Text = "Аннулировать накладную...";
+            this.menuDeleteWaybill.Click += new System.EventHandler(this.menuDeleteWaybill_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -1131,15 +1077,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem menuRefresh;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem menuCalcPrice;
-        private System.Windows.Forms.ToolStripMenuItem menuClearPrices;
-        private System.Windows.Forms.ToolStripMenuItem menuReturnSupplStateToAutoProcessPrices;
-        private System.Windows.Forms.ToolStripMenuItem menuMakeSupplDeleted;
-        private System.Windows.Forms.ToolStripMenuItem menuEventLog;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem menuCreateOrderBlank;
-        private System.Windows.Forms.ToolStripMenuItem menuGoToSuppl;
-        private System.Windows.Forms.ToolStripMenuItem menuItemPaymentHistory;
+        private System.Windows.Forms.ToolStripMenuItem menuSetBackWaybillToStock;
         private DevExpress.Utils.ImageCollection imageCollection;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -1205,5 +1143,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelItemParentDocument;
         private DevExpress.XtraTab.XtraTabPage tabPageItemPayments;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelItemPaymentsHistory;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem menuDeleteWaybill;
     }
 }

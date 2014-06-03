@@ -17,7 +17,6 @@ namespace ERPMercuryProcessingOrder
         #region Свойства
         private UniXP.Common.CProfile m_objProfile;
         private UniXP.Common.MENUITEM m_objMenuItem;
-        private System.Boolean m_bOnlyView;
         private List<ERP_Mercury.Common.CCustomer> m_objCustomerList;
         private List<ERP_Mercury.Common.COrder> m_objOrderList;
         private List<ERP_Mercury.Common.COrderState> m_objOrderStateList;
@@ -51,6 +50,19 @@ namespace ERPMercuryProcessingOrder
         //private const System.String strCompany = "Валгон";
         private System.Boolean m_bThreadFinishJob;
         private const System.String m_strOrderBlankFileName = "Бланк заявки.xlsm";
+
+        // используемые динамические права 
+        private System.Boolean IsAvailableDR_ViewSupplPayForm1;             // "Заказ ф1 просмотр";
+        private System.Boolean IsAvailableDR_ViewSupplPayForm2;             // "Заказ ф2 просмотр";
+        private System.Boolean IsAvailableDR_EditSupplPayForm1;             // "Заказ ф1 редактировать";
+        private System.Boolean IsAvailableDR_EditSupplPayForm2;             // "Заказ ф2 редактировать";
+        private System.Boolean IsAvailableDR_MoveSupplToWaybillPayForm1;    // "Заказ ф1 перевод в ТТН";
+        private System.Boolean IsAvailableDR_MoveSupplToWaybillPayForm2;    // "Заказ ф2 перевод в ТТН";
+        private System.Boolean IsAvailableDR_UserCanEditOrder;            // "Обнуление цен и запуск расчета цен в заказе";
+        private System.Boolean IsAvailableDR_UserCanExcludeOrderFromADJ;  // "Исключение заказа из акта выполненных работ";
+        private System.Boolean IsAvailableDR_IncludeOrderInADJ;             // "Включить заказ в акт выполненных работ";
+        private System.Boolean IsAvailableDR_ExcludeOrderInADJ;             // "Исключить заказ из акта выполненных работ";
+        
         #endregion
 
         #region Конструктор
@@ -68,6 +80,23 @@ namespace ERPMercuryProcessingOrder
 
             m_objMenuItem = objMenuItem;
             m_objProfile = objMenuItem.objProfile;
+
+            // динамические права
+            UniXP.Common.CClientRights objClientRights = m_objProfile.GetClientsRight();
+            IsAvailableDR_ViewSupplPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewSupplPayForm1);
+            IsAvailableDR_ViewSupplPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewSupplPayForm2);
+            IsAvailableDR_EditSupplPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditSupplPayForm1);
+            IsAvailableDR_EditSupplPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditSupplPayForm2);
+            IsAvailableDR_MoveSupplToWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_MoveSupplToWaybillPayForm1);
+            IsAvailableDR_MoveSupplToWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_MoveSupplToWaybillPayForm2);
+
+            IsAvailableDR_UserCanEditOrder = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDRUserCanEditOrder);
+            IsAvailableDR_UserCanExcludeOrderFromADJ = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDRUserCanExcludeOrderFromADJ);
+            IsAvailableDR_IncludeOrderInADJ = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strIncludeOrderInADJ);
+            IsAvailableDR_ExcludeOrderInADJ = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strExcludeOrderInADJ);
+            
+            objClientRights = null;
+            
             m_objOrderList = null;
             frmItemEditor = null;
             m_objSelectedOrder = null;
@@ -386,12 +415,15 @@ namespace ERPMercuryProcessingOrder
                 else
                 {
                     cboxCustomer.Text = "";
-                    barBtnAdd.Enabled = !m_bOnlyView;
-                    barBtnEdit.Enabled = ( gridViewAgreementList.FocusedRowHandle >= 0 );
-                    barBtnCopy.Enabled = (gridViewAgreementList.FocusedRowHandle >= 0);
-                    barBtnDelete.Enabled = ( (!m_bOnlyView) && (gridViewAgreementList.FocusedRowHandle >= 0) );
+                    barBtnAdd.Enabled = ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 );
+                    barBtnEdit.Enabled = ( ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 ) && ( gridViewAgreementList.FocusedRowHandle >= 0 ) );
+                    barBtnCopy.Enabled = ( ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 ) && (gridViewAgreementList.FocusedRowHandle >= 0) );
+                    barBtnDelete.Enabled = ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) && (gridViewAgreementList.FocusedRowHandle >= 0));
                     //barbtnImportProduct.Enabled = true;
-                    gridControlAgreementList.MouseDoubleClick += new MouseEventHandler(gridControlAgreementGrid_MouseDoubleClick);
+                    if (IsAvailableDR_ViewSupplPayForm1 || IsAvailableDR_ViewSupplPayForm2)
+                    {
+                        gridControlAgreementList.MouseDoubleClick += new MouseEventHandler(gridControlAgreementGrid_MouseDoubleClick);
+                    }
                 }
             }
             catch (System.Exception f)
@@ -549,6 +581,15 @@ namespace ERPMercuryProcessingOrder
         private void EditOrder(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
+
+            if ((IsAvailableDR_ViewSupplPayForm1 || IsAvailableDR_ViewSupplPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"просмотр заказа\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+
             try
             {
                 m_objSelectedOrder = objOrder;
@@ -663,6 +704,13 @@ namespace ERPMercuryProcessingOrder
         private void CopyOrder(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
+            if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"копирование заказа\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
             try
             {
                 m_objSelectedOrder = objOrder;
@@ -727,6 +775,13 @@ namespace ERPMercuryProcessingOrder
         private void DeleteOrder(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
+            if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"удаление заказа\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
             try
             {
                 System.Int32 iFocusedRowHandle = gridViewAgreementList.FocusedRowHandle;
@@ -790,6 +845,14 @@ namespace ERPMercuryProcessingOrder
         /// </summary>
         private void NewOrder()
         {
+            if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"создание нового заказа\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+
             try
             {
                 ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -861,6 +924,13 @@ namespace ERPMercuryProcessingOrder
         /// </summary>
         private void ImportDataFromExcel()
         {
+            if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"импорт заказа\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
             try
             {
                 if (cboxCompany.SelectedItem == null) { return; }
@@ -1139,10 +1209,10 @@ namespace ERPMercuryProcessingOrder
             {
                 ShowOrderProperties(GetSelectedOrder());
 
-                barBtnAdd.Enabled = !m_bOnlyView;
-                barBtnEdit.Enabled = (e.FocusedRowHandle >= 0);
-                barBtnCopy.Enabled = (e.FocusedRowHandle >= 0);
-                barBtnDelete.Enabled = ((!m_bOnlyView) && (e.FocusedRowHandle >= 0));
+                barBtnAdd.Enabled = (IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2);
+                barBtnEdit.Enabled = ( ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 ) && (e.FocusedRowHandle >= 0) );
+                barBtnCopy.Enabled = ( ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 ) && (e.FocusedRowHandle >= 0) );
+                barBtnDelete.Enabled = ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) && (e.FocusedRowHandle >= 0));
             }
             catch (System.Exception f)
             {
@@ -1156,10 +1226,10 @@ namespace ERPMercuryProcessingOrder
             {
                 ShowOrderProperties(GetSelectedOrder());
 
-                barBtnAdd.Enabled = !m_bOnlyView;
-                barBtnEdit.Enabled = (gridViewAgreementList.FocusedRowHandle >= 0);
-                barBtnCopy.Enabled = (gridViewAgreementList.FocusedRowHandle >= 0);
-                barBtnDelete.Enabled = ((!m_bOnlyView) && (gridViewAgreementList.FocusedRowHandle >= 0));
+                barBtnAdd.Enabled = (IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2);
+                barBtnEdit.Enabled = ( ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 ) && (gridViewAgreementList.FocusedRowHandle >= 0) );
+                barBtnCopy.Enabled = ( ( IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2 ) && (gridViewAgreementList.FocusedRowHandle >= 0) );
+                barBtnDelete.Enabled = ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) && (gridViewAgreementList.FocusedRowHandle >= 0));
             }
             catch (System.Exception f)
             {
@@ -1350,6 +1420,15 @@ namespace ERPMercuryProcessingOrder
         private void RecalcPricesInOrderOrder(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
+
+            if (IsAvailableDR_UserCanEditOrder == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"пересчет цен в заказе заказа\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+            
             try
             {
                 Cursor = Cursors.WaitCursor;
@@ -1528,6 +1607,13 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 menuCreateOrderBlank.Enabled = (cboxCompany.Text.Trim() != "" );
+
+                menuCalcPrice.Enabled = ((gridViewAgreementList.FocusedRowHandle >= 0) && (IsAvailableDR_UserCanEditOrder == true));
+                menuClearPrices.Enabled = ((gridViewAgreementList.FocusedRowHandle >= 0) && (IsAvailableDR_UserCanEditOrder == true));
+                menuMakeSupplDeleted.Enabled = ((gridViewAgreementList.FocusedRowHandle >= 0) && (IsAvailableDR_UserCanEditOrder == true));
+                menuReturnSupplStateToAutoProcessPrices.Enabled = ((gridViewAgreementList.FocusedRowHandle >= 0) && (IsAvailableDR_UserCanEditOrder == true));
+                menuTransformSupplToWaybillInManualMode.Enabled = ((gridViewAgreementList.FocusedRowHandle >= 0) && (IsAvailableDR_MoveSupplToWaybillPayForm1 || IsAvailableDR_MoveSupplToWaybillPayForm2));
+                menuTransformSupplToWaybillInAutoMode.Enabled = ((gridViewAgreementList.FocusedRowHandle >= 0) && (IsAvailableDR_MoveSupplToWaybillPayForm1 || IsAvailableDR_MoveSupplToWaybillPayForm2));
             }
             catch (System.Exception f)
             {
@@ -1717,7 +1803,6 @@ namespace ERPMercuryProcessingOrder
                 LoadOrderList();
 
                 tabControl.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
-                m_bOnlyView = false;
 
                 StartThreadWithLoadData();
             }
@@ -1892,6 +1977,8 @@ namespace ERPMercuryProcessingOrder
         private void CreateWaybillForSuppl(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
+            
+            
             try
             {
                 System.String strErr = System.String.Empty;
@@ -1956,6 +2043,15 @@ namespace ERPMercuryProcessingOrder
         private void TransformSupplToWaybill(ERP_Mercury.Common.COrder objOrder)
         {
             if (objOrder == null) { return; }
+
+            if ((IsAvailableDR_MoveSupplToWaybillPayForm1 || IsAvailableDR_MoveSupplToWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"перевод заказа в накладную\".", "Внимание",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+            
             try
             {
                 System.String strErr = System.String.Empty;

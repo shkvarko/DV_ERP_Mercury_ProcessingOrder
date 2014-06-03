@@ -46,6 +46,11 @@ namespace ERPMercuryProcessingOrder
         private const System.String strWaitCustomer = "ждите... идет заполнение списка";
         private System.Boolean m_bThreadFinishJob;
         private const int m_iMinCountWaybillsInUnion = 2;
+
+
+        private System.Boolean IsAvailableDR_UnionWaybillPayForm1; // "ТТН ф1 объединение";
+        private System.Boolean IsAvailableDR_UnionWaybillPayForm2; // "ТТН ф2 объединение";
+
         #endregion
 
         #region Конструктор
@@ -63,6 +68,14 @@ namespace ERPMercuryProcessingOrder
 
             m_objMenuItem = objMenuItem;
             m_objProfile = objMenuItem.objProfile;
+
+            // динамические права
+            UniXP.Common.CClientRights objClientRights = m_objProfile.GetClientsRight();
+            IsAvailableDR_UnionWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_UnionWaybillPayForm1);
+            IsAvailableDR_UnionWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_UnionWaybillPayForm2);
+            objClientRights = null;
+            
+            
             m_objList = null;
             m_bThreadFinishJob = false;
             m_objCustomerList = new List<ERP_Mercury.Common.CCustomer>();
@@ -463,7 +476,7 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewTTNPayForm2);
+                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewWaybillPayForm2);
                 System.Int32 DefPaymentTypeId = 0;
                 System.Boolean BlockOtherPaymentType = false;
                 System.String CompanyAcronymForPaymentType1 = System.String.Empty;
@@ -782,7 +795,7 @@ namespace ERPMercuryProcessingOrder
 
                 WaybilllNum.Properties.Appearance.BackColor = ((WaybilllNum.Text.Trim().Length == 0) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
                 Depart.Properties.Appearance.BackColor = ((Depart.SelectedItem == null) ? System.Drawing.Color.Tomato : System.Drawing.Color.White);
-                btnUnionWaybill.Enabled = ((gridViewList.RowCount > 0) && (WaybilllNum.Text.Trim().Length > 0) && (Depart.SelectedItem != null));
+                btnUnionWaybill.Enabled = ((IsAvailableDR_UnionWaybillPayForm1 || IsAvailableDR_UnionWaybillPayForm2) && (gridViewList.RowCount > 0) && (WaybilllNum.Text.Trim().Length > 0) && (Depart.SelectedItem != null));
             }
             catch (System.Exception f)
             {
@@ -803,6 +816,20 @@ namespace ERPMercuryProcessingOrder
             }
             return;
         }
+
+        private void gridViewList_RowCountChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadWaybillInfo(GetSelectedItem());
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("gridViewList_RowCountChanged. Текст ошибки: " + f.Message);
+            }
+            return;
+        }
+
 
         #endregion
 
@@ -854,6 +881,15 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
+                if ((IsAvailableDR_UnionWaybillPayForm1 || IsAvailableDR_UnionWaybillPayForm2) == false)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "У Вас недостаточно прав для операции \"объединение накладных\"", "Внимание!",
+                       System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
                 if (gridViewList.RowCount < m_iMinCountWaybillsInUnion)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -959,6 +995,7 @@ namespace ERPMercuryProcessingOrder
         }
 
         #endregion
+
 
 
     }

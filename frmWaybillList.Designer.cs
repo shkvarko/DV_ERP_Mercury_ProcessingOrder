@@ -33,16 +33,11 @@
             this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuRefresh = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuCalcPrice = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuClearPrices = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuReturnSupplStateToAutoProcessPrices = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuMakeSupplDeleted = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuEventLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuCreateOrderBlank = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGoToSuppl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemPaymentHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemBackWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new DevExpress.XtraTab.XtraTabControl();
             this.tabPageViewer = new DevExpress.XtraTab.XtraTabPage();
@@ -126,10 +121,8 @@
             this.tabPageItemPayments = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelItemPaymentsHistory = new System.Windows.Forms.TableLayoutPanel();
             this.tabPageItemBackWaybillEditor = new DevExpress.XtraTab.XtraTabPage();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanelItemBackWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemBackWaybill = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -189,20 +182,13 @@
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRefresh,
-            this.toolStripSeparator1,
-            this.menuCalcPrice,
-            this.menuClearPrices,
-            this.menuReturnSupplStateToAutoProcessPrices,
-            this.menuMakeSupplDeleted,
-            this.menuEventLog,
             this.toolStripMenuItem1,
-            this.menuCreateOrderBlank,
             this.menuGoToSuppl,
             this.menuItemPaymentHistory,
             this.toolStripMenuItem2,
             this.menuItemBackWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(308, 264);
+            this.contextMenuStrip.Size = new System.Drawing.Size(227, 104);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             this.contextMenuStrip.Click += new System.EventHandler(this.contextMenuStrip_Click);
@@ -210,78 +196,41 @@
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(307, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(226, 22);
             this.menuRefresh.Text = "Обновить";
             this.menuRefresh.Click += new System.EventHandler(this.barBtnRefresh_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(304, 6);
-            // 
-            // menuCalcPrice
-            // 
-            this.menuCalcPrice.Name = "menuCalcPrice";
-            this.menuCalcPrice.Size = new System.Drawing.Size(307, 22);
-            this.menuCalcPrice.Text = "Пересчитать цены в заказе";
-            this.menuCalcPrice.Visible = false;
-            // 
-            // menuClearPrices
-            // 
-            this.menuClearPrices.Name = "menuClearPrices";
-            this.menuClearPrices.Size = new System.Drawing.Size(307, 22);
-            this.menuClearPrices.Text = "Обнулить цены для ручной обработки";
-            this.menuClearPrices.Visible = false;
-            // 
-            // menuReturnSupplStateToAutoProcessPrices
-            // 
-            this.menuReturnSupplStateToAutoProcessPrices.Name = "menuReturnSupplStateToAutoProcessPrices";
-            this.menuReturnSupplStateToAutoProcessPrices.Size = new System.Drawing.Size(307, 22);
-            this.menuReturnSupplStateToAutoProcessPrices.Text = "Вернуть заказ на автоматический расчет цен";
-            this.menuReturnSupplStateToAutoProcessPrices.Visible = false;
-            // 
-            // menuMakeSupplDeleted
-            // 
-            this.menuMakeSupplDeleted.Name = "menuMakeSupplDeleted";
-            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(307, 22);
-            this.menuMakeSupplDeleted.Text = "Удалить заказ";
-            this.menuMakeSupplDeleted.ToolTipText = "Изменить состояние заказа на \"удален\"";
-            this.menuMakeSupplDeleted.Visible = false;
-            // 
-            // menuEventLog
-            // 
-            this.menuEventLog.Name = "menuEventLog";
-            this.menuEventLog.Size = new System.Drawing.Size(307, 22);
-            this.menuEventLog.Text = "Журнал событий";
-            this.menuEventLog.Visible = false;
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(304, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 6);
             this.toolStripMenuItem1.Visible = false;
-            // 
-            // menuCreateOrderBlank
-            // 
-            this.menuCreateOrderBlank.Name = "menuCreateOrderBlank";
-            this.menuCreateOrderBlank.Size = new System.Drawing.Size(307, 22);
-            this.menuCreateOrderBlank.Text = "Формирование бланка заказа";
-            this.menuCreateOrderBlank.ToolTipText = "Формирование бланка заказа в MS Excel";
-            this.menuCreateOrderBlank.Visible = false;
             // 
             // menuGoToSuppl
             // 
             this.menuGoToSuppl.Name = "menuGoToSuppl";
-            this.menuGoToSuppl.Size = new System.Drawing.Size(307, 22);
+            this.menuGoToSuppl.Size = new System.Drawing.Size(226, 22);
             this.menuGoToSuppl.Text = "Перейти к заказу...";
             this.menuGoToSuppl.Click += new System.EventHandler(this.menuGoToSuppl_Click);
             // 
             // menuItemPaymentHistory
             // 
             this.menuItemPaymentHistory.Name = "menuItemPaymentHistory";
-            this.menuItemPaymentHistory.Size = new System.Drawing.Size(307, 22);
+            this.menuItemPaymentHistory.Size = new System.Drawing.Size(226, 22);
             this.menuItemPaymentHistory.Text = "Журнал оплат...";
             this.menuItemPaymentHistory.Click += new System.EventHandler(this.menuItemPaymentHistory_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 6);
+            // 
+            // menuItemBackWaybill
+            // 
+            this.menuItemBackWaybill.Name = "menuItemBackWaybill";
+            this.menuItemBackWaybill.Size = new System.Drawing.Size(226, 22);
+            this.menuItemBackWaybill.Text = "Возврат товара от клиента...";
+            this.menuItemBackWaybill.Click += new System.EventHandler(this.menuItemBackWaybill_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -1152,8 +1101,8 @@
             this.tableLayoutPanel5.Controls.Add(this.barBtnAdd, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.barbtnImportProduct, 3, 0);
             this.tableLayoutPanel5.Controls.Add(this.barBtnEdit, 4, 0);
-            this.tableLayoutPanel5.Controls.Add(this.barBtnDelete, 2, 0);
-            this.tableLayoutPanel5.Controls.Add(this.barBtnCopy, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.barBtnCopy, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.barBtnDelete, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
@@ -1174,7 +1123,7 @@
             this.barBtnAdd.Name = "barBtnAdd";
             this.barBtnAdd.Size = new System.Drawing.Size(25, 25);
             this.barBtnAdd.TabIndex = 9;
-            this.barBtnAdd.ToolTip = "Создать новый заказ";
+            this.barBtnAdd.ToolTip = "Создать новую накладную";
             this.barBtnAdd.ToolTipController = this.toolTipController;
             this.barBtnAdd.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.barBtnAdd.Click += new System.EventHandler(this.barBtnAdd_Click);
@@ -1213,12 +1162,12 @@
             this.barBtnDelete.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.barBtnDelete.Image = ((System.Drawing.Image)(resources.GetObject("barBtnDelete.Image")));
             this.barBtnDelete.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.barBtnDelete.Location = new System.Drawing.Point(55, 3);
+            this.barBtnDelete.Location = new System.Drawing.Point(28, 3);
             this.barBtnDelete.Margin = new System.Windows.Forms.Padding(1);
             this.barBtnDelete.Name = "barBtnDelete";
             this.barBtnDelete.Size = new System.Drawing.Size(25, 25);
             this.barBtnDelete.TabIndex = 11;
-            this.barBtnDelete.ToolTip = "Удалить заказ";
+            this.barBtnDelete.ToolTip = "Аннулировать накладную";
             this.barBtnDelete.ToolTipController = this.toolTipController;
             this.barBtnDelete.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             // 
@@ -1227,7 +1176,7 @@
             this.barBtnCopy.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.barBtnCopy.Image = ((System.Drawing.Image)(resources.GetObject("barBtnCopy.Image")));
             this.barBtnCopy.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.barBtnCopy.Location = new System.Drawing.Point(28, 3);
+            this.barBtnCopy.Location = new System.Drawing.Point(55, 3);
             this.barBtnCopy.Margin = new System.Windows.Forms.Padding(1);
             this.barBtnCopy.Name = "barBtnCopy";
             this.barBtnCopy.Size = new System.Drawing.Size(25, 25);
@@ -1235,6 +1184,7 @@
             this.barBtnCopy.ToolTip = "Копировать заказ";
             this.barBtnCopy.ToolTipController = this.toolTipController;
             this.barBtnCopy.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.barBtnCopy.Visible = false;
             // 
             // tabPageEditor
             // 
@@ -1332,11 +1282,6 @@
             this.tabPageItemBackWaybillEditor.Size = new System.Drawing.Size(1079, 564);
             this.tabPageItemBackWaybillEditor.Text = "Возврат товара";
             // 
-            // openFileDialog
-            // 
-            this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
-    "*.*)|*.*";
-            // 
             // tableLayoutPanelItemBackWaybillEditor
             // 
             this.tableLayoutPanelItemBackWaybillEditor.ColumnCount = 1;
@@ -1350,17 +1295,10 @@
             this.toolTipController.SetSuperTip(this.tableLayoutPanelItemBackWaybillEditor, null);
             this.tableLayoutPanelItemBackWaybillEditor.TabIndex = 0;
             // 
-            // toolStripMenuItem2
+            // openFileDialog
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(304, 6);
-            // 
-            // menuItemBackWaybill
-            // 
-            this.menuItemBackWaybill.Name = "menuItemBackWaybill";
-            this.menuItemBackWaybill.Size = new System.Drawing.Size(307, 22);
-            this.menuItemBackWaybill.Text = "Возврат товара от клиента...";
-            this.menuItemBackWaybill.Click += new System.EventHandler(this.menuItemBackWaybill_Click);
+            this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
+    "*.*)|*.*";
             // 
             // frmWaybillList
             // 
@@ -1439,14 +1377,7 @@
         private DevExpress.Utils.ToolTipController toolTipController;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem menuRefresh;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem menuCalcPrice;
-        private System.Windows.Forms.ToolStripMenuItem menuClearPrices;
-        private System.Windows.Forms.ToolStripMenuItem menuReturnSupplStateToAutoProcessPrices;
-        private System.Windows.Forms.ToolStripMenuItem menuMakeSupplDeleted;
-        private System.Windows.Forms.ToolStripMenuItem menuEventLog;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem menuCreateOrderBlank;
         private DevExpress.Utils.ImageCollection imageCollection;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

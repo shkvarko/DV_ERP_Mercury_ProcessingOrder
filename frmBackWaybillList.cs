@@ -18,7 +18,6 @@ namespace ERPMercuryProcessingOrder
         #region Свойства
         private UniXP.Common.CProfile m_objProfile;
         private UniXP.Common.MENUITEM m_objMenuItem;
-        private System.Boolean m_bOnlyView;
         private List<ERP_Mercury.Common.CCustomer> m_objCustomerList;
         private List<ERP_Mercury.Common.CBackWaybill> m_objList;
         private ERP_Mercury.Common.CBackWaybill m_objSelectedItem;
@@ -50,6 +49,13 @@ namespace ERPMercuryProcessingOrder
         private const System.Int32 iThreadSleepTime = 1000;
         private const System.String strWaitCustomer = "ждите... идет заполнение списка";
         private System.Boolean m_bThreadFinishJob;
+
+        private System.Boolean IsAvailableDR_ViewBackWaybillPayForm1; // "Возврат ф1 просмотр";
+        private System.Boolean IsAvailableDR_ViewBackWaybillPayForm2; // "Возврат ф2 просмотр";
+
+        private System.Boolean IsAvailableDR_EditBackWaybillPayForm1; // "Возврат ф1 редактировать";
+        private System.Boolean IsAvailableDR_EditBackWaybillPayForm2; // "Возврат ф2 редактировать";
+
         #endregion
 
         #region Конструктор
@@ -67,6 +73,16 @@ namespace ERPMercuryProcessingOrder
 
             m_objMenuItem = objMenuItem;
             m_objProfile = objMenuItem.objProfile;
+
+            // динамические права
+            UniXP.Common.CClientRights objClientRights = m_objProfile.GetClientsRight();
+            IsAvailableDR_ViewBackWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewBackWaybillPayForm1);
+            IsAvailableDR_ViewBackWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewBackWaybillPayForm2);
+            IsAvailableDR_EditBackWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditBackWaybillPayForm1);
+            IsAvailableDR_EditBackWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditBackWaybillPayForm2);
+            objClientRights = null;
+
+
             m_objList = null;
             m_objSelectedItem = null;
             m_bThreadFinishJob = false;
@@ -371,11 +387,15 @@ namespace ERPMercuryProcessingOrder
                 else
                 {
                     cboxCustomer.Text = "";
-                    barBtnAdd.Enabled = !m_bOnlyView;
-                    barBtnEdit.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                    barBtnCopy.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                    barBtnDelete.Enabled = ((!m_bOnlyView) && (gridViewList.FocusedRowHandle >= 0));
-                    gridControlList.MouseDoubleClick += new MouseEventHandler(gridControlGrid_MouseDoubleClick);
+                    barBtnAdd.Enabled = ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 );
+                    barBtnEdit.Enabled = ( ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) && (gridViewList.FocusedRowHandle >= 0) );
+                    barBtnCopy.Enabled = ( ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) && (gridViewList.FocusedRowHandle >= 0) );
+                    barBtnDelete.Enabled = ((IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0));
+                    
+                    if (IsAvailableDR_ViewBackWaybillPayForm1 || IsAvailableDR_ViewBackWaybillPayForm2)
+                    {
+                        gridControlList.MouseDoubleClick += new MouseEventHandler(gridControlGrid_MouseDoubleClick);
+                    }
                 }
             }
             catch (System.Exception f)
@@ -633,6 +653,16 @@ namespace ERPMercuryProcessingOrder
         private void ViewItem(ERP_Mercury.Common.CBackWaybill objItem)
         {
             if (objItem == null) { return; }
+
+            if ((IsAvailableDR_ViewBackWaybillPayForm1 || IsAvailableDR_ViewBackWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "У Вас недостаточно прав для операции \"просмотр накладной на возврат товара от клиента\"", "Внимание!",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+            
             System.String strErr = System.String.Empty;
 
             try
@@ -709,21 +739,49 @@ namespace ERPMercuryProcessingOrder
         private void DeleteItem(ERP_Mercury.Common.CBackWaybill objItem)
         {
             if (objItem == null) { return; }
+
+            if ((IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "У Вас недостаточно прав для операции \"аннулирование возврата от клиента\"", "Внимание!",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+
             try
             {
                 System.Int32 iFocusedRowHandle = gridViewList.FocusedRowHandle;
-                if (DevExpress.XtraEditors.XtraMessageBox.Show("Подтвердите, пожалуйста, удаление записи.\n\n№" + objItem.DocNum + "\nКлиент: " + objItem.Customer.FullName, "Подтверждение",
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Подтвердите, пожалуйста, аннулирование накладной.\n\n№{0} от {1}\nКлиент: {2}", objItem.DocNum, objItem.BeginDate.ToShortDateString(), objItem.Customer.FullName), "Подтверждение",
                     System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == DialogResult.No) { return; }
 
-                //System.String strErr = "";
-                //if (ERP_Mercury.Common.COrderRepository.MakeDeletedDB(m_objProfile, null, objItem.ID, ref strErr) == true)
-                //{
-                //    LoadList();
-                //}
-                //else
-                //{
-                //    SendMessageToLog("Удаление записи. Текст ошибки: " + strErr);
-                //}
+                System.String strErr = System.String.Empty;
+                System.Guid NewBackWaybillState_Guid = System.Guid.Empty;
+
+                if (CBackWaybill.DeleteBackWaybill(m_objProfile, objItem.ID, ref NewBackWaybillState_Guid, ref strErr) == true)
+                {
+                    if (NewBackWaybillState_Guid.CompareTo(System.Guid.Empty) != 0)
+                    {
+                        List<CBackWaybillState> objBackWaybillStateList = CBackWaybillState.GetBackWaybillStateList(m_objProfile, ref strErr);
+                        if (objBackWaybillStateList != null)
+                        {
+                            CBackWaybillState objNewBackWaybillState = objBackWaybillStateList.SingleOrDefault<CBackWaybillState>(x => x.ID.CompareTo(NewBackWaybillState_Guid) == 0);
+                            if (objNewBackWaybillState != null)
+                            {
+                                objItem.BackWaybillState = objNewBackWaybillState;
+                            }
+                        }
+                        objBackWaybillStateList = null;
+                    }
+
+                    
+                    gridControlList.RefreshDataSource();
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Ошибка",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                }
             }
             catch (System.Exception f)
             {
@@ -750,6 +808,23 @@ namespace ERPMercuryProcessingOrder
 
             return;
         }
+        private void menuDeleteWaybill_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DeleteItem(GetSelectedItem());
+            }//try
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Удаление записи. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+
+            return;
+        }
+
         #endregion
 
         #region Новая запись
@@ -762,6 +837,15 @@ namespace ERPMercuryProcessingOrder
             {
                 //((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
                 //this.SuspendLayout();
+
+                if ((IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2) == false)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "У Вас недостаточно прав для операции \"возврат товара от клиента\"", "Внимание!",
+                       System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
 
                 // причина возврата
                 DialogResult objRet = System.Windows.Forms.DialogResult.None;
@@ -919,7 +1003,8 @@ namespace ERPMercuryProcessingOrder
             try
             {
 
-                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewTTNPayForm2);
+                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewWaybillPayForm2);
+
                 System.Int32 DefPaymentTypeId = 0;
                 System.Boolean BlockOtherPaymentType = false;
                 System.String CompanyAcronymForPaymentType1 = System.String.Empty;
@@ -1168,10 +1253,10 @@ namespace ERPMercuryProcessingOrder
             {
                 ShowItemProperties(GetSelectedItem());
 
-                barBtnAdd.Enabled = !m_bOnlyView;
-                barBtnEdit.Enabled = (e.FocusedRowHandle >= 0);
-                barBtnCopy.Enabled = (e.FocusedRowHandle >= 0);
-                barBtnDelete.Enabled = ((!m_bOnlyView) && (e.FocusedRowHandle >= 0));
+                barBtnAdd.Enabled = ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 );
+                barBtnEdit.Enabled = ( ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) && (e.FocusedRowHandle >= 0) );
+                barBtnCopy.Enabled = ( ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) && (e.FocusedRowHandle >= 0) );
+                barBtnDelete.Enabled = ((IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2) && (e.FocusedRowHandle >= 0));
             }
             catch (System.Exception f)
             {
@@ -1185,10 +1270,10 @@ namespace ERPMercuryProcessingOrder
             {
                 ShowItemProperties(GetSelectedItem());
 
-                barBtnAdd.Enabled = !m_bOnlyView;
-                barBtnEdit.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                barBtnCopy.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                barBtnDelete.Enabled = ((!m_bOnlyView) && (gridViewList.FocusedRowHandle >= 0));
+                barBtnAdd.Enabled = (IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2);
+                barBtnEdit.Enabled = ( ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) && (gridViewList.FocusedRowHandle >= 0));
+                barBtnCopy.Enabled = ( ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) && (gridViewList.FocusedRowHandle >= 0) );
+                barBtnDelete.Enabled = ((IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0));
             }
             catch (System.Exception f)
             {
@@ -1452,7 +1537,6 @@ namespace ERPMercuryProcessingOrder
                 LoadList();
 
                 tabControl.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
-                m_bOnlyView = false;
 
                 StartThreadWithLoadData();
             }
@@ -1530,6 +1614,104 @@ namespace ERPMercuryProcessingOrder
                 this.Cursor = Cursors.Default;
             }
 
+            return;
+        }
+        #endregion
+
+        #region Постановка накладной на возврат товара на приход
+        /// <summary>
+        /// Постановка товара на приход
+        /// </summary>
+        /// <param name="objBackWaybill"></param>
+        private void SetBackWaybillToStock(CBackWaybill objBackWaybill)
+        {
+            if (objBackWaybill == null) { return; }
+            if ((IsAvailableDR_ViewBackWaybillPayForm1 || IsAvailableDR_ViewBackWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "У Вас недостаточно прав для операции \"постановка возврата на приход\"", "Внимание!",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+            try
+            {
+                DialogResult objRet = System.Windows.Forms.DialogResult.None;
+                using (frmSetBackWaybillToStock objFrmSetBackWaybillToStock = new frmSetBackWaybillToStock() )
+                {
+                    objFrmSetBackWaybillToStock.SetParamsForSetBackWaybillToStock(m_objProfile, objBackWaybill);
+                    objRet = objFrmSetBackWaybillToStock.ShowDialog();
+                }
+
+                if(objRet == System.Windows.Forms.DialogResult.OK)
+                {
+                    gridControlList.RefreshDataSource();
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("SetBackWaybillToStock. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
+        private void menuSetBackWaybillToStock_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SetBackWaybillToStock(GetSelectedItem());
+            }//try
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Постановка твоара на приход. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+
+            return;
+
+        }
+        #endregion
+
+        #region Контекстное меню
+        private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (gridViewList.RowCount == 0)
+                {
+                    menuDeleteWaybill.Enabled = false;
+                    menuSetBackWaybillToStock.Enabled = false;
+                }
+                else
+                {
+                    CBackWaybill objSelectedItem = GetSelectedItem();
+                    if ((objSelectedItem == null) || ( objSelectedItem.BackWaybillState == null ))
+                    {
+                        menuDeleteWaybill.Enabled = false;
+                        menuSetBackWaybillToStock.Enabled = false;
+                    }
+                    else
+                    {
+                        menuDeleteWaybill.Enabled = ( ( objSelectedItem.BackWaybillState.BackWaybillStateId == 0 ) && 
+                            ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) );
+                        menuSetBackWaybillToStock.Enabled = ((objSelectedItem.BackWaybillState.BackWaybillStateId == 0) &&
+                            (IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2));
+                    }
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("contextMenuStrip_Opening. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
             return;
         }
         #endregion

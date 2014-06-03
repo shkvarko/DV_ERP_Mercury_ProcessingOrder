@@ -956,12 +956,6 @@ namespace ERPMercuryProcessingOrder
 
     }
 
-    public class Consts
-    {
-        public static readonly System.String strRightEditRulePool = "Редактирование правил расчета цен";
-        public static readonly System.String strRightEditRulePoolDecription = "Редактирование описания акций";
-    }
-
 
     public class ViewRulePool : PlugIn.IClassTypeView
     {

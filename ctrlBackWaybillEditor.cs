@@ -1355,6 +1355,8 @@ namespace ERPMercuryProcessingOrder
 
                 ClearControls();
 
+                LoadComboBoxItems();
+
                 // шапка накладной
                 LoadComboBoxAndSetValues(m_objSelectedWaybill);
 

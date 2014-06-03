@@ -18,7 +18,6 @@ namespace ERPMercuryProcessingOrder
         #region Свойства
         private UniXP.Common.CProfile m_objProfile;
         private UniXP.Common.MENUITEM m_objMenuItem;
-        private System.Boolean m_bOnlyView;
         private List<ERP_Mercury.Common.CCustomer> m_objCustomerList;
         private List<ERP_Mercury.Common.CWaybill> m_objList;
         private ERP_Mercury.Common.CWaybill m_objSelectedItem;
@@ -53,6 +52,23 @@ namespace ERPMercuryProcessingOrder
         private const System.Int32 iThreadSleepTime = 1000;
         private const System.String strWaitCustomer = "ждите... идет заполнение списка";
         private System.Boolean m_bThreadFinishJob;
+
+        // используемые динамические права 
+        private System.Boolean IsAvailableDR_ViewWaybillPayForm1; // "ТТН ф1 просмотр";
+        private System.Boolean IsAvailableDR_ViewWaybillPayForm2; // "ТТН ф2 просмотр";
+        private System.Boolean IsAvailableDR_EditWaybillPayForm1;  // "ТТН ф1 редактировать";
+        private System.Boolean IsAvailableDR_EditWaybillPayForm2;  //"ТТН ф2 редактировать";
+        private System.Boolean IsAvailableDR_PrintWaybillPayForm1; // "ТТН ф1 печать";
+        private System.Boolean IsAvailableDR_PrintWaybillPayForm2; // "ТТН ф2 печать";
+
+        private System.Boolean IsAvailableDR_ViewBackWaybillPayForm1; // "Возврат ф1 просмотр";
+        private System.Boolean IsAvailableDR_ViewBackWaybillPayForm2; // "Возврат ф2 просмотр";
+
+        private System.Boolean IsAvailableDR_EditBackWaybillPayForm1; // "Возврат ф1 редактировать";
+        private System.Boolean IsAvailableDR_EditBackWaybillPayForm2; // "Возврат ф2 редактировать";
+
+        private System.Boolean IsBlockBtnAdd;
+        private System.Boolean IsBlockBtnCopy;
         #endregion
 
         #region Конструктор
@@ -70,6 +86,24 @@ namespace ERPMercuryProcessingOrder
 
             m_objMenuItem = objMenuItem;
             m_objProfile = objMenuItem.objProfile;
+
+            // динамические права
+            UniXP.Common.CClientRights objClientRights = m_objProfile.GetClientsRight();
+            IsAvailableDR_ViewWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewWaybillPayForm1);
+            IsAvailableDR_ViewWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewWaybillPayForm2);
+            IsAvailableDR_EditWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditWaybillPayForm1);
+            IsAvailableDR_EditWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditWaybillPayForm2);
+            IsAvailableDR_PrintWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_PrintWaybillPayForm1);
+            IsAvailableDR_PrintWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_PrintWaybillPayForm2);
+            IsAvailableDR_ViewBackWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewBackWaybillPayForm1);
+            IsAvailableDR_ViewBackWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewBackWaybillPayForm2);
+            IsAvailableDR_EditBackWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditBackWaybillPayForm1);
+            IsAvailableDR_EditBackWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_EditBackWaybillPayForm2);
+            objClientRights = null;
+
+            IsBlockBtnAdd = true;
+            IsBlockBtnCopy = true;
+
             m_objList = null;
             m_objSelectedItem = null;
             m_bThreadFinishJob = false;
@@ -408,11 +442,17 @@ namespace ERPMercuryProcessingOrder
                 else
                 {
                     cboxCustomer.Text = "";
-                    barBtnAdd.Enabled = !m_bOnlyView;
-                    barBtnEdit.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                    barBtnCopy.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                    barBtnDelete.Enabled = ((!m_bOnlyView) && (gridViewList.FocusedRowHandle >= 0));
-                    gridControlList.MouseDoubleClick += new MouseEventHandler(gridControlGrid_MouseDoubleClick);
+
+                    barBtnAdd.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 ) && (IsBlockBtnAdd == false) );
+                    barBtnEdit.Enabled = (  ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 ) && (gridViewList.FocusedRowHandle >= 0) );
+                    barBtnCopy.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0) && (IsBlockBtnCopy == false));
+                    barBtnDelete.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0));
+
+                    if ((IsAvailableDR_ViewWaybillPayForm1 == true) || (IsAvailableDR_ViewWaybillPayForm2 == true) ||
+                        (IsAvailableDR_EditWaybillPayForm1 == true) || (IsAvailableDR_EditWaybillPayForm2 == true))
+                    {
+                        gridControlList.MouseDoubleClick += new MouseEventHandler(gridControlGrid_MouseDoubleClick);
+                    }
                 }
             }
             catch (System.Exception f)
@@ -591,6 +631,15 @@ namespace ERPMercuryProcessingOrder
         private void EditItem (ERP_Mercury.Common.CWaybill objItem)
         {
             if (objItem == null) { return; }
+
+            if ((IsAvailableDR_ViewWaybillPayForm1 || IsAvailableDR_ViewWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "У Вас недостаточно прав для операции \"просмотр накладной\"", "Внимание!",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
             System.String strErr = System.String.Empty;
 
             try
@@ -714,6 +763,14 @@ namespace ERPMercuryProcessingOrder
         private void DeleteItem(ERP_Mercury.Common.CWaybill objItem)
         {
             if (objItem == null) { return; }
+            if ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "У Вас недостаточно прав для операции \"аннулирование накладной\"", "Внимание!",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
             try
             {
                 System.Int32 iFocusedRowHandle = gridViewList.FocusedRowHandle;
@@ -763,6 +820,15 @@ namespace ERPMercuryProcessingOrder
         /// </summary>
         private void NewItem()
         {
+            if ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) == false)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "У Вас недостаточно прав для операции \"создание накладной\"", "Внимание!",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return;
+            }
+
             try
             {
                 ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -895,7 +961,7 @@ namespace ERPMercuryProcessingOrder
             try
             {
 
-                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewTTNPayForm2);
+                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewWaybillPayForm2);
                 System.Int32 DefPaymentTypeId = 0;
                 System.Boolean BlockOtherPaymentType = false;
                 System.String CompanyAcronymForPaymentType1 = System.String.Empty;
@@ -1154,10 +1220,10 @@ namespace ERPMercuryProcessingOrder
             {
                 ShowItemProperties(GetSelectedItem());
 
-                barBtnAdd.Enabled = !m_bOnlyView;
-                barBtnEdit.Enabled = (e.FocusedRowHandle >= 0);
-                barBtnCopy.Enabled = (e.FocusedRowHandle >= 0);
-                barBtnDelete.Enabled = ((!m_bOnlyView) && (e.FocusedRowHandle >= 0));
+                barBtnAdd.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 ) && (IsBlockBtnAdd == false) );
+                barBtnEdit.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 ) && (e.FocusedRowHandle >= 0) );
+                barBtnCopy.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (e.FocusedRowHandle >= 0) && (IsBlockBtnCopy == false));
+                barBtnDelete.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (e.FocusedRowHandle >= 0));
             }
             catch (System.Exception f)
             {
@@ -1171,10 +1237,10 @@ namespace ERPMercuryProcessingOrder
             {
                 ShowItemProperties(GetSelectedItem());
 
-                barBtnAdd.Enabled = !m_bOnlyView;
-                barBtnEdit.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                barBtnCopy.Enabled = (gridViewList.FocusedRowHandle >= 0);
-                barBtnDelete.Enabled = ((!m_bOnlyView) && (gridViewList.FocusedRowHandle >= 0));
+                barBtnAdd.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (IsBlockBtnAdd == false));
+                barBtnEdit.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 )&& (gridViewList.FocusedRowHandle >= 0) );
+                barBtnCopy.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0) && (IsBlockBtnCopy == false));
+                barBtnDelete.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0));
             }
             catch (System.Exception f)
             {
@@ -1515,7 +1581,6 @@ namespace ERPMercuryProcessingOrder
                 LoadList();
 
                 tabControl.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
-                m_bOnlyView = false;
 
                 StartThreadWithLoadData();
             }
@@ -1670,7 +1735,7 @@ namespace ERPMercuryProcessingOrder
 
                 menuItemPaymentHistory.Enabled = (objSelectedItem != null);
                 menuGoToSuppl.Enabled = (objSelectedItem != null);
-                menuItemBackWaybill.Enabled = (objSelectedItem != null);
+                menuItemBackWaybill.Enabled = ( (objSelectedItem != null) && ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) );
 
                 objSelectedItem = null;
 

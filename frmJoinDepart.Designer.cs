@@ -361,6 +361,7 @@
             this.gridViewList.OptionsView.ShowFooter = true;
             this.gridViewList.OptionsView.ShowGroupPanel = false;
             this.gridViewList.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewList_FocusedRowChanged);
+            this.gridViewList.RowCountChanged += new System.EventHandler(this.gridViewList_RowCountChanged);
             // 
             // panelControlSearchCondition
             // 
