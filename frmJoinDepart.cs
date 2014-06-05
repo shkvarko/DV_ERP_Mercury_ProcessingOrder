@@ -476,7 +476,7 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewWaybillPayForm2);
+                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState( ERPMercuryProcessingOrder.Consts.strDR_ViewWaybillPayForm2);
                 System.Int32 DefPaymentTypeId = 0;
                 System.Boolean BlockOtherPaymentType = false;
                 System.String CompanyAcronymForPaymentType1 = System.String.Empty;

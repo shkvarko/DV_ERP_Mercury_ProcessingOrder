@@ -110,8 +110,8 @@
             this.barBtnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.barbtnImportProduct = new DevExpress.XtraEditors.SimpleButton();
             this.barBtnEdit = new DevExpress.XtraEditors.SimpleButton();
-            this.barBtnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.barBtnCopy = new DevExpress.XtraEditors.SimpleButton();
+            this.barBtnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.tabPageEditor = new DevExpress.XtraTab.XtraTabPage();
             this.tabControlItemDetail = new DevExpress.XtraTab.XtraTabControl();
             this.tabPageItemEditor = new DevExpress.XtraTab.XtraTabPage();
@@ -123,6 +123,7 @@
             this.tabPageItemBackWaybillEditor = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelItemBackWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.menuItemCancelWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -186,9 +187,10 @@
             this.menuGoToSuppl,
             this.menuItemPaymentHistory,
             this.toolStripMenuItem2,
-            this.menuItemBackWaybill});
+            this.menuItemBackWaybill,
+            this.menuItemCancelWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(227, 104);
+            this.contextMenuStrip.Size = new System.Drawing.Size(227, 148);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             this.contextMenuStrip.Click += new System.EventHandler(this.contextMenuStrip_Click);
@@ -1157,20 +1159,6 @@
             this.barBtnEdit.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.barBtnEdit.Visible = false;
             // 
-            // barBtnDelete
-            // 
-            this.barBtnDelete.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.barBtnDelete.Image = ((System.Drawing.Image)(resources.GetObject("barBtnDelete.Image")));
-            this.barBtnDelete.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.barBtnDelete.Location = new System.Drawing.Point(28, 3);
-            this.barBtnDelete.Margin = new System.Windows.Forms.Padding(1);
-            this.barBtnDelete.Name = "barBtnDelete";
-            this.barBtnDelete.Size = new System.Drawing.Size(25, 25);
-            this.barBtnDelete.TabIndex = 11;
-            this.barBtnDelete.ToolTip = "Аннулировать накладную";
-            this.barBtnDelete.ToolTipController = this.toolTipController;
-            this.barBtnDelete.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            // 
             // barBtnCopy
             // 
             this.barBtnCopy.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -1185,6 +1173,20 @@
             this.barBtnCopy.ToolTipController = this.toolTipController;
             this.barBtnCopy.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.barBtnCopy.Visible = false;
+            // 
+            // barBtnDelete
+            // 
+            this.barBtnDelete.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.barBtnDelete.Image = ((System.Drawing.Image)(resources.GetObject("barBtnDelete.Image")));
+            this.barBtnDelete.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.barBtnDelete.Location = new System.Drawing.Point(28, 3);
+            this.barBtnDelete.Margin = new System.Windows.Forms.Padding(1);
+            this.barBtnDelete.Name = "barBtnDelete";
+            this.barBtnDelete.Size = new System.Drawing.Size(25, 25);
+            this.barBtnDelete.TabIndex = 11;
+            this.barBtnDelete.ToolTip = "Аннулировать накладную";
+            this.barBtnDelete.ToolTipController = this.toolTipController;
+            this.barBtnDelete.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             // 
             // tabPageEditor
             // 
@@ -1299,6 +1301,13 @@
             // 
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
+            // 
+            // menuItemCancelWaybill
+            // 
+            this.menuItemCancelWaybill.Name = "menuItemCancelWaybill";
+            this.menuItemCancelWaybill.Size = new System.Drawing.Size(226, 22);
+            this.menuItemCancelWaybill.Text = "Аннулировать накладную...";
+            this.menuItemCancelWaybill.Click += new System.EventHandler(this.menuItemCancelWaybill_Click);
             // 
             // frmWaybillList
             // 
@@ -1467,5 +1476,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelItemBackWaybillEditor;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem menuItemBackWaybill;
+        private System.Windows.Forms.ToolStripMenuItem menuItemCancelWaybill;
     }
 }

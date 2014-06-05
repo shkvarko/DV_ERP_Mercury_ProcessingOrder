@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmOrderList));
-            this.toolTipController = new DevExpress.Utils.ToolTipController();
+            this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new DevExpress.XtraTab.XtraTabControl();
             this.tabPageViewer = new DevExpress.XtraTab.XtraTabPage();
@@ -95,7 +96,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gridControlAgreementList = new DevExpress.XtraGrid.GridControl();
-            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuCalcPrice = new System.Windows.Forms.ToolStripMenuItem();
@@ -111,7 +112,7 @@
             this.menuTransformSupplToWaybillInAutoMode = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGoToWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.gridViewAgreementList = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.imageCollection = new DevExpress.Utils.ImageCollection();
+            this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.barBtnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.barbtnImportProduct = new DevExpress.XtraEditors.SimpleButton();
@@ -1053,7 +1054,7 @@
             // 
             this.menuReturnSupplStateToAutoProcessPrices.Name = "menuReturnSupplStateToAutoProcessPrices";
             this.menuReturnSupplStateToAutoProcessPrices.Size = new System.Drawing.Size(323, 22);
-            this.menuReturnSupplStateToAutoProcessPrices.Text = "Вернуть заказ на автоматический расчет цен";
+            this.menuReturnSupplStateToAutoProcessPrices.Text = "Вернуть заказ на автоматическую обработку";
             this.menuReturnSupplStateToAutoProcessPrices.Visible = false;
             // 
             // menuMakeSupplDeleted

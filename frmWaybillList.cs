@@ -961,7 +961,7 @@ namespace ERPMercuryProcessingOrder
             try
             {
 
-                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewWaybillPayForm2);
+                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewWaybillPayForm2);
                 System.Int32 DefPaymentTypeId = 0;
                 System.Boolean BlockOtherPaymentType = false;
                 System.String CompanyAcronymForPaymentType1 = System.String.Empty;
@@ -1214,16 +1214,31 @@ namespace ERPMercuryProcessingOrder
         #endregion
 
         #region Свойства записи
+
+        private void FocusedRowChanged( CWaybill objItem, System.Int32 iRowHandle )
+        {
+            try
+            {
+                ShowItemProperties(objItem);
+
+                barBtnAdd.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (IsBlockBtnAdd == false));
+                barBtnEdit.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (iRowHandle >= 0));
+                barBtnCopy.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (iRowHandle >= 0) && (IsBlockBtnCopy == false));
+                barBtnDelete.Enabled = ((objItem != null) && (objItem.WaybillState.WaybillStateId == 0) && (IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2));
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("FocusedRowChanged. Текст ошибки: " + f.Message);
+            }
+            return;
+        }
+
         private void gridViewList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             try
             {
-                ShowItemProperties(GetSelectedItem());
-
-                barBtnAdd.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 ) && (IsBlockBtnAdd == false) );
-                barBtnEdit.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 ) && (e.FocusedRowHandle >= 0) );
-                barBtnCopy.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (e.FocusedRowHandle >= 0) && (IsBlockBtnCopy == false));
-                barBtnDelete.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (e.FocusedRowHandle >= 0));
+                FocusedRowChanged(GetSelectedItem(), e.FocusedRowHandle);
             }
             catch (System.Exception f)
             {
@@ -1235,12 +1250,7 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                ShowItemProperties(GetSelectedItem());
-
-                barBtnAdd.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (IsBlockBtnAdd == false));
-                barBtnEdit.Enabled = ( ( IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2 )&& (gridViewList.FocusedRowHandle >= 0) );
-                barBtnCopy.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0) && (IsBlockBtnCopy == false));
-                barBtnDelete.Enabled = ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) && (gridViewList.FocusedRowHandle >= 0));
+                FocusedRowChanged(GetSelectedItem(), gridViewList.FocusedRowHandle);
             }
             catch (System.Exception f)
             {
@@ -1735,8 +1745,10 @@ namespace ERPMercuryProcessingOrder
 
                 menuItemPaymentHistory.Enabled = (objSelectedItem != null);
                 menuGoToSuppl.Enabled = (objSelectedItem != null);
-                menuItemBackWaybill.Enabled = ( (objSelectedItem != null) && ( IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2 ) );
 
+                menuItemBackWaybill.Enabled = ((objSelectedItem != null) && (objSelectedItem.WaybillState.WaybillStateId == 1) && (IsAvailableDR_EditBackWaybillPayForm1 || IsAvailableDR_EditBackWaybillPayForm2));
+                menuItemCancelWaybill.Enabled = ((objSelectedItem != null) && (objSelectedItem.WaybillState.WaybillStateId == 0) && (IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2));
+                
                 objSelectedItem = null;
 
             }//try
@@ -1847,6 +1859,103 @@ namespace ERPMercuryProcessingOrder
             {
             }
             return;
+        }
+        #endregion
+
+        #region Аннулирование накладной
+        /// <summary>
+        /// Аннулирование накладной
+        /// </summary>
+        /// <param name="objItem">накладная</param>
+        private void CancelWaybill(ERP_Mercury.Common.CWaybill objItem)
+        {
+            if (objItem == null) { return; }
+
+            try
+            {
+                // проверка, можно ли оформить возврат товара
+                System.String strErr = System.String.Empty;
+                if (CWaybill.CanCancelWaybill(m_objProfile, objItem.ID, ref strErr) == false)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Аннулирование документа {0} от {1} отклонено.\n{2}", objItem.DocNum, objItem.BeginDate.ToShortDateString(), strErr),
+                        "Внимание", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if ((IsAvailableDR_EditWaybillPayForm1 || IsAvailableDR_EditWaybillPayForm2) == false)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("У Вас отстутствуют права на проведение операции \"Аннулирование накладной\".",
+                        "Внимание", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Подтвердите, пожалуйста, аннулирование накладной {0} от {1}.", objItem.DocNum, objItem.BeginDate.ToShortDateString()),
+                        "Подтверждение", System.Windows.Forms.MessageBoxButtons.YesNoCancel, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+
+                    System.Guid Waybill_Guid = objItem.ID;
+                    System.Guid CurrentWaybillState_Guid = objItem.WaybillState.ID;
+                    System.Guid NewWaybillState_Guid = System.Guid.Empty;
+
+                    Cursor = Cursors.WaitCursor;
+
+                    System.Boolean bRet = CWaybill.CancelWaybill(m_objProfile, Waybill_Guid, ref NewWaybillState_Guid, ref strErr);
+
+                    Cursor = Cursors.Default;
+
+                    if(bRet == true )
+                    {
+                        if (NewWaybillState_Guid.CompareTo(System.Guid.Empty) != 0)
+                        {
+                            List<CWaybillState> objWaybillStateList = CWaybillState.GetWaybillStateList(m_objProfile, ref strErr);
+                            if (objWaybillStateList != null)
+                            {
+                                CWaybillState objNewWaybillState = objWaybillStateList.SingleOrDefault<CWaybillState>(x => x.ID.CompareTo(NewWaybillState_Guid) == 0);
+                                if (objNewWaybillState != null)
+                                {
+                                    objItem.WaybillState = objNewWaybillState;
+                                }
+                            }
+
+                            objWaybillStateList = null;
+
+                            objItem.QuantityReturn = objItem.Quantity;
+                            objItem.SumReturn = objItem.SumWithDiscount;
+                            objItem.SumReturnInAccountingCurrency = objItem.SumWithDiscountInAccountingCurrency;
+                            objItem.SumPayment = 0;
+                            objItem.SumPaymentInAccountingCurrency = 0;
+
+                            gridControlList.RefreshDataSource();
+                            SendMessageToLog(String.Format("{0}  от {1} {2}", objItem.DocNum, objItem.BeginDate.ToShortDateString(), strErr));
+                        }
+
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(strErr,
+                        "Внимание", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    }
+
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("CancelWaybill. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+            return;
+        }
+
+
+        private void menuItemCancelWaybill_Click(object sender, EventArgs e)
+        {
+            CancelWaybill(GetSelectedItem());
         }
         #endregion
 

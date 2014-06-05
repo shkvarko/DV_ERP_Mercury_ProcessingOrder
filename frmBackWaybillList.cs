@@ -1003,7 +1003,7 @@ namespace ERPMercuryProcessingOrder
             try
             {
 
-                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERP_Mercury.Global.Consts.strDR_ViewWaybillPayForm2);
+                System.Boolean CanViewPaymentType2 = m_objProfile.GetClientsRight().GetState(ERPMercuryProcessingOrder.Consts.strDR_ViewBackWaybillPayForm2);
 
                 System.Int32 DefPaymentTypeId = 0;
                 System.Boolean BlockOtherPaymentType = false;
@@ -1088,6 +1088,7 @@ namespace ERPMercuryProcessingOrder
             AddGridColumn(ColumnView, "ID", "Идентификатор");
             AddGridColumn(ColumnView, "DocNum", "Номер");
             AddGridColumn(ColumnView, "BeginDate", "Дата");
+            AddGridColumn(ColumnView, "BackWaybillStateName", "Состояние док-та");
             AddGridColumn(ColumnView, "WaybillBackReasonName", "Причина возврата");
   //          AddGridColumn(ColumnView, "ShipDate", "Дата отгрузки");
             AddGridColumn(ColumnView, "WaybillShipModeName", "Вид отгрузки");

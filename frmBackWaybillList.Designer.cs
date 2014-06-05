@@ -156,38 +156,38 @@
             this.toolStripMenuItem1,
             this.menuDeleteWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(221, 82);
+            this.contextMenuStrip.Size = new System.Drawing.Size(257, 82);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(220, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(256, 22);
             this.menuRefresh.Text = "Обновить";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(217, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(253, 6);
             // 
             // menuSetBackWaybillToStock
             // 
             this.menuSetBackWaybillToStock.Name = "menuSetBackWaybillToStock";
-            this.menuSetBackWaybillToStock.Size = new System.Drawing.Size(220, 22);
+            this.menuSetBackWaybillToStock.Size = new System.Drawing.Size(256, 22);
             this.menuSetBackWaybillToStock.Text = "Поставить на приход...";
             this.menuSetBackWaybillToStock.Click += new System.EventHandler(this.menuSetBackWaybillToStock_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(217, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(253, 6);
             // 
             // menuDeleteWaybill
             // 
             this.menuDeleteWaybill.Name = "menuDeleteWaybill";
-            this.menuDeleteWaybill.Size = new System.Drawing.Size(220, 22);
-            this.menuDeleteWaybill.Text = "Аннулировать накладную...";
+            this.menuDeleteWaybill.Size = new System.Drawing.Size(256, 22);
+            this.menuDeleteWaybill.Text = "Удалить возвратную накладную...";
             this.menuDeleteWaybill.Click += new System.EventHandler(this.menuDeleteWaybill_Click);
             // 
             // tableLayoutPanel1
@@ -831,8 +831,8 @@
             this.tableLayoutPanel5.Controls.Add(this.barBtnAdd, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.barbtnImportProduct, 3, 0);
             this.tableLayoutPanel5.Controls.Add(this.barBtnEdit, 4, 0);
-            this.tableLayoutPanel5.Controls.Add(this.barBtnDelete, 2, 0);
-            this.tableLayoutPanel5.Controls.Add(this.barBtnCopy, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.barBtnCopy, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.barBtnDelete, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
@@ -853,7 +853,7 @@
             this.barBtnAdd.Name = "barBtnAdd";
             this.barBtnAdd.Size = new System.Drawing.Size(25, 25);
             this.barBtnAdd.TabIndex = 9;
-            this.barBtnAdd.ToolTip = "Создать новый заказ";
+            this.barBtnAdd.ToolTip = "Сформировать возарат товара от клиента";
             this.barBtnAdd.ToolTipController = this.toolTipController;
             this.barBtnAdd.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.barBtnAdd.Click += new System.EventHandler(this.barBtnAdd_Click);
@@ -893,12 +893,12 @@
             this.barBtnDelete.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.barBtnDelete.Image = ((System.Drawing.Image)(resources.GetObject("barBtnDelete.Image")));
             this.barBtnDelete.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.barBtnDelete.Location = new System.Drawing.Point(55, 3);
+            this.barBtnDelete.Location = new System.Drawing.Point(28, 3);
             this.barBtnDelete.Margin = new System.Windows.Forms.Padding(1);
             this.barBtnDelete.Name = "barBtnDelete";
             this.barBtnDelete.Size = new System.Drawing.Size(25, 25);
             this.barBtnDelete.TabIndex = 11;
-            this.barBtnDelete.ToolTip = "Удалить заказ";
+            this.barBtnDelete.ToolTip = "Удалить возвратную накладную";
             this.barBtnDelete.ToolTipController = this.toolTipController;
             this.barBtnDelete.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.barBtnDelete.Click += new System.EventHandler(this.barBtnDelete_Click);
@@ -908,7 +908,7 @@
             this.barBtnCopy.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.barBtnCopy.Image = ((System.Drawing.Image)(resources.GetObject("barBtnCopy.Image")));
             this.barBtnCopy.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.barBtnCopy.Location = new System.Drawing.Point(28, 3);
+            this.barBtnCopy.Location = new System.Drawing.Point(55, 3);
             this.barBtnCopy.Margin = new System.Windows.Forms.Padding(1);
             this.barBtnCopy.Name = "barBtnCopy";
             this.barBtnCopy.Size = new System.Drawing.Size(25, 25);
@@ -916,6 +916,7 @@
             this.barBtnCopy.ToolTip = "Копировать заказ";
             this.barBtnCopy.ToolTipController = this.toolTipController;
             this.barBtnCopy.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.barBtnCopy.Visible = false;
             // 
             // tabPageEditor
             // 
