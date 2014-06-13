@@ -432,6 +432,7 @@
             this.cboxStock.ToolTip = "Склад отгрузки";
             this.cboxStock.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.cboxStock.SelectedValueChanged += new System.EventHandler(this.cboxStock_SelectedValueChanged);
+            this.cboxStock.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // labelControl11
             // 
@@ -461,6 +462,7 @@
             this.cboxCompany.ToolTip = "Компания";
             this.cboxCompany.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.cboxCompany.SelectedValueChanged += new System.EventHandler(this.cboxCompany_SelectedValueChanged);
+            this.cboxCompany.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // cboxCustomer
             // 
@@ -475,6 +477,7 @@
             this.cboxCustomer.ToolTip = "Клиент";
             this.cboxCustomer.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.cboxCustomer.SelectedIndexChanged += new System.EventHandler(this.cboxStock_SelectedValueChanged);
+            this.cboxCustomer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // dtEndDate
             // 
@@ -487,6 +490,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton()});
             this.dtEndDate.Size = new System.Drawing.Size(100, 20);
             this.dtEndDate.TabIndex = 2;
+            this.dtEndDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // labelControl9
             // 
@@ -515,6 +519,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton()});
             this.dtBeginDate.Size = new System.Drawing.Size(100, 20);
             this.dtBeginDate.TabIndex = 1;
+            this.dtBeginDate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDate_KeyDown);
             // 
             // tableLayoutPanel2
             // 
@@ -566,6 +571,7 @@
             this.Name = "frmJoinDepart";
             this.toolTipController.SetSuperTip(this, null);
             this.Text = "frmJoinDepart";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmList_FormClosing);
             this.Shown += new System.EventHandler(this.frmJoinDepart_Shown);
             this.contextMenuStrip.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -92,6 +92,16 @@ namespace ERPMercuryProcessingOrder
             objClassInfo.strResourceName = "shopping_cart_16";
             m_arClassInfo.Add(objClassInfo);
 
+            objClassInfo = new UniXP.Common.CLASSINFO();
+            objClassInfo.enClassType = UniXP.Common.EnumClassType.mcView;
+            objClassInfo.strClassName = "ERPMercuryProcessingOrder.ViewShippedProducts";
+            objClassInfo.strName = "Отгрузка товаров по накладным";
+            objClassInfo.strDescription = "Отгрузка товара с остатка по документам: накладная, внутреннее перемещение";
+            objClassInfo.lID = 8;
+            objClassInfo.nImage = 1;
+            objClassInfo.strResourceName = "shopping_cart_16";
+            m_arClassInfo.Add(objClassInfo);
+
         }
     }
 

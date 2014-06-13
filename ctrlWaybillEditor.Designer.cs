@@ -429,7 +429,7 @@
             this.mitemDeleteSelectedRows,
             this.mitemClearRows});
             this.contextMenuStrip.Name = "contextMenuStripLicence";
-            this.contextMenuStrip.Size = new System.Drawing.Size(329, 126);
+            this.contextMenuStrip.Size = new System.Drawing.Size(329, 104);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             // 
             // mitemExport

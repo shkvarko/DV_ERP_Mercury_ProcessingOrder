@@ -39,6 +39,9 @@ namespace ERPMercuryProcessingOrder
         public static readonly System.String strDR_EditBackWaybillPayForm1 = "Возврат ф1 редактировать";
         public static readonly System.String strDR_EditBackWaybillPayForm2 = "Возврат ф2 редактировать";
 
+        public static readonly System.String strDR_ShippedWaybillPayForm1 = "ТТН ф1 отгрузка";
+        public static readonly System.String strDR_ShippedWaybillPayForm2 = "ТТН ф2 отгрузка";
+
         public static readonly System.String strRightEditRulePool = "Редактирование правил расчета цен";
         public static readonly System.String strRightEditRulePoolDecription = "Редактирование описания акций";
 

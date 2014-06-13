@@ -173,6 +173,12 @@
     <Compile Include="frmSetBackWaybillToStock.Designer.cs">
       <DependentUpon>frmSetBackWaybillToStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmShippedProducts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShippedProducts.Designer.cs">
+      <DependentUpon>frmShippedProducts.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmWaybillBackReason.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSetBackWaybillToStock.resx">
       <DependentUpon>frmSetBackWaybillToStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShippedProducts.resx">
+      <DependentUpon>frmShippedProducts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmWaybillBackReason.resx">
       <DependentUpon>frmWaybillBackReason.cs</DependentUpon>
