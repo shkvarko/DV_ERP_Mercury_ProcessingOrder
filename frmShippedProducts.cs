@@ -20,6 +20,8 @@ namespace ERPMercuryProcessingOrder
         private List<ERP_Mercury.Common.CCustomer> m_objCustomerList;
         private List<ERP_Mercury.Common.CWaybill> m_objWaybillList;
         private List<ERP_Mercury.Common.CIntWaybill> m_objIntWaybillList;
+        private List<CWaybillState> m_objWaybillStateList;
+        private List<CIntWaybillState> m_objIntWaybillStateList;
         private CWaybill SelectedWaybill { get { return GetSelectedWaybill(); } }
         private CIntWaybill SelectedIntWaybill { get { return GetSelectedIntWaybill(); } }
         private DevExpress.XtraGrid.Views.Base.ColumnView WaybillColumnView
@@ -53,10 +55,39 @@ namespace ERPMercuryProcessingOrder
         private const System.String strWaitCustomer = "ждите... идет заполнение списка";
         private System.Boolean m_bThreadFinishJob;
         private const int m_iMinCountWaybillsInUnion = 2;
+        private const int m_iHightWarningPanel = 35;
+        private const int m_indxWarningPanel = 2;
 
 
         private System.Boolean IsAvailableDR_ShippedWaybillPayForm1; // "ТТН ф1 отгрузка";
         private System.Boolean IsAvailableDR_ShippedWaybillPayForm2; // "ТТН ф2 отгрузка";
+
+        public System.Threading.Thread ThreadAutoShipDocumentList { get; set; }
+
+        public delegate void SetInfoInSearchProcessWoringDelegate(System.Int32 iCurrentIndex, System.Int32 iAllObjectCount,
+            System.String Waybill_Num, System.Double Waybill_TotalSum, System.String Customer_Name
+            );
+        public SetInfoInSearchProcessWoringDelegate m_SetInfoInSearchProcessWoringDelegate;
+
+        public delegate void SetResultAutoShipWaybillListDelegate(System.Int32 ERROR_NUM, System.String ERROR_STR,
+            System.Guid Waybill_Guid, System.DateTime Waybill_ShipDate, System.Guid WaybillState_Guid,
+            System.Int32 WaybillsCount, System.Double WaybillsTotalSum,
+            System.Boolean bLastDocument);
+        public SetResultAutoShipWaybillListDelegate m_SetResultAutoShipWaybillListDelegate;
+
+        public System.Threading.Thread ThreadAutoShipIntDocumentList { get; set; }
+
+        public delegate void SetInfoInSearchProcessIntWoringDelegate(System.Int32 iCurrentIndex, System.Int32 iAllObjectCount,
+            System.String IntWaybill_Num, System.Double IntWaybill_TotalSum, System.String SrcStock_Name, System.String DstStock_Name
+            );
+        public SetInfoInSearchProcessIntWoringDelegate m_SetInfoInSearchProcessIntWoringDelegate;
+
+        public delegate void SetResultAutoShipIntWaybillListDelegate(System.Int32 ERROR_NUM, System.String ERROR_STR,
+            System.Guid IntWaybill_Guid, System.DateTime IntWaybill_ShipDate, 
+            System.Guid IntWaybillState_Guid, System.Guid SetIntWaybillShipMode_Guid,
+            System.Int32 IntWaybillsCount, System.Double IntWaybillsTotalSum,
+            System.Boolean bLastDocument);
+        public SetResultAutoShipIntWaybillListDelegate m_SetResultAutoShipIntWaybillListDelegate;
 
         #endregion
 
@@ -86,14 +117,30 @@ namespace ERPMercuryProcessingOrder
             m_objIntWaybillList = null;
             m_bThreadFinishJob = false;
             m_objCustomerList = new List<ERP_Mercury.Common.CCustomer>();
+            m_objWaybillStateList = null;
+            m_objIntWaybillStateList = null;
 
             AddWaybillGridColumns();
             AddIntWaybillGridColumns();
 
             dtBeginDate.DateTime = System.DateTime.Today;
             dtEndDate.DateTime = System.DateTime.Today;
+            dtWaybill_ShipDate.DateTime = System.DateTime.Today;
+            dtIntWaybill_ShipDate.DateTime = System.DateTime.Today;
             dtBeginDateIntWaybill.DateTime = System.DateTime.Today;
             dtEndDateIntWaybill.DateTime = System.DateTime.Today;
+
+            tableLayoutPanel4.RowStyles[m_indxWarningPanel].Height = 0;
+            tableLayoutPanelIntWaybill.RowStyles[m_indxWarningPanel].Height = 0;
+            SearchProcessWoring.Visible = false;
+            SearchProcessWoringIntWaybill.Visible = false;
+
+            checkEditSetWaybillShipMode.CheckState = CheckState.Unchecked;
+            checkEditRepresentative.CheckState = CheckState.Unchecked;
+            WaybillShipMode.Enabled = false;
+            txtRepresentative.Enabled = false;
+            checkEditSetIntWaybillShipMode.CheckState = CheckState.Unchecked;
+            IntWaybillShipMode.Enabled = false;
 
             tabControl.ShowTabHeader = DevExpress.Utils.DefaultBoolean.Default;
 
@@ -347,7 +394,9 @@ namespace ERPMercuryProcessingOrder
             System.Boolean bRet = false;
             try
             {
-                bRet = ((thrStockOrderTypeParts != null) && (thrStockOrderTypeParts.IsAlive == true));
+                bRet = (((thrStockOrderTypeParts != null) && (thrStockOrderTypeParts.IsAlive == true)) &&
+                    ((ThreadAutoShipDocumentList != null) && (ThreadAutoShipDocumentList.IsAlive == true)) &&
+                    ((ThreadAutoShipIntDocumentList != null) && (ThreadAutoShipIntDocumentList.IsAlive == true)));
             }
             catch (System.Exception f)
             {
@@ -485,7 +534,7 @@ namespace ERPMercuryProcessingOrder
                     objColumn.BestFit();
                     //objColumn.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
                 }
-                if ((objColumn.FieldName == "ID"))
+                if ((objColumn.FieldName == "ID") || (objColumn.FieldName == "WaybillStateId"))
                 {
                     objColumn.Visible = false;
                 }
@@ -712,6 +761,8 @@ namespace ERPMercuryProcessingOrder
                 cboxCompany.Properties.Items.Clear();
                 cboxCompanySrc.Properties.Items.Clear();
                 cboxCompanyDst.Properties.Items.Clear();
+                WaybillShipMode.Properties.Items.Clear();
+                IntWaybillShipMode.Properties.Items.Clear();
 
                 List<ERP_Mercury.Common.CCompany> objCompanyList = ERP_Mercury.Common.CCompany.GetCompanyList(m_objProfile, null);
                 cboxCompany.Properties.Items.AddRange(objCompanyList);
@@ -740,6 +791,13 @@ namespace ERPMercuryProcessingOrder
                 LoadStockForCompany(cboxStock, cboxCompany);
                 LoadStockForCompany(cboxStockSrc, cboxCompanySrc);
                 LoadStockForCompany(cboxStockDst, cboxCompanyDst);
+
+                m_objWaybillStateList = CWaybillState.GetWaybillStateList(m_objProfile, ref strErr);
+                m_objIntWaybillStateList = CIntWaybillState.GetIntWaybillStateList(m_objProfile, ref strErr);
+
+                WaybillShipMode.Properties.Items.AddRange( CWaybillShipMode.GetWaybillShipModeList( m_objProfile, ref strErr ) );
+                IntWaybillShipMode.Properties.Items.AddRange(CIntWaybillShipMode.GetWaybillShipModeList(m_objProfile, ref strErr));
+                
             }
             catch (System.Exception f)
             {
@@ -974,7 +1032,10 @@ namespace ERPMercuryProcessingOrder
 
                 LoadWaybillList();
 
+                LoadIntWaybillList();
+
                 tabControl.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
+                tabControl.SelectedTabPage = tabPageWaybill;
 
                 SetColorsForSearch();
 
@@ -1055,7 +1116,7 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 btnShippedProducts.Enabled = ((IsAvailableDR_ShippedWaybillPayForm1 || IsAvailableDR_ShippedWaybillPayForm2) && ( gridViewWaybill.RowCount > 0) );
-                btnShippedProducts2.Enabled = ((IsAvailableDR_ShippedWaybillPayForm1 || IsAvailableDR_ShippedWaybillPayForm2) && (gridViewIntWaybill.RowCount > 0));
+                btnShippedProductsByIntWaybill.Enabled = ((IsAvailableDR_ShippedWaybillPayForm1 || IsAvailableDR_ShippedWaybillPayForm2) && (gridViewIntWaybill.RowCount > 0));
             }
             catch (System.Exception f)
             {
@@ -1151,6 +1212,749 @@ namespace ERPMercuryProcessingOrder
             ChangeConditionForSearch();
         }
         #endregion
+
+        #region Отгрузка накладных
+
+        public void StartThreadAutoShipWaybillList()
+        {
+            try
+            {
+                if( gridViewWaybill.RowCount == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных пуст.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    Cursor = Cursors.Default;
+                    return;
+                }
+
+                // список накладных на отгрузку
+                List<CWaybill> objWaybillList = new List<CWaybill>();
+                for (System.Int32 i = 0; i < gridViewWaybill.RowCount; i++)
+                {
+                    if (m_objWaybillList[gridViewWaybill.GetDataSourceRowIndex(i)].WaybillState.WaybillStateId == 0)
+                    {
+                        objWaybillList.Add(m_objWaybillList[gridViewWaybill.GetDataSourceRowIndex(i)]);
+                    }
+                }
+
+                if (objWaybillList.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных на отгрузку пуст.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    Cursor = Cursors.Default;
+                    return;
+                }
+
+                System.Double SumQuantity = objWaybillList.Sum<CWaybill>(x => x.Quantity);
+                System.Double SumWithDiscount = objWaybillList.Sum<CWaybill>(x => x.SumWithDiscount);
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Общее количество и сумма накладных на отгрузку составляет\nКоличество\t:{0:### ### ### ##0} шт.\t\tСумма:\t{1:### ### ### ##0.00} руб.\n\nПодтвердите начало отгрузки товара.", SumQuantity, SumWithDiscount), "Подтверждение",
+                    System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+                {
+                    Cursor = Cursors.Default;
+                    return;
+                }
+
+                tableLayoutPanel4.RowStyles[m_indxWarningPanel].Height = m_iHightWarningPanel;
+                SearchProcessWoring.Visible = true;
+                SearchProcessWoring.Refresh();
+                Cursor = Cursors.WaitCursor;
+
+                // инициализируем делегаты
+                m_SetInfoInSearchProcessWoringDelegate = new SetInfoInSearchProcessWoringDelegate(SetInfoInSearchProcessWoring);
+                m_SetResultAutoShipWaybillListDelegate = new SetResultAutoShipWaybillListDelegate(SetResultAutoShipWaybillList);
+
+
+                // запуск потока
+                this.ThreadAutoShipDocumentList = new System.Threading.Thread(unused => AutoShipWaybillListInThread(objWaybillList,
+                    dtWaybill_ShipDate.DateTime, ((WaybillShipMode.SelectedItem == null) ? null : (CWaybillShipMode)WaybillShipMode.SelectedItem), 
+                    txtRepresentative.Text.Trim()));
+                this.ThreadAutoShipDocumentList.Start();
+
+                Thread.Sleep(1000);
+
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("StartThreadAutoPayDebitDocumentList().\n\nТекст ошибки: " + f.Message, "Ошибка",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+
+            return;
+        }
+
+        public void AutoShipWaybillListInThread(List<CWaybill> objWaybillList,
+            System.DateTime Waybill_ShipDate, CWaybillShipMode objWaybillShipMode, System.String strRepresentative)
+        {
+            try
+            {
+
+                if ((objWaybillList == null) || (objWaybillList.Count == 0))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных для отгрузки пуст.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                System.Int32 ERROR_NUM = 0;
+	            System.Guid Waybill_Guid = System.Guid.Empty;
+	            System.String ShipDescription = ( ( strRepresentative.Trim().Length == 0 ) ? System.String.Empty : strRepresentative );
+	            System.Guid SetWaybillShipMode_Guid = System.Guid.Empty;
+	            System.Guid WaybillState_Guid = System.Guid.Empty;
+                System.Double WaybillsTotalSum = 0;
+
+                System.String strErr = System.String.Empty;
+                System.Int32 iCurrentIndex = 0;
+                System.Int32 iAllObjectCount = objWaybillList.Count;
+                System.Int32 iRet = 0;
+
+
+                foreach (CWaybill objWaybill in objWaybillList)
+                {
+                    iCurrentIndex++;
+
+                    Waybill_Guid = objWaybill.ID;
+                    //ShipDescription = System.String.Empty;
+                    SetWaybillShipMode_Guid = (((objWaybillShipMode == null) || (objWaybillShipMode.ID.CompareTo(System.Guid.Empty) == 0)) ? objWaybill.WaybillShipMode.ID : objWaybillShipMode.ID);
+                    WaybillState_Guid = System.Guid.Empty;
+                    ERROR_NUM = 0;
+                    strErr = System.String.Empty;
+                    iRet = 0;
+
+                    if ((objWaybill.WaybillState.WaybillStateId == 0) && (objWaybill.Customer != null))
+                    {
+                        Thread.Sleep(1000);
+                        this.Invoke(m_SetInfoInSearchProcessWoringDelegate, new Object[] { iCurrentIndex, iAllObjectCount, 
+                            ( String.Format("{0} от {1}", objWaybill.DocNum, objWaybill.BeginDate.ToShortDateString()) ), 
+                        objWaybill.SumWithDiscount, objWaybill.CustomerName });
+
+                        iRet = CWaybill.ShippedProductsByWaybill(m_objProfile, Waybill_Guid, Waybill_ShipDate, 
+                            SetWaybillShipMode_Guid, ShipDescription, ref WaybillState_Guid, ref ERROR_NUM, ref strErr );
+
+                        if (iRet == 0)
+                        {
+                            WaybillsTotalSum += objWaybill.SumWithDiscount;
+                            Thread.Sleep(1000);
+                            this.Invoke(m_SetResultAutoShipWaybillListDelegate, new Object[] { ERROR_NUM, strErr,
+                                Waybill_Guid, Waybill_ShipDate, WaybillState_Guid,
+                               iAllObjectCount, WaybillsTotalSum, false });
+                        }
+                    }
+
+                    if (iCurrentIndex == iAllObjectCount)
+                    {
+                        // все накладные обработаны, выводится сообщение о завершении процесса 
+                        System.String strTmp = System.String.Empty;
+                        System.DateTime dtTmp = System.DateTime.Today;
+                        System.Guid uuidTmp = System.Guid.Empty;
+                        System.Int32 intTmp = 0;
+
+                        Thread.Sleep(2000);
+                        this.Invoke(m_SetResultAutoShipWaybillListDelegate, new Object[] { intTmp, strTmp, 
+                            uuidTmp, dtTmp,  uuidTmp, 
+                            iAllObjectCount, WaybillsTotalSum,  true});
+                    }
+
+
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка отгрузки. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        public void SetInfoInSearchProcessWoring(System.Int32 iCurrentIndex, System.Int32 iAllObjectCount,
+            System.String Waybill_Num, System.Double Waybill_TotalSum, System.String Customer_Name 
+            )
+        {
+            try
+            {
+                if (SearchProcessWoring.Visible == false) { SearchProcessWoring.Visible = true; }
+
+                SendMessageToLog(System.String.Format("Обрабатывается запись №{0:### ### ##0}  из {1:### ### ##0}", iCurrentIndex, iAllObjectCount));
+                SendMessageToLog(System.String.Format("Отгружается накладная №:\t{0}\t на сумму:\t{1:### ### ##0.00}  Клиент:\t{2}", Waybill_Num, Waybill_TotalSum, Customer_Name));
+
+                lblShippingWaybillProcessInfo.Text = System.String.Format("накладная №:\t{0}\t на сумму:\t{1:### ### ##0.00}  клиент:\t{2}", Waybill_Num, Waybill_TotalSum, Customer_Name);
+                lblShippingWaybillProcessInfo.Refresh();
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("SetInfoInSearchProcessWoring.\n\nТекст ошибки: " + f.Message, "Ошибка",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            finally
+            {
+            }
+            return;
+        }
+
+        public void SetResultAutoShipWaybillList(System.Int32 ERROR_NUM, System.String ERROR_STR,
+            System.Guid Waybill_Guid, System.DateTime Waybill_ShipDate, System.Guid WaybillState_Guid,
+            System.Int32 WaybillsCount, System.Double WaybillsTotalSum,
+            System.Boolean bLastDocument
+            )
+        {
+            try
+            {
+                if (bLastDocument == true)
+                {
+                    Cursor = Cursors.Default;
+
+                    tableLayoutPanel4.RowStyles[m_indxWarningPanel].Height = 0;
+                    SearchProcessWoring.Visible = false;
+                    gridControlWaybill.RefreshDataSource();
+
+                    Cursor = Cursors.Default;
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(System.String.Format("Отгрузка твоара по накладным завершена.\nОтгружено накладных: {0:### ### ##0} на сумму: {1:### ### ##0}  ", WaybillsCount, WaybillsTotalSum), "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                }
+                else
+                {
+                    if (ERROR_NUM == 0)
+                    {
+                        if (Waybill_Guid.CompareTo( System.Guid.Empty ) != 0)
+                        {
+                            CWaybill objItem = m_objWaybillList.SingleOrDefault<CWaybill>(x => x.ID.CompareTo(Waybill_Guid) == 0);
+
+                            if (objItem != null)
+                            {
+                                objItem.ShipDate = Waybill_ShipDate;
+                                objItem.WaybillState = m_objWaybillStateList.SingleOrDefault<CWaybillState>(x=>x.ID.CompareTo(WaybillState_Guid) == 0);
+                            }
+                            else
+                            {
+                                m_objMenuItem.SimulateNewMessage(String.Format("Не найдена накладная с УИ: {0}", WaybillState_Guid));
+                               // SendMessageToLog(String.Format("Не найдена накладная с УИ: {0}", WaybillState_Guid));
+                            }
+
+                            gridControlWaybill.RefreshDataSource();
+                        }
+                    }
+                    else
+                    {
+                        m_objMenuItem.SimulateNewMessage(ERROR_STR);
+                        //SendMessageToLog(ERROR_STR);
+                    }
+
+                }
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("SetResultAutoShipWaybillList.\n\nТекст ошибки: " + f.Message, "Ошибка",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            finally
+            {
+            }
+            return;
+        }
+
+        private void btnShippedProducts_Click(object sender, EventArgs e)
+        {
+            StartThreadAutoShipWaybillList();
+        }
+
+        private void ShipWaybill(CWaybill objWaybill, System.DateTime Waybill_ShipDate)
+        {
+            try
+            {
+
+                if (objWaybill == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Необходимо указать накладную для отгрузки.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (objWaybill.WaybillState.WaybillStateId != 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Накладная не может быть отгружена, так как состояние накладной: " + objWaybill.WaybillState.Name, "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (objWaybill.Customer == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Накладная не может быть отгружена, так как в документе не указан клиент.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                System.Int32 ERROR_NUM = 0;
+                System.Guid Waybill_Guid = objWaybill.ID;
+                System.String ShipDescription = System.String.Empty;
+                System.Guid SetWaybillShipMode_Guid = objWaybill.WaybillShipMode.ID;
+                System.Guid WaybillState_Guid = System.Guid.Empty;
+                System.Double WaybillsTotalSum = objWaybill.SumWithDiscount;
+
+                System.String strErr = System.String.Empty;
+
+                Cursor = Cursors.WaitCursor;
+
+                System.Int32 iRet = CWaybill.ShippedProductsByWaybill(m_objProfile, Waybill_Guid, Waybill_ShipDate,
+                    SetWaybillShipMode_Guid, ShipDescription, ref WaybillState_Guid, ref ERROR_NUM, ref strErr);
+
+                Cursor = Cursors.Default;
+
+                if (iRet == 0)
+                {
+                    SetResultAutoShipWaybillList(ERROR_NUM, strErr, Waybill_Guid, Waybill_ShipDate, WaybillState_Guid,  1, WaybillsTotalSum, false);
+
+                    System.String strTmp = System.String.Empty;
+                    System.DateTime dtTmp = System.DateTime.Today;
+                    System.Guid uuidTmp = System.Guid.Empty;
+                    System.Int32 intTmp = 0;
+
+                    SetResultAutoShipWaybillList(intTmp, strTmp, uuidTmp, dtTmp, uuidTmp, 1, WaybillsTotalSum, true);
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка отгрузки. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        private void menuItemShipWaybill_Click(object sender, EventArgs e)
+        {
+            ShipWaybill(SelectedWaybill, dtWaybill_ShipDate.DateTime);
+        }
+
+        private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                menuItemShipWaybill.Enabled = (SelectedWaybill != null);
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("contextMenuStrip_Opening. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        private void checkEditSetWaybillShipMode_CheckStateChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkEditSetWaybillShipMode.CheckState == CheckState.Unchecked)
+                {
+                    WaybillShipMode.SelectedItem = null;
+                    WaybillShipMode.Enabled = false;
+                }
+                else if (checkEditSetWaybillShipMode.CheckState == CheckState.Checked)
+                {
+                    WaybillShipMode.SelectedItem = ((WaybillShipMode.Properties.Items.Count > 0) ? WaybillShipMode.Properties.Items[0] : null);
+                    WaybillShipMode.Enabled = true;
+                }
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("checkEditSetWaybillShipMode_CheckStateChanged. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        private void checkEditRepresentative_CheckStateChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkEditRepresentative.CheckState == CheckState.Unchecked)
+                {
+                    txtRepresentative.Text = System.String.Empty;
+                    txtRepresentative.Enabled = false;
+                }
+                else if (checkEditRepresentative.CheckState == CheckState.Checked)
+                {
+                    txtRepresentative.Enabled = true;
+                }
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("checkEditSetWaybillShipMode_CheckStateChanged. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        
+        #endregion
+
+        #region Отгрузка накладных на внутреннее перемещение
+
+        private void btnShippedProductsByIntWaybill_Click(object sender, EventArgs e)
+        {
+            StartThreadAutoShipIntWaybillList();
+        }
+
+        public void StartThreadAutoShipIntWaybillList()
+        {
+            try
+            {
+                if (gridViewIntWaybill.RowCount == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных пуст.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    Cursor = Cursors.Default;
+                    return;
+                }
+
+                // список накладных на отгрузку
+                List<CIntWaybill> objIntWaybillList = new List<CIntWaybill>();
+                for (System.Int32 i = 0; i < gridViewIntWaybill.RowCount; i++)
+                {
+                    if (m_objIntWaybillList[gridViewIntWaybill.GetDataSourceRowIndex(i)].DocState.IntWaybillStateId == 0)
+                    {
+                        objIntWaybillList.Add(m_objIntWaybillList[gridViewIntWaybill.GetDataSourceRowIndex(i)]);
+                    }
+                }
+
+                if (objIntWaybillList.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных на отгрузку пуст.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    Cursor = Cursors.Default;
+                    return;
+                }
+
+                System.Double SumQuantity = objIntWaybillList.Sum<CIntWaybill>(x => x.Quantity);
+                System.Double SumWithDiscount = objIntWaybillList.Sum<CIntWaybill>(x => x.SumWaybill);
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Общее количество и сумма накладных на отгрузку составляет\nКоличество\t:{0:### ### ### ##0} шт.\t\tСумма:\t{1:### ### ### ##0.00} руб.\n\nПодтвердите начало отгрузки товара.", SumQuantity, SumWithDiscount), "Подтверждение",
+                    System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.No)
+                {
+                    Cursor = Cursors.Default;
+                    return;
+                }
+
+                tableLayoutPanelIntWaybill.RowStyles[m_indxWarningPanel].Height = m_iHightWarningPanel;
+                SearchProcessWoringIntWaybill.Visible = true;
+                SearchProcessWoringIntWaybill.Refresh();
+                Cursor = Cursors.WaitCursor;
+
+                // инициализируем делегаты
+                m_SetInfoInSearchProcessIntWoringDelegate = new SetInfoInSearchProcessIntWoringDelegate(SetInfoInSearchProcessIntWoring);
+                m_SetResultAutoShipIntWaybillListDelegate = new SetResultAutoShipIntWaybillListDelegate(SetResultAutoShipIntWaybillList);
+
+
+                // запуск потока
+                this.ThreadAutoShipIntDocumentList = new System.Threading.Thread(unused => AutoShipIntWaybillListInThread(objIntWaybillList, 
+                    dtIntWaybill_ShipDate.DateTime, 
+                    ((IntWaybillShipMode.SelectedItem == null) ? null : (CIntWaybillShipMode)IntWaybillShipMode.SelectedItem) ));
+                this.ThreadAutoShipIntDocumentList.Start();
+
+                Thread.Sleep(1000);
+
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("StartThreadAutoShipIntWaybillList().\n\nТекст ошибки: " + f.Message, "Ошибка",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+
+            return;
+        }
+
+        public void AutoShipIntWaybillListInThread(List<CIntWaybill> objIntWaybillList, 
+            System.DateTime IntWaybill_ShipDate, CIntWaybillShipMode objIntWaybillShipMode)
+        {
+            try
+            {
+
+                if ((objIntWaybillList == null) || (objIntWaybillList.Count == 0))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных для отгрузки пуст.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                System.Int32 ERROR_NUM = 0;
+                System.Guid IntWaybill_Guid = System.Guid.Empty;
+                System.Guid SetIntWaybillShipMode_Guid = System.Guid.Empty;
+                System.Guid IntWaybillState_Guid = System.Guid.Empty;
+                System.Double IntWaybillsTotalSum = 0;
+
+                System.String strErr = System.String.Empty;
+                System.Int32 iCurrentIndex = 0;
+                System.Int32 iAllObjectCount = objIntWaybillList.Count;
+                System.Int32 iRet = 0;
+
+
+                foreach (CIntWaybill objIntWaybill in objIntWaybillList)
+                {
+                    iCurrentIndex++;
+
+                    IntWaybill_Guid = objIntWaybill.ID;
+                    SetIntWaybillShipMode_Guid = (((objIntWaybillShipMode == null) || (objIntWaybillShipMode.ID.CompareTo(System.Guid.Empty) == 0)) ? objIntWaybill.WaybillShipMode.ID : objIntWaybillShipMode.ID);
+                    IntWaybillState_Guid = System.Guid.Empty;
+                    ERROR_NUM = 0;
+                    strErr = System.String.Empty;
+                    iRet = 0;
+
+                    if( objIntWaybill.DocState.IntWaybillStateId == 0)
+                    {
+                        Thread.Sleep(1000);
+                        this.Invoke(m_SetInfoInSearchProcessIntWoringDelegate, new Object[] { iCurrentIndex, iAllObjectCount, 
+                            ( String.Format("{0} от {1}", objIntWaybill.DocNum, objIntWaybill.BeginDate.ToShortDateString()) ), 
+                        objIntWaybill.SumWithDiscount, objIntWaybill.StockSrcName, objIntWaybill.StockDstName });
+
+                        iRet = CIntWaybill.ShippedProductsByIntWaybill(m_objProfile, IntWaybill_Guid, IntWaybill_ShipDate,
+                            SetIntWaybillShipMode_Guid, ref IntWaybillState_Guid, ref ERROR_NUM, ref strErr);
+
+                        if (iRet == 0)
+                        {
+                            IntWaybillsTotalSum += objIntWaybill.SumWaybill;
+                            Thread.Sleep(1000);
+                            this.Invoke(m_SetResultAutoShipIntWaybillListDelegate, new Object[] { ERROR_NUM, strErr,
+                                IntWaybill_Guid, IntWaybill_ShipDate, IntWaybillState_Guid, SetIntWaybillShipMode_Guid, 
+                               iAllObjectCount, IntWaybillsTotalSum, false });
+                        }
+                    }
+
+                    if (iCurrentIndex == iAllObjectCount)
+                    {
+                        // все накладные обработаны, выводится сообщение о завершении процесса 
+                        System.String strTmp = System.String.Empty;
+                        System.DateTime dtTmp = System.DateTime.Today;
+                        System.Guid uuidTmp = System.Guid.Empty;
+                        System.Int32 intTmp = 0;
+
+                        Thread.Sleep(2000);
+                        this.Invoke(m_SetResultAutoShipIntWaybillListDelegate, new Object[] { intTmp, strTmp, 
+                            uuidTmp, dtTmp,  uuidTmp, uuidTmp,
+                            iAllObjectCount, IntWaybillsTotalSum,  true});
+                    }
+
+
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка отгрузки. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        
+        public void SetInfoInSearchProcessIntWoring(System.Int32 iCurrentIndex, System.Int32 iAllObjectCount,
+            System.String IntWaybill_Num, System.Double IntWaybill_TotalSum, System.String SrcStock_Name, System.String DstStock_Name
+            )
+        {
+            try
+            {
+                if (SearchProcessWoringIntWaybill.Visible == false) { SearchProcessWoringIntWaybill.Visible = true; }
+
+                SendMessageToLog(System.String.Format("Обрабатывается запись №{0:### ### ##0}  из {1:### ### ##0}", iCurrentIndex, iAllObjectCount));
+                SendMessageToLog(System.String.Format("Отгружается накладная №:\t{0}\t на сумму:\t{1:### ### ##0.00} со склада:\t{2}\tна склад:\t{3}", IntWaybill_Num, IntWaybill_TotalSum, SrcStock_Name, DstStock_Name));
+
+                lblShippingIntWaybillProcessInfo.Text = System.String.Format("накладная №:\t{0}\t на сумму:\t{1:### ### ##0.00} со склада:\t{2}\tна склад:\t{3}", IntWaybill_Num, IntWaybill_TotalSum, SrcStock_Name, DstStock_Name);
+                lblShippingIntWaybillProcessInfo.Refresh();
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("SetInfoInSearchProcessIntWoring.\n\nТекст ошибки: " + f.Message, "Ошибка",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            finally
+            {
+            }
+            return;
+        }
+
+        public void SetResultAutoShipIntWaybillList(System.Int32 ERROR_NUM, System.String ERROR_STR,
+            System.Guid IntWaybill_Guid, System.DateTime IntWaybill_ShipDate, 
+            System.Guid IntWaybillState_Guid, System.Guid SetIntWaybillShipMode_Guid,
+            System.Int32 IntWaybillsCount, System.Double IntWaybillsTotalSum,
+            System.Boolean bLastDocument
+            )
+        {
+            try
+            {
+                if (bLastDocument == true)
+                {
+                    Cursor = Cursors.Default;
+
+                    tableLayoutPanelIntWaybill.RowStyles[m_indxWarningPanel].Height = 0;
+                    SearchProcessWoringIntWaybill.Visible = false;
+                    gridControlIntWaybill.RefreshDataSource();
+
+                    Cursor = Cursors.Default;
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(System.String.Format("Отгрузка товара по накладным на внутреннее перемещение завершена.\nОтгружено накладных: {0:### ### ##0} на сумму: {1:### ### ##0}  ", IntWaybillsCount, IntWaybillsTotalSum), "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                }
+                else
+                {
+                    if (ERROR_NUM == 0)
+                    {
+                        if (IntWaybill_Guid.CompareTo(System.Guid.Empty) != 0)
+                        {
+                            CIntWaybill objItem = m_objIntWaybillList.SingleOrDefault<CIntWaybill>(x => x.ID.CompareTo(IntWaybill_Guid) == 0);
+
+                            if (objItem != null)
+                            {
+                                objItem.ShipDate = IntWaybill_ShipDate;
+                                objItem.DocState = m_objIntWaybillStateList.SingleOrDefault<CIntWaybillState>(x => x.ID.CompareTo(IntWaybillState_Guid) == 0);
+                                if (objItem.WaybillShipMode.ID.CompareTo(SetIntWaybillShipMode_Guid) != 0)
+                                {
+                                    objItem.WaybillShipMode = IntWaybillShipMode.Properties.Items.Cast<CIntWaybillShipMode>().SingleOrDefault<CIntWaybillShipMode>(x => x.ID.CompareTo(SetIntWaybillShipMode_Guid) == 0);
+                                }
+                            }
+                            else
+                            {
+                                m_objMenuItem.SimulateNewMessage(String.Format("Не найдена накладная с УИ: {0}", IntWaybillState_Guid));
+                                // SendMessageToLog(String.Format("Не найдена накладная с УИ: {0}", WaybillState_Guid));
+                            }
+
+                            gridControlIntWaybill.RefreshDataSource();
+                        }
+                    }
+                    else
+                    {
+                        m_objMenuItem.SimulateNewMessage(ERROR_STR);
+                        //SendMessageToLog(ERROR_STR);
+                    }
+
+                }
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("SetResultAutoShipIntWaybillList.\n\nТекст ошибки: " + f.Message, "Ошибка",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            finally
+            {
+            }
+            return;
+        }
+        
+        private void contextMenuStripInt_Opening(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                menuItemShipInt.Enabled = (SelectedIntWaybill != null);
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("contextMenuStripInt_Opening. Текст ошибки: " + f.Message);
+            }
+
+            return;
+
+        }
+
+        private void checkEditSetIntWaybillShipMode_CheckStateChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkEditSetIntWaybillShipMode.CheckState == CheckState.Unchecked)
+                {
+                    IntWaybillShipMode.SelectedItem = null;
+                    IntWaybillShipMode.Enabled = false;
+                }
+                else if (checkEditSetIntWaybillShipMode.CheckState == CheckState.Checked)
+                {
+                    IntWaybillShipMode.SelectedItem = ((IntWaybillShipMode.Properties.Items.Count > 0) ? IntWaybillShipMode.Properties.Items[0] : null);
+                    IntWaybillShipMode.Enabled = true;
+                }
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("checkEditSetWaybillShipMode_CheckStateChanged. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        private void ShipIntWaybill(CIntWaybill objIntWaybill, System.DateTime IntWaybill_ShipDate, CIntWaybillShipMode objIntWaybillShipMode)
+        {
+            try
+            {
+
+                if (objIntWaybill == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Необходимо указать накладную для отгрузки.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (objIntWaybill.DocState.IntWaybillStateId != 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Накладная не может быть отгружена, так как состояние накладной: " + objIntWaybill.DocState.Name, "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                System.Int32 ERROR_NUM = 0;
+                System.Guid IntWaybill_Guid = objIntWaybill.ID;
+                System.Guid SetIntWaybillShipMode_Guid = ((objIntWaybillShipMode == null) ? objIntWaybill.WaybillShipMode.ID : objIntWaybillShipMode.ID );
+                System.Guid IntWaybillState_Guid = System.Guid.Empty;
+                System.Double IntWaybillsTotalSum = objIntWaybill.SumWaybill;
+
+                System.String strErr = System.String.Empty;
+
+                Cursor = Cursors.WaitCursor;
+
+                System.Int32 iRet = CIntWaybill.ShippedProductsByIntWaybill(m_objProfile, IntWaybill_Guid, IntWaybill_ShipDate,
+                    SetIntWaybillShipMode_Guid, ref IntWaybillState_Guid, ref ERROR_NUM, ref strErr);
+
+                Cursor = Cursors.Default;
+
+                if (iRet == 0)
+                {
+                    SetResultAutoShipIntWaybillList(ERROR_NUM, strErr, IntWaybill_Guid, IntWaybill_ShipDate,
+                        IntWaybillState_Guid, SetIntWaybillShipMode_Guid, 1, IntWaybillsTotalSum, false);
+
+                    System.String strTmp = System.String.Empty;
+                    System.DateTime dtTmp = System.DateTime.Today;
+                    System.Guid uuidTmp = System.Guid.Empty;
+                    System.Int32 intTmp = 0;
+
+                    SetResultAutoShipIntWaybillList(intTmp, strTmp, uuidTmp, dtTmp, uuidTmp, uuidTmp, 1, IntWaybillsTotalSum, true);
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Ошибка отгрузки. Текст ошибки: " + f.Message);
+            }
+
+            return;
+        }
+
+        private void menuItemShipInt_Click(object sender, EventArgs e)
+        {
+            ShipIntWaybill( SelectedIntWaybill, dtIntWaybill_ShipDate.DateTime, 
+                ( ( IntWaybillShipMode.SelectedItem == null ) ? null : (CIntWaybillShipMode)IntWaybillShipMode.SelectedItem ));
+        }
+        #endregion
+
 
     }
 

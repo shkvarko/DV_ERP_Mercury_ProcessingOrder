@@ -34,24 +34,26 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuCalcPrice = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuClearPrices = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuReturnSupplStateToAutoProcessPrices = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuMakeSupplDeleted = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuEventLog = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuCreateOrderBlank = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuGoToSuppl = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemPaymentHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemShipWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tabControl = new DevExpress.XtraTab.XtraTabControl();
-            this.tabPageWaybill = new DevExpress.XtraTab.XtraTabPage();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.btnCloseFromWaybill = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.Depart = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.tabControl = new DevExpress.XtraTab.XtraTabControl();
+            this.tabPageWaybill = new DevExpress.XtraTab.XtraTabPage();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.panelControl4 = new DevExpress.XtraEditors.PanelControl();
+            this.checkEditRepresentative = new DevExpress.XtraEditors.CheckEdit();
+            this.txtRepresentative = new DevExpress.XtraEditors.TextEdit();
+            this.WaybillShipMode = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.checkEditSetWaybillShipMode = new DevExpress.XtraEditors.CheckEdit();
+            this.dtWaybill_ShipDate = new DevExpress.XtraEditors.DateEdit();
+            this.labelControl16 = new DevExpress.XtraEditors.LabelControl();
             this.btnShippedProducts = new DevExpress.XtraEditors.SimpleButton();
+            this.SearchProcessWoring = new System.Windows.Forms.Panel();
+            this.lblShippingWaybillProcessInfo = new DevExpress.XtraEditors.LabelControl();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.controlNavigator = new DevExpress.XtraEditors.ControlNavigator();
             this.gridControlWaybill = new DevExpress.XtraGrid.GridControl();
             this.gridViewWaybill = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -72,18 +74,24 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tabPageIntWaybill = new DevExpress.XtraTab.XtraTabPage();
-            this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            this.btnCloseFromIntWaybill = new DevExpress.XtraEditors.SimpleButton();
+            this.tableLayoutPanelIntWaybill = new System.Windows.Forms.TableLayoutPanel();
+            this.SearchProcessWoringIntWaybill = new System.Windows.Forms.Panel();
+            this.lblShippingIntWaybillProcessInfo = new DevExpress.XtraEditors.LabelControl();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.panelControl5 = new DevExpress.XtraEditors.PanelControl();
+            this.IntWaybillShipMode = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.checkEditSetIntWaybillShipMode = new DevExpress.XtraEditors.CheckEdit();
+            this.dtIntWaybill_ShipDate = new DevExpress.XtraEditors.DateEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
-            this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.btnShippedProducts2 = new DevExpress.XtraEditors.SimpleButton();
+            this.btnShippedProductsByIntWaybill = new DevExpress.XtraEditors.SimpleButton();
             this.controlNavigator2 = new DevExpress.XtraEditors.ControlNavigator();
             this.gridControlIntWaybill = new DevExpress.XtraGrid.GridControl();
             this.gridViewIntWaybill = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.cboxStockDst = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
+            this.cboxCompanyDst = new DevExpress.XtraEditors.ComboBoxEdit();
             this.IntWaybilllNum = new DevExpress.XtraEditors.TextEdit();
             this.btnIntWaybillRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
@@ -97,19 +105,31 @@
             this.dtBeginDateIntWaybill = new DevExpress.XtraEditors.DateEdit();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.cboxStockDst = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
-            this.cboxCompanyDst = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.contextMenuStripInt = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuItemRefreshInt = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemShipInt = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
+            this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Depart.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPageWaybill.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Depart.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).BeginInit();
+            this.panelControl4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditRepresentative.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRepresentative.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WaybillShipMode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditSetWaybillShipMode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtWaybill_ShipDate.Properties.VistaTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtWaybill_ShipDate.Properties)).BeginInit();
+            this.SearchProcessWoring.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlWaybill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWaybill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSearchCondition)).BeginInit();
@@ -125,15 +145,21 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tabPageIntWaybill.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
-            this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
-            this.panelControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).BeginInit();
+            this.tableLayoutPanelIntWaybill.SuspendLayout();
+            this.SearchProcessWoringIntWaybill.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl5)).BeginInit();
+            this.panelControl5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IntWaybillShipMode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditSetIntWaybillShipMode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties.VistaTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlIntWaybill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewIntWaybill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboxStockDst.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboxCompanyDst.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IntWaybilllNum.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxStockSrc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxCompanySrc.Properties)).BeginInit();
@@ -143,8 +169,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDateIntWaybill.Properties)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboxStockDst.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboxCompanyDst.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
+            this.contextMenuStripInt.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip
@@ -152,167 +178,65 @@
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRefresh,
             this.toolStripSeparator1,
-            this.menuCalcPrice,
-            this.menuClearPrices,
-            this.menuReturnSupplStateToAutoProcessPrices,
-            this.menuMakeSupplDeleted,
-            this.menuEventLog,
-            this.toolStripMenuItem1,
-            this.menuCreateOrderBlank,
-            this.menuGoToSuppl,
-            this.menuItemPaymentHistory});
+            this.menuItemShipWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(308, 214);
+            this.contextMenuStrip.Size = new System.Drawing.Size(202, 54);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
+            this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(307, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(201, 22);
             this.menuRefresh.Text = "Обновить";
+            this.menuRefresh.Click += new System.EventHandler(this.btnWaybillRefresh_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(304, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
             // 
-            // menuCalcPrice
+            // menuItemShipWaybill
             // 
-            this.menuCalcPrice.Name = "menuCalcPrice";
-            this.menuCalcPrice.Size = new System.Drawing.Size(307, 22);
-            this.menuCalcPrice.Text = "Пересчитать цены в заказе";
-            this.menuCalcPrice.Visible = false;
-            // 
-            // menuClearPrices
-            // 
-            this.menuClearPrices.Name = "menuClearPrices";
-            this.menuClearPrices.Size = new System.Drawing.Size(307, 22);
-            this.menuClearPrices.Text = "Обнулить цены для ручной обработки";
-            this.menuClearPrices.Visible = false;
-            // 
-            // menuReturnSupplStateToAutoProcessPrices
-            // 
-            this.menuReturnSupplStateToAutoProcessPrices.Name = "menuReturnSupplStateToAutoProcessPrices";
-            this.menuReturnSupplStateToAutoProcessPrices.Size = new System.Drawing.Size(307, 22);
-            this.menuReturnSupplStateToAutoProcessPrices.Text = "Вернуть заказ на автоматический расчет цен";
-            this.menuReturnSupplStateToAutoProcessPrices.Visible = false;
-            // 
-            // menuMakeSupplDeleted
-            // 
-            this.menuMakeSupplDeleted.Name = "menuMakeSupplDeleted";
-            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(307, 22);
-            this.menuMakeSupplDeleted.Text = "Удалить заказ";
-            this.menuMakeSupplDeleted.ToolTipText = "Изменить состояние заказа на \"удален\"";
-            this.menuMakeSupplDeleted.Visible = false;
-            // 
-            // menuEventLog
-            // 
-            this.menuEventLog.Name = "menuEventLog";
-            this.menuEventLog.Size = new System.Drawing.Size(307, 22);
-            this.menuEventLog.Text = "Журнал событий";
-            this.menuEventLog.Visible = false;
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(304, 6);
-            this.toolStripMenuItem1.Visible = false;
-            // 
-            // menuCreateOrderBlank
-            // 
-            this.menuCreateOrderBlank.Name = "menuCreateOrderBlank";
-            this.menuCreateOrderBlank.Size = new System.Drawing.Size(307, 22);
-            this.menuCreateOrderBlank.Text = "Формирование бланка заказа";
-            this.menuCreateOrderBlank.ToolTipText = "Формирование бланка заказа в MS Excel";
-            this.menuCreateOrderBlank.Visible = false;
-            // 
-            // menuGoToSuppl
-            // 
-            this.menuGoToSuppl.Name = "menuGoToSuppl";
-            this.menuGoToSuppl.Size = new System.Drawing.Size(307, 22);
-            this.menuGoToSuppl.Text = "Перейти к заказу...";
-            // 
-            // menuItemPaymentHistory
-            // 
-            this.menuItemPaymentHistory.Name = "menuItemPaymentHistory";
-            this.menuItemPaymentHistory.Size = new System.Drawing.Size(307, 22);
-            this.menuItemPaymentHistory.Text = "Журнал оплат...";
+            this.menuItemShipWaybill.Name = "menuItemShipWaybill";
+            this.menuItemShipWaybill.Size = new System.Drawing.Size(201, 22);
+            this.menuItemShipWaybill.Text = "Отгрузить накладную...";
+            this.menuItemShipWaybill.Click += new System.EventHandler(this.menuItemShipWaybill_Click);
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panelControl1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tabControl, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1013, 587);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel1, null);
             this.tableLayoutPanel1.TabIndex = 8;
-            // 
-            // tabControl
-            // 
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(3, 3);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedTabPage = this.tabPageWaybill;
-            this.tabControl.Size = new System.Drawing.Size(1007, 581);
-            this.tabControl.TabIndex = 0;
-            this.tabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
-            this.tabPageWaybill,
-            this.tabPageIntWaybill});
-            this.tabControl.Text = "xtraTabControl1";
-            this.tabControl.ToolTipController = this.toolTipController;
-            // 
-            // tabPageWaybill
-            // 
-            this.tabPageWaybill.Controls.Add(this.tableLayoutPanel4);
-            this.tabPageWaybill.Name = "tabPageWaybill";
-            this.tabPageWaybill.Size = new System.Drawing.Size(998, 550);
-            this.tabPageWaybill.Text = "Отгрузка клиентам";
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.panelControl1, 0, 3);
-            this.tableLayoutPanel4.Controls.Add(this.controlNavigator, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.panelControlSearchCondition, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel2, 0, 2);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 4;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(998, 550);
-            this.toolTipController.SetSuperTip(this.tableLayoutPanel4, null);
-            this.tableLayoutPanel4.TabIndex = 2;
             // 
             // panelControl1
             // 
             this.panelControl1.Controls.Add(this.btnCloseFromWaybill);
             this.panelControl1.Controls.Add(this.labelControl1);
             this.panelControl1.Controls.Add(this.Depart);
-            this.panelControl1.Controls.Add(this.btnShippedProducts);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(1, 514);
+            this.panelControl1.Location = new System.Drawing.Point(1, 553);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(974, 35);
+            this.panelControl1.Size = new System.Drawing.Size(1011, 33);
             this.toolTipController.SetSuperTip(this.panelControl1, null);
-            this.panelControl1.TabIndex = 24;
+            this.panelControl1.TabIndex = 25;
             // 
             // btnCloseFromWaybill
             // 
             this.btnCloseFromWaybill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCloseFromWaybill.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnCloseFromWaybill.Location = new System.Drawing.Point(879, 7);
+            this.btnCloseFromWaybill.Location = new System.Drawing.Point(914, 5);
             this.btnCloseFromWaybill.Margin = new System.Windows.Forms.Padding(1);
             this.btnCloseFromWaybill.Name = "btnCloseFromWaybill";
             this.btnCloseFromWaybill.Size = new System.Drawing.Size(92, 25);
@@ -326,7 +250,7 @@
             // labelControl1
             // 
             this.labelControl1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelControl1.Location = new System.Drawing.Point(256, 14);
+            this.labelControl1.Location = new System.Drawing.Point(256, 13);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(84, 13);
             this.labelControl1.TabIndex = 2;
@@ -336,7 +260,7 @@
             // Depart
             // 
             this.Depart.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.Depart.Location = new System.Drawing.Point(346, 10);
+            this.Depart.Location = new System.Drawing.Point(346, 9);
             this.Depart.Name = "Depart";
             this.Depart.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -350,19 +274,192 @@
             this.Depart.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.Depart.Visible = false;
             // 
+            // tabControl
+            // 
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(3, 3);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedTabPage = this.tabPageWaybill;
+            this.tabControl.Size = new System.Drawing.Size(1007, 546);
+            this.tabControl.TabIndex = 0;
+            this.tabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
+            this.tabPageWaybill,
+            this.tabPageIntWaybill});
+            this.tabControl.Text = "xtraTabControl1";
+            this.tabControl.ToolTipController = this.toolTipController;
+            // 
+            // tabPageWaybill
+            // 
+            this.tabPageWaybill.Controls.Add(this.tableLayoutPanel4);
+            this.tabPageWaybill.Name = "tabPageWaybill";
+            this.tabPageWaybill.Size = new System.Drawing.Size(998, 515);
+            this.tabPageWaybill.Text = "Отгрузка клиентам";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.panelControl4, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.SearchProcessWoring, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.controlNavigator, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.panelControlSearchCondition, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel2, 0, 4);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 5;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(998, 515);
+            this.toolTipController.SetSuperTip(this.tableLayoutPanel4, null);
+            this.tableLayoutPanel4.TabIndex = 2;
+            // 
+            // panelControl4
+            // 
+            this.panelControl4.Controls.Add(this.checkEditRepresentative);
+            this.panelControl4.Controls.Add(this.txtRepresentative);
+            this.panelControl4.Controls.Add(this.WaybillShipMode);
+            this.panelControl4.Controls.Add(this.checkEditSetWaybillShipMode);
+            this.panelControl4.Controls.Add(this.dtWaybill_ShipDate);
+            this.panelControl4.Controls.Add(this.labelControl16);
+            this.panelControl4.Controls.Add(this.btnShippedProducts);
+            this.panelControl4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelControl4.Location = new System.Drawing.Point(1, 56);
+            this.panelControl4.Margin = new System.Windows.Forms.Padding(1);
+            this.panelControl4.Name = "panelControl4";
+            this.panelControl4.Size = new System.Drawing.Size(996, 38);
+            this.toolTipController.SetSuperTip(this.panelControl4, null);
+            this.panelControl4.TabIndex = 26;
+            // 
+            // checkEditRepresentative
+            // 
+            this.checkEditRepresentative.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkEditRepresentative.Location = new System.Drawing.Point(575, 11);
+            this.checkEditRepresentative.Name = "checkEditRepresentative";
+            this.checkEditRepresentative.Properties.Caption = "Цель для представительских нужд:";
+            this.checkEditRepresentative.Size = new System.Drawing.Size(203, 19);
+            this.checkEditRepresentative.TabIndex = 37;
+            this.checkEditRepresentative.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.checkEditRepresentative.CheckStateChanged += new System.EventHandler(this.checkEditRepresentative_CheckStateChanged);
+            // 
+            // txtRepresentative
+            // 
+            this.txtRepresentative.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtRepresentative.Location = new System.Drawing.Point(784, 10);
+            this.txtRepresentative.Name = "txtRepresentative";
+            this.txtRepresentative.Properties.Appearance.Options.UseTextOptions = true;
+            this.txtRepresentative.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            this.txtRepresentative.Size = new System.Drawing.Size(103, 20);
+            this.txtRepresentative.TabIndex = 36;
+            // 
+            // WaybillShipMode
+            // 
+            this.WaybillShipMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.WaybillShipMode.Location = new System.Drawing.Point(404, 10);
+            this.WaybillShipMode.Name = "WaybillShipMode";
+            this.WaybillShipMode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.WaybillShipMode.Properties.PopupSizeable = true;
+            this.WaybillShipMode.Properties.Sorted = true;
+            this.WaybillShipMode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.WaybillShipMode.Size = new System.Drawing.Size(165, 20);
+            this.WaybillShipMode.TabIndex = 35;
+            this.WaybillShipMode.ToolTip = "Вид отгрузки";
+            this.WaybillShipMode.ToolTipController = this.toolTipController;
+            this.WaybillShipMode.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            // 
+            // checkEditSetWaybillShipMode
+            // 
+            this.checkEditSetWaybillShipMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkEditSetWaybillShipMode.Location = new System.Drawing.Point(207, 11);
+            this.checkEditSetWaybillShipMode.Name = "checkEditSetWaybillShipMode";
+            this.checkEditSetWaybillShipMode.Properties.Caption = "для всех ТТН в списке назначить:";
+            this.checkEditSetWaybillShipMode.Size = new System.Drawing.Size(203, 19);
+            this.checkEditSetWaybillShipMode.TabIndex = 34;
+            this.checkEditSetWaybillShipMode.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.checkEditSetWaybillShipMode.CheckStateChanged += new System.EventHandler(this.checkEditSetWaybillShipMode_CheckStateChanged);
+            // 
+            // dtWaybill_ShipDate
+            // 
+            this.dtWaybill_ShipDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.dtWaybill_ShipDate.EditValue = null;
+            this.dtWaybill_ShipDate.Location = new System.Drawing.Point(101, 10);
+            this.dtWaybill_ShipDate.Name = "dtWaybill_ShipDate";
+            this.dtWaybill_ShipDate.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.dtWaybill_ShipDate.Properties.Appearance.Options.UseFont = true;
+            this.dtWaybill_ShipDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtWaybill_ShipDate.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.dtWaybill_ShipDate.Size = new System.Drawing.Size(100, 20);
+            this.dtWaybill_ShipDate.TabIndex = 7;
+            // 
+            // labelControl16
+            // 
+            this.labelControl16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelControl16.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl16.Appearance.Options.UseFont = true;
+            this.labelControl16.Location = new System.Drawing.Point(5, 14);
+            this.labelControl16.Name = "labelControl16";
+            this.labelControl16.Size = new System.Drawing.Size(90, 13);
+            this.labelControl16.TabIndex = 6;
+            this.labelControl16.Text = "Дата отгрузки:";
+            // 
             // btnShippedProducts
             // 
-            this.btnShippedProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShippedProducts.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnShippedProducts.Image = global::ERPMercuryProcessingOrder.Properties.Resources.check2;
-            this.btnShippedProducts.Location = new System.Drawing.Point(785, 7);
+            this.btnShippedProducts.Location = new System.Drawing.Point(891, 8);
             this.btnShippedProducts.Margin = new System.Windows.Forms.Padding(1);
             this.btnShippedProducts.Name = "btnShippedProducts";
             this.btnShippedProducts.Size = new System.Drawing.Size(92, 25);
             this.btnShippedProducts.TabIndex = 4;
-            this.btnShippedProducts.Text = "Отгрузка";
+            this.btnShippedProducts.Text = "Отгрузить";
             this.btnShippedProducts.ToolTip = "Отгрузить выбранные накладные и списать товар с остатка";
             this.btnShippedProducts.ToolTipController = this.toolTipController;
             this.btnShippedProducts.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnShippedProducts.Click += new System.EventHandler(this.btnShippedProducts_Click);
+            // 
+            // SearchProcessWoring
+            // 
+            this.SearchProcessWoring.BackColor = System.Drawing.SystemColors.Info;
+            this.SearchProcessWoring.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SearchProcessWoring.Controls.Add(this.lblShippingWaybillProcessInfo);
+            this.SearchProcessWoring.Controls.Add(this.pictureBox1);
+            this.SearchProcessWoring.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SearchProcessWoring.Location = new System.Drawing.Point(3, 98);
+            this.SearchProcessWoring.Name = "SearchProcessWoring";
+            this.SearchProcessWoring.Size = new System.Drawing.Size(992, 29);
+            this.toolTipController.SetSuperTip(this.SearchProcessWoring, null);
+            this.SearchProcessWoring.TabIndex = 25;
+            // 
+            // lblShippingWaybillProcessInfo
+            // 
+            this.lblShippingWaybillProcessInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblShippingWaybillProcessInfo.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblShippingWaybillProcessInfo.Appearance.Options.UseFont = true;
+            this.lblShippingWaybillProcessInfo.Location = new System.Drawing.Point(30, 7);
+            this.lblShippingWaybillProcessInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.lblShippingWaybillProcessInfo.Name = "lblShippingWaybillProcessInfo";
+            this.lblShippingWaybillProcessInfo.Size = new System.Drawing.Size(187, 13);
+            this.lblShippingWaybillProcessInfo.TabIndex = 1;
+            this.lblShippingWaybillProcessInfo.Text = "выполняется отгрузка товара..";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox1.Image = global::ERPMercuryProcessingOrder.Properties.Resources.warning_24;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(27, 27);
+            this.toolTipController.SetSuperTip(this.pictureBox1, null);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // controlNavigator
             // 
@@ -370,7 +467,7 @@
             this.controlNavigator.Buttons.CancelEdit.Visible = false;
             this.controlNavigator.Buttons.Edit.Visible = false;
             this.controlNavigator.Buttons.EndEdit.Visible = false;
-            this.controlNavigator.Location = new System.Drawing.Point(3, 58);
+            this.controlNavigator.Location = new System.Drawing.Point(3, 133);
             this.controlNavigator.Name = "controlNavigator";
             this.controlNavigator.NavigatableControl = this.gridControlWaybill;
             this.controlNavigator.ShowToolTips = true;
@@ -388,7 +485,7 @@
             this.gridControlWaybill.Location = new System.Drawing.Point(3, 3);
             this.gridControlWaybill.MainView = this.gridViewWaybill;
             this.gridControlWaybill.Name = "gridControlWaybill";
-            this.gridControlWaybill.Size = new System.Drawing.Size(968, 427);
+            this.gridControlWaybill.Size = new System.Drawing.Size(990, 354);
             this.gridControlWaybill.TabIndex = 2;
             this.gridControlWaybill.ToolTipController = this.toolTipController;
             this.gridControlWaybill.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -426,7 +523,7 @@
             this.panelControlSearchCondition.Location = new System.Drawing.Point(1, 1);
             this.panelControlSearchCondition.Margin = new System.Windows.Forms.Padding(1);
             this.panelControlSearchCondition.Name = "panelControlSearchCondition";
-            this.panelControlSearchCondition.Size = new System.Drawing.Size(974, 53);
+            this.panelControlSearchCondition.Size = new System.Drawing.Size(996, 53);
             this.toolTipController.SetSuperTip(this.panelControlSearchCondition, null);
             this.panelControlSearchCondition.TabIndex = 1;
             // 
@@ -445,7 +542,7 @@
             // 
             this.btnWaybillRefresh.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnWaybillRefresh.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnWaybillRefresh.Location = new System.Drawing.Point(886, 19);
+            this.btnWaybillRefresh.Location = new System.Drawing.Point(908, 19);
             this.btnWaybillRefresh.Margin = new System.Windows.Forms.Padding(1);
             this.btnWaybillRefresh.Name = "btnWaybillRefresh";
             this.btnWaybillRefresh.Size = new System.Drawing.Size(75, 25);
@@ -525,7 +622,7 @@
             this.cboxCustomer.Name = "cboxCustomer";
             this.cboxCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboxCustomer.Size = new System.Drawing.Size(257, 20);
+            this.cboxCustomer.Size = new System.Drawing.Size(279, 20);
             this.cboxCustomer.TabIndex = 5;
             this.cboxCustomer.ToolTip = "Клиент";
             this.cboxCustomer.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
@@ -580,12 +677,12 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 79);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 154);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(974, 433);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(996, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel2, null);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
@@ -600,116 +697,160 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 433F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(974, 433);
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 360F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(996, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel6, null);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
             // tabPageIntWaybill
             // 
-            this.tabPageIntWaybill.Controls.Add(this.tableLayoutPanel3);
+            this.tabPageIntWaybill.Controls.Add(this.tableLayoutPanelIntWaybill);
             this.tabPageIntWaybill.Name = "tabPageIntWaybill";
-            this.tabPageIntWaybill.Size = new System.Drawing.Size(998, 550);
+            this.tabPageIntWaybill.Size = new System.Drawing.Size(998, 515);
             this.tabPageIntWaybill.Text = "Внутреннее перемещение";
             // 
-            // imageCollection
+            // tableLayoutPanelIntWaybill
             // 
-            this.imageCollection.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection.ImageStream")));
+            this.tableLayoutPanelIntWaybill.ColumnCount = 1;
+            this.tableLayoutPanelIntWaybill.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelIntWaybill.Controls.Add(this.SearchProcessWoringIntWaybill, 0, 2);
+            this.tableLayoutPanelIntWaybill.Controls.Add(this.panelControl5, 0, 1);
+            this.tableLayoutPanelIntWaybill.Controls.Add(this.controlNavigator2, 0, 3);
+            this.tableLayoutPanelIntWaybill.Controls.Add(this.panelControl3, 0, 0);
+            this.tableLayoutPanelIntWaybill.Controls.Add(this.tableLayoutPanel5, 0, 4);
+            this.tableLayoutPanelIntWaybill.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelIntWaybill.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelIntWaybill.Name = "tableLayoutPanelIntWaybill";
+            this.tableLayoutPanelIntWaybill.RowCount = 5;
+            this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelIntWaybill.Size = new System.Drawing.Size(998, 515);
+            this.toolTipController.SetSuperTip(this.tableLayoutPanelIntWaybill, null);
+            this.tableLayoutPanelIntWaybill.TabIndex = 3;
             // 
-            // openFileDialog
+            // SearchProcessWoringIntWaybill
             // 
-            this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
-    "*.*)|*.*";
+            this.SearchProcessWoringIntWaybill.BackColor = System.Drawing.SystemColors.Info;
+            this.SearchProcessWoringIntWaybill.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SearchProcessWoringIntWaybill.Controls.Add(this.lblShippingIntWaybillProcessInfo);
+            this.SearchProcessWoringIntWaybill.Controls.Add(this.pictureBox2);
+            this.SearchProcessWoringIntWaybill.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SearchProcessWoringIntWaybill.Location = new System.Drawing.Point(3, 98);
+            this.SearchProcessWoringIntWaybill.Name = "SearchProcessWoringIntWaybill";
+            this.SearchProcessWoringIntWaybill.Size = new System.Drawing.Size(992, 29);
+            this.toolTipController.SetSuperTip(this.SearchProcessWoringIntWaybill, null);
+            this.SearchProcessWoringIntWaybill.TabIndex = 28;
             // 
-            // tableLayoutPanel3
+            // lblShippingIntWaybillProcessInfo
             // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.panelControl2, 0, 3);
-            this.tableLayoutPanel3.Controls.Add(this.controlNavigator2, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.panelControl3, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 2);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 4;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(998, 550);
-            this.toolTipController.SetSuperTip(this.tableLayoutPanel3, null);
-            this.tableLayoutPanel3.TabIndex = 3;
+            this.lblShippingIntWaybillProcessInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblShippingIntWaybillProcessInfo.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblShippingIntWaybillProcessInfo.Appearance.Options.UseFont = true;
+            this.lblShippingIntWaybillProcessInfo.Location = new System.Drawing.Point(30, 7);
+            this.lblShippingIntWaybillProcessInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.lblShippingIntWaybillProcessInfo.Name = "lblShippingIntWaybillProcessInfo";
+            this.lblShippingIntWaybillProcessInfo.Size = new System.Drawing.Size(187, 13);
+            this.lblShippingIntWaybillProcessInfo.TabIndex = 1;
+            this.lblShippingIntWaybillProcessInfo.Text = "выполняется отгрузка товара..";
             // 
-            // panelControl2
+            // pictureBox2
             // 
-            this.panelControl2.Controls.Add(this.btnCloseFromIntWaybill);
-            this.panelControl2.Controls.Add(this.labelControl2);
-            this.panelControl2.Controls.Add(this.comboBoxEdit1);
-            this.panelControl2.Controls.Add(this.btnShippedProducts2);
-            this.panelControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl2.Location = new System.Drawing.Point(1, 514);
-            this.panelControl2.Margin = new System.Windows.Forms.Padding(1);
-            this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(996, 35);
-            this.toolTipController.SetSuperTip(this.panelControl2, null);
-            this.panelControl2.TabIndex = 24;
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox2.Image = global::ERPMercuryProcessingOrder.Properties.Resources.warning_24;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(27, 27);
+            this.toolTipController.SetSuperTip(this.pictureBox2, null);
+            this.pictureBox2.TabIndex = 0;
+            this.pictureBox2.TabStop = false;
             // 
-            // btnCloseFromIntWaybill
+            // panelControl5
             // 
-            this.btnCloseFromIntWaybill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCloseFromIntWaybill.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnCloseFromIntWaybill.Location = new System.Drawing.Point(901, 7);
-            this.btnCloseFromIntWaybill.Margin = new System.Windows.Forms.Padding(1);
-            this.btnCloseFromIntWaybill.Name = "btnCloseFromIntWaybill";
-            this.btnCloseFromIntWaybill.Size = new System.Drawing.Size(92, 25);
-            this.btnCloseFromIntWaybill.TabIndex = 5;
-            this.btnCloseFromIntWaybill.Text = "Выход";
-            this.btnCloseFromIntWaybill.ToolTip = "Закрыть форму";
-            this.btnCloseFromIntWaybill.ToolTipController = this.toolTipController;
-            this.btnCloseFromIntWaybill.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            this.btnCloseFromIntWaybill.Click += new System.EventHandler(this.btnCloseFromWaybill_Click);
+            this.panelControl5.Controls.Add(this.IntWaybillShipMode);
+            this.panelControl5.Controls.Add(this.checkEditSetIntWaybillShipMode);
+            this.panelControl5.Controls.Add(this.dtIntWaybill_ShipDate);
+            this.panelControl5.Controls.Add(this.labelControl2);
+            this.panelControl5.Controls.Add(this.btnShippedProductsByIntWaybill);
+            this.panelControl5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelControl5.Location = new System.Drawing.Point(1, 56);
+            this.panelControl5.Margin = new System.Windows.Forms.Padding(1);
+            this.panelControl5.Name = "panelControl5";
+            this.panelControl5.Size = new System.Drawing.Size(996, 38);
+            this.toolTipController.SetSuperTip(this.panelControl5, null);
+            this.panelControl5.TabIndex = 27;
+            // 
+            // IntWaybillShipMode
+            // 
+            this.IntWaybillShipMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.IntWaybillShipMode.Location = new System.Drawing.Point(404, 10);
+            this.IntWaybillShipMode.Name = "IntWaybillShipMode";
+            this.IntWaybillShipMode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.IntWaybillShipMode.Properties.PopupSizeable = true;
+            this.IntWaybillShipMode.Properties.Sorted = true;
+            this.IntWaybillShipMode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.IntWaybillShipMode.Size = new System.Drawing.Size(165, 20);
+            this.IntWaybillShipMode.TabIndex = 35;
+            this.IntWaybillShipMode.ToolTip = "Вид отгрузки";
+            this.IntWaybillShipMode.ToolTipController = this.toolTipController;
+            this.IntWaybillShipMode.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            // 
+            // checkEditSetIntWaybillShipMode
+            // 
+            this.checkEditSetIntWaybillShipMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkEditSetIntWaybillShipMode.Location = new System.Drawing.Point(207, 11);
+            this.checkEditSetIntWaybillShipMode.Name = "checkEditSetIntWaybillShipMode";
+            this.checkEditSetIntWaybillShipMode.Properties.Caption = "для всех ТТН в списке назначить:";
+            this.checkEditSetIntWaybillShipMode.Size = new System.Drawing.Size(203, 19);
+            this.checkEditSetIntWaybillShipMode.TabIndex = 34;
+            this.checkEditSetIntWaybillShipMode.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.checkEditSetIntWaybillShipMode.CheckStateChanged += new System.EventHandler(this.checkEditSetIntWaybillShipMode_CheckStateChanged);
+            // 
+            // dtIntWaybill_ShipDate
+            // 
+            this.dtIntWaybill_ShipDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.dtIntWaybill_ShipDate.EditValue = null;
+            this.dtIntWaybill_ShipDate.Location = new System.Drawing.Point(101, 10);
+            this.dtIntWaybill_ShipDate.Name = "dtIntWaybill_ShipDate";
+            this.dtIntWaybill_ShipDate.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.dtIntWaybill_ShipDate.Properties.Appearance.Options.UseFont = true;
+            this.dtIntWaybill_ShipDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtIntWaybill_ShipDate.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.dtIntWaybill_ShipDate.Size = new System.Drawing.Size(100, 20);
+            this.dtIntWaybill_ShipDate.TabIndex = 7;
             // 
             // labelControl2
             // 
             this.labelControl2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelControl2.Location = new System.Drawing.Point(256, 14);
+            this.labelControl2.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.labelControl2.Appearance.Options.UseFont = true;
+            this.labelControl2.Location = new System.Drawing.Point(5, 14);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(84, 13);
-            this.labelControl2.TabIndex = 2;
-            this.labelControl2.Text = "Подразделение:";
-            this.labelControl2.Visible = false;
+            this.labelControl2.Size = new System.Drawing.Size(90, 13);
+            this.labelControl2.TabIndex = 6;
+            this.labelControl2.Text = "Дата отгрузки:";
             // 
-            // comboBoxEdit1
+            // btnShippedProductsByIntWaybill
             // 
-            this.comboBoxEdit1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.comboBoxEdit1.Location = new System.Drawing.Point(346, 10);
-            this.comboBoxEdit1.Name = "comboBoxEdit1";
-            this.comboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.comboBoxEdit1.Properties.PopupSizeable = true;
-            this.comboBoxEdit1.Properties.Sorted = true;
-            this.comboBoxEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.comboBoxEdit1.Size = new System.Drawing.Size(94, 20);
-            this.comboBoxEdit1.TabIndex = 3;
-            this.comboBoxEdit1.ToolTip = "Подразделение";
-            this.comboBoxEdit1.ToolTipController = this.toolTipController;
-            this.comboBoxEdit1.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            this.comboBoxEdit1.Visible = false;
-            // 
-            // btnShippedProducts2
-            // 
-            this.btnShippedProducts2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShippedProducts2.Image = global::ERPMercuryProcessingOrder.Properties.Resources.check2;
-            this.btnShippedProducts2.Location = new System.Drawing.Point(807, 7);
-            this.btnShippedProducts2.Margin = new System.Windows.Forms.Padding(1);
-            this.btnShippedProducts2.Name = "btnShippedProducts2";
-            this.btnShippedProducts2.Size = new System.Drawing.Size(92, 25);
-            this.btnShippedProducts2.TabIndex = 4;
-            this.btnShippedProducts2.Text = "Отгрузка";
-            this.btnShippedProducts2.ToolTip = "Отгрузить выбранные накладные и списать товар с остатка";
-            this.btnShippedProducts2.ToolTipController = this.toolTipController;
-            this.btnShippedProducts2.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnShippedProductsByIntWaybill.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnShippedProductsByIntWaybill.Image = global::ERPMercuryProcessingOrder.Properties.Resources.check2;
+            this.btnShippedProductsByIntWaybill.Location = new System.Drawing.Point(891, 8);
+            this.btnShippedProductsByIntWaybill.Margin = new System.Windows.Forms.Padding(1);
+            this.btnShippedProductsByIntWaybill.Name = "btnShippedProductsByIntWaybill";
+            this.btnShippedProductsByIntWaybill.Size = new System.Drawing.Size(92, 25);
+            this.btnShippedProductsByIntWaybill.TabIndex = 4;
+            this.btnShippedProductsByIntWaybill.Text = "Отгрузить";
+            this.btnShippedProductsByIntWaybill.ToolTip = "Отгрузить выбранные накладные и списать товар с остатка";
+            this.btnShippedProductsByIntWaybill.ToolTipController = this.toolTipController;
+            this.btnShippedProductsByIntWaybill.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnShippedProductsByIntWaybill.Click += new System.EventHandler(this.btnShippedProductsByIntWaybill_Click);
             // 
             // controlNavigator2
             // 
@@ -717,7 +858,7 @@
             this.controlNavigator2.Buttons.CancelEdit.Visible = false;
             this.controlNavigator2.Buttons.Edit.Visible = false;
             this.controlNavigator2.Buttons.EndEdit.Visible = false;
-            this.controlNavigator2.Location = new System.Drawing.Point(3, 58);
+            this.controlNavigator2.Location = new System.Drawing.Point(3, 133);
             this.controlNavigator2.Name = "controlNavigator2";
             this.controlNavigator2.NavigatableControl = this.gridControlIntWaybill;
             this.controlNavigator2.ShowToolTips = true;
@@ -729,13 +870,13 @@
             // 
             // gridControlIntWaybill
             // 
-            this.gridControlIntWaybill.ContextMenuStrip = this.contextMenuStrip;
+            this.gridControlIntWaybill.ContextMenuStrip = this.contextMenuStripInt;
             this.gridControlIntWaybill.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControlIntWaybill.EmbeddedNavigator.Name = "";
             this.gridControlIntWaybill.Location = new System.Drawing.Point(3, 3);
             this.gridControlIntWaybill.MainView = this.gridViewIntWaybill;
             this.gridControlIntWaybill.Name = "gridControlIntWaybill";
-            this.gridControlIntWaybill.Size = new System.Drawing.Size(990, 427);
+            this.gridControlIntWaybill.Size = new System.Drawing.Size(990, 354);
             this.gridControlIntWaybill.TabIndex = 2;
             this.gridControlIntWaybill.ToolTipController = this.toolTipController;
             this.gridControlIntWaybill.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -778,6 +919,49 @@
             this.panelControl3.Size = new System.Drawing.Size(996, 53);
             this.toolTipController.SetSuperTip(this.panelControl3, null);
             this.panelControl3.TabIndex = 1;
+            // 
+            // labelControl5
+            // 
+            this.labelControl5.Location = new System.Drawing.Point(766, 4);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(96, 13);
+            this.labelControl5.TabIndex = 13;
+            this.labelControl5.Text = "Склад-получатель";
+            // 
+            // cboxStockDst
+            // 
+            this.cboxStockDst.Location = new System.Drawing.Point(765, 21);
+            this.cboxStockDst.Name = "cboxStockDst";
+            this.cboxStockDst.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboxStockDst.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboxStockDst.Size = new System.Drawing.Size(133, 20);
+            this.cboxStockDst.TabIndex = 11;
+            this.cboxStockDst.ToolTip = "Склад отгрузки";
+            this.cboxStockDst.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxStockDst.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDateIntWaybill_KeyDown);
+            // 
+            // labelControl14
+            // 
+            this.labelControl14.Location = new System.Drawing.Point(625, 5);
+            this.labelControl14.Name = "labelControl14";
+            this.labelControl14.Size = new System.Drawing.Size(113, 13);
+            this.labelControl14.TabIndex = 12;
+            this.labelControl14.Text = "Компания-получатель";
+            // 
+            // cboxCompanyDst
+            // 
+            this.cboxCompanyDst.Location = new System.Drawing.Point(625, 21);
+            this.cboxCompanyDst.Name = "cboxCompanyDst";
+            this.cboxCompanyDst.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboxCompanyDst.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboxCompanyDst.Size = new System.Drawing.Size(133, 20);
+            this.cboxCompanyDst.TabIndex = 10;
+            this.cboxCompanyDst.ToolTip = "Компания";
+            this.cboxCompanyDst.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.cboxCompanyDst.SelectedValueChanged += new System.EventHandler(this.cboxCompanyDst_SelectedValueChanged);
+            this.cboxCompanyDst.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDateIntWaybill_KeyDown);
             // 
             // IntWaybilllNum
             // 
@@ -907,12 +1091,12 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel7, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 79);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 154);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(996, 433);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(996, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel5, null);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
@@ -928,52 +1112,48 @@
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 433F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(996, 433);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(996, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel7, null);
             this.tableLayoutPanel7.TabIndex = 4;
             // 
-            // labelControl5
+            // imageCollection
             // 
-            this.labelControl5.Location = new System.Drawing.Point(766, 4);
-            this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(96, 13);
-            this.labelControl5.TabIndex = 13;
-            this.labelControl5.Text = "Склад-получатель";
+            this.imageCollection.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollection.ImageStream")));
             // 
-            // cboxStockDst
+            // openFileDialog
             // 
-            this.cboxStockDst.Location = new System.Drawing.Point(765, 21);
-            this.cboxStockDst.Name = "cboxStockDst";
-            this.cboxStockDst.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboxStockDst.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboxStockDst.Size = new System.Drawing.Size(133, 20);
-            this.cboxStockDst.TabIndex = 11;
-            this.cboxStockDst.ToolTip = "Склад отгрузки";
-            this.cboxStockDst.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            this.cboxStockDst.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDateIntWaybill_KeyDown);
+            this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
+    "*.*)|*.*";
             // 
-            // labelControl14
+            // contextMenuStripInt
             // 
-            this.labelControl14.Location = new System.Drawing.Point(625, 5);
-            this.labelControl14.Name = "labelControl14";
-            this.labelControl14.Size = new System.Drawing.Size(113, 13);
-            this.labelControl14.TabIndex = 12;
-            this.labelControl14.Text = "Компания-получатель";
+            this.contextMenuStripInt.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemRefreshInt,
+            this.toolStripSeparator2,
+            this.menuItemShipInt});
+            this.contextMenuStripInt.Name = "contextMenuStrip";
+            this.contextMenuStripInt.Size = new System.Drawing.Size(202, 54);
+            this.toolTipController.SetSuperTip(this.contextMenuStripInt, null);
+            this.contextMenuStripInt.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripInt_Opening);
             // 
-            // cboxCompanyDst
+            // menuItemRefreshInt
             // 
-            this.cboxCompanyDst.Location = new System.Drawing.Point(625, 21);
-            this.cboxCompanyDst.Name = "cboxCompanyDst";
-            this.cboxCompanyDst.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboxCompanyDst.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboxCompanyDst.Size = new System.Drawing.Size(133, 20);
-            this.cboxCompanyDst.TabIndex = 10;
-            this.cboxCompanyDst.ToolTip = "Компания";
-            this.cboxCompanyDst.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
-            this.cboxCompanyDst.SelectedValueChanged += new System.EventHandler(this.cboxCompanyDst_SelectedValueChanged);
-            this.cboxCompanyDst.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtBeginDateIntWaybill_KeyDown);
+            this.menuItemRefreshInt.Name = "menuItemRefreshInt";
+            this.menuItemRefreshInt.Size = new System.Drawing.Size(201, 22);
+            this.menuItemRefreshInt.Text = "Обновить";
+            this.menuItemRefreshInt.Click += new System.EventHandler(this.btnIntWaybillRefresh_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(198, 6);
+            // 
+            // menuItemShipInt
+            // 
+            this.menuItemShipInt.Name = "menuItemShipInt";
+            this.menuItemShipInt.Size = new System.Drawing.Size(201, 22);
+            this.menuItemShipInt.Text = "Отгрузить накладную...";
+            this.menuItemShipInt.Click += new System.EventHandler(this.menuItemShipInt_Click);
             // 
             // frmShippedProducts
             // 
@@ -988,14 +1168,26 @@
             this.Shown += new System.EventHandler(this.frmShippedProducts_Shown);
             this.contextMenuStrip.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();
-            this.tabControl.ResumeLayout(false);
-            this.tabPageWaybill.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Depart.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();
+            this.tabControl.ResumeLayout(false);
+            this.tabPageWaybill.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).EndInit();
+            this.panelControl4.ResumeLayout(false);
+            this.panelControl4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditRepresentative.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRepresentative.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WaybillShipMode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditSetWaybillShipMode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtWaybill_ShipDate.Properties.VistaTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtWaybill_ShipDate.Properties)).EndInit();
+            this.SearchProcessWoring.ResumeLayout(false);
+            this.SearchProcessWoring.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlWaybill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewWaybill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSearchCondition)).EndInit();
@@ -1012,17 +1204,24 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tabPageIntWaybill.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
-            this.panelControl2.ResumeLayout(false);
-            this.panelControl2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).EndInit();
+            this.tableLayoutPanelIntWaybill.ResumeLayout(false);
+            this.SearchProcessWoringIntWaybill.ResumeLayout(false);
+            this.SearchProcessWoringIntWaybill.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl5)).EndInit();
+            this.panelControl5.ResumeLayout(false);
+            this.panelControl5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IntWaybillShipMode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditSetIntWaybillShipMode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties.VistaTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlIntWaybill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewIntWaybill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.panelControl3.ResumeLayout(false);
             this.panelControl3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboxStockDst.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboxCompanyDst.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IntWaybilllNum.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxStockSrc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboxCompanySrc.Properties)).EndInit();
@@ -1032,8 +1231,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtBeginDateIntWaybill.Properties)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboxStockDst.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboxCompanyDst.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
+            this.contextMenuStripInt.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1044,26 +1243,15 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem menuRefresh;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem menuCalcPrice;
-        private System.Windows.Forms.ToolStripMenuItem menuClearPrices;
-        private System.Windows.Forms.ToolStripMenuItem menuReturnSupplStateToAutoProcessPrices;
-        private System.Windows.Forms.ToolStripMenuItem menuMakeSupplDeleted;
-        private System.Windows.Forms.ToolStripMenuItem menuEventLog;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem menuCreateOrderBlank;
-        private System.Windows.Forms.ToolStripMenuItem menuGoToSuppl;
-        private System.Windows.Forms.ToolStripMenuItem menuItemPaymentHistory;
+        private System.Windows.Forms.ToolStripMenuItem menuItemShipWaybill;
         private DevExpress.Utils.ImageCollection imageCollection;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private DevExpress.XtraTab.XtraTabControl tabControl;
         private DevExpress.XtraTab.XtraTabPage tabPageWaybill;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraEditors.TextEdit WaybilllNum;
         private DevExpress.XtraEditors.LabelControl labelControl29;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.ComboBoxEdit Depart;
         private DevExpress.XtraEditors.SimpleButton btnShippedProducts;
         private DevExpress.XtraEditors.ControlNavigator controlNavigator;
         private DevExpress.XtraGrid.GridControl gridControlWaybill;
@@ -1082,14 +1270,8 @@
         private DevExpress.XtraEditors.DateEdit dtBeginDate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private DevExpress.XtraEditors.SimpleButton btnCloseFromWaybill;
         private DevExpress.XtraTab.XtraTabPage tabPageIntWaybill;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private DevExpress.XtraEditors.PanelControl panelControl2;
-        private DevExpress.XtraEditors.SimpleButton btnCloseFromIntWaybill;
-        private DevExpress.XtraEditors.LabelControl labelControl2;
-        private DevExpress.XtraEditors.ComboBoxEdit comboBoxEdit1;
-        private DevExpress.XtraEditors.SimpleButton btnShippedProducts2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelIntWaybill;
         private DevExpress.XtraEditors.ControlNavigator controlNavigator2;
         private DevExpress.XtraGrid.GridControl gridControlIntWaybill;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewIntWaybill;
@@ -1111,5 +1293,32 @@
         private DevExpress.XtraEditors.ComboBoxEdit cboxStockDst;
         private DevExpress.XtraEditors.LabelControl labelControl14;
         private DevExpress.XtraEditors.ComboBoxEdit cboxCompanyDst;
+        private System.Windows.Forms.Panel SearchProcessWoring;
+        private DevExpress.XtraEditors.LabelControl lblShippingWaybillProcessInfo;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private DevExpress.XtraEditors.LabelControl labelControl16;
+        private DevExpress.XtraEditors.DateEdit dtWaybill_ShipDate;
+        private DevExpress.XtraEditors.PanelControl panelControl4;
+        private DevExpress.XtraEditors.CheckEdit checkEditSetWaybillShipMode;
+        private DevExpress.XtraEditors.ComboBoxEdit WaybillShipMode;
+        private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraEditors.SimpleButton btnCloseFromWaybill;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.ComboBoxEdit Depart;
+        private DevExpress.XtraEditors.PanelControl panelControl5;
+        private DevExpress.XtraEditors.ComboBoxEdit IntWaybillShipMode;
+        private DevExpress.XtraEditors.CheckEdit checkEditSetIntWaybillShipMode;
+        private DevExpress.XtraEditors.DateEdit dtIntWaybill_ShipDate;
+        private DevExpress.XtraEditors.LabelControl labelControl2;
+        private DevExpress.XtraEditors.SimpleButton btnShippedProductsByIntWaybill;
+        private DevExpress.XtraEditors.CheckEdit checkEditRepresentative;
+        private DevExpress.XtraEditors.TextEdit txtRepresentative;
+        private System.Windows.Forms.Panel SearchProcessWoringIntWaybill;
+        private DevExpress.XtraEditors.LabelControl lblShippingIntWaybillProcessInfo;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripInt;
+        private System.Windows.Forms.ToolStripMenuItem menuItemRefreshInt;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem menuItemShipInt;
     }
 }
