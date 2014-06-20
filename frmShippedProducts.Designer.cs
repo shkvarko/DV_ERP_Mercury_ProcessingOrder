@@ -86,6 +86,10 @@
             this.btnShippedProductsByIntWaybill = new DevExpress.XtraEditors.SimpleButton();
             this.controlNavigator2 = new DevExpress.XtraEditors.ControlNavigator();
             this.gridControlIntWaybill = new DevExpress.XtraGrid.GridControl();
+            this.contextMenuStripInt = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuItemRefreshInt = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemShipInt = new System.Windows.Forms.ToolStripMenuItem();
             this.gridViewIntWaybill = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
@@ -107,10 +111,6 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.contextMenuStripInt = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuItemRefreshInt = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemShipInt = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
@@ -155,6 +155,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties.VistaTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlIntWaybill)).BeginInit();
+            this.contextMenuStripInt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewIntWaybill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
@@ -170,7 +171,6 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
-            this.contextMenuStripInt.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip
@@ -471,10 +471,11 @@
             this.controlNavigator.Name = "controlNavigator";
             this.controlNavigator.NavigatableControl = this.gridControlWaybill;
             this.controlNavigator.ShowToolTips = true;
-            this.controlNavigator.Size = new System.Drawing.Size(204, 19);
+            this.controlNavigator.Size = new System.Drawing.Size(206, 19);
             this.controlNavigator.TabIndex = 23;
             this.controlNavigator.Text = "controlNavigator";
             this.controlNavigator.TextLocation = DevExpress.XtraEditors.NavigatorButtonsTextLocation.Center;
+            this.controlNavigator.TextStringFormat = "Запись {0} из {1}";
             this.controlNavigator.ToolTipController = this.toolTipController;
             // 
             // gridControlWaybill
@@ -862,10 +863,11 @@
             this.controlNavigator2.Name = "controlNavigator2";
             this.controlNavigator2.NavigatableControl = this.gridControlIntWaybill;
             this.controlNavigator2.ShowToolTips = true;
-            this.controlNavigator2.Size = new System.Drawing.Size(204, 19);
+            this.controlNavigator2.Size = new System.Drawing.Size(206, 17);
             this.controlNavigator2.TabIndex = 23;
             this.controlNavigator2.Text = "controlNavigator1";
             this.controlNavigator2.TextLocation = DevExpress.XtraEditors.NavigatorButtonsTextLocation.Center;
+            this.controlNavigator2.TextStringFormat = "Запись {0} из {1}";
             this.controlNavigator2.ToolTipController = this.toolTipController;
             // 
             // gridControlIntWaybill
@@ -881,6 +883,36 @@
             this.gridControlIntWaybill.ToolTipController = this.toolTipController;
             this.gridControlIntWaybill.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewIntWaybill});
+            // 
+            // contextMenuStripInt
+            // 
+            this.contextMenuStripInt.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemRefreshInt,
+            this.toolStripSeparator2,
+            this.menuItemShipInt});
+            this.contextMenuStripInt.Name = "contextMenuStrip";
+            this.contextMenuStripInt.Size = new System.Drawing.Size(202, 54);
+            this.toolTipController.SetSuperTip(this.contextMenuStripInt, null);
+            this.contextMenuStripInt.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripInt_Opening);
+            // 
+            // menuItemRefreshInt
+            // 
+            this.menuItemRefreshInt.Name = "menuItemRefreshInt";
+            this.menuItemRefreshInt.Size = new System.Drawing.Size(201, 22);
+            this.menuItemRefreshInt.Text = "Обновить";
+            this.menuItemRefreshInt.Click += new System.EventHandler(this.btnIntWaybillRefresh_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(198, 6);
+            // 
+            // menuItemShipInt
+            // 
+            this.menuItemShipInt.Name = "menuItemShipInt";
+            this.menuItemShipInt.Size = new System.Drawing.Size(201, 22);
+            this.menuItemShipInt.Text = "Отгрузить накладную...";
+            this.menuItemShipInt.Click += new System.EventHandler(this.menuItemShipInt_Click);
             // 
             // gridViewIntWaybill
             // 
@@ -1125,36 +1157,6 @@
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
             // 
-            // contextMenuStripInt
-            // 
-            this.contextMenuStripInt.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuItemRefreshInt,
-            this.toolStripSeparator2,
-            this.menuItemShipInt});
-            this.contextMenuStripInt.Name = "contextMenuStrip";
-            this.contextMenuStripInt.Size = new System.Drawing.Size(202, 54);
-            this.toolTipController.SetSuperTip(this.contextMenuStripInt, null);
-            this.contextMenuStripInt.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripInt_Opening);
-            // 
-            // menuItemRefreshInt
-            // 
-            this.menuItemRefreshInt.Name = "menuItemRefreshInt";
-            this.menuItemRefreshInt.Size = new System.Drawing.Size(201, 22);
-            this.menuItemRefreshInt.Text = "Обновить";
-            this.menuItemRefreshInt.Click += new System.EventHandler(this.btnIntWaybillRefresh_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(198, 6);
-            // 
-            // menuItemShipInt
-            // 
-            this.menuItemShipInt.Name = "menuItemShipInt";
-            this.menuItemShipInt.Size = new System.Drawing.Size(201, 22);
-            this.menuItemShipInt.Text = "Отгрузить накладную...";
-            this.menuItemShipInt.Click += new System.EventHandler(this.menuItemShipInt_Click);
-            // 
             // frmShippedProducts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1216,6 +1218,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties.VistaTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtIntWaybill_ShipDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlIntWaybill)).EndInit();
+            this.contextMenuStripInt.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridViewIntWaybill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.panelControl3.ResumeLayout(false);
@@ -1232,7 +1235,6 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
-            this.contextMenuStripInt.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

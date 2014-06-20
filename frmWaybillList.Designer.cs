@@ -38,6 +38,7 @@
             this.menuItemPaymentHistory = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemBackWaybill = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemCancelWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl = new DevExpress.XtraTab.XtraTabControl();
             this.tabPageViewer = new DevExpress.XtraTab.XtraTabPage();
@@ -123,7 +124,6 @@
             this.tabPageItemBackWaybillEditor = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelItemBackWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.menuItemCancelWaybill = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -190,7 +190,7 @@
             this.menuItemBackWaybill,
             this.menuItemCancelWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(227, 148);
+            this.contextMenuStrip.Size = new System.Drawing.Size(227, 126);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             this.contextMenuStrip.Click += new System.EventHandler(this.contextMenuStrip_Click);
@@ -233,6 +233,13 @@
             this.menuItemBackWaybill.Size = new System.Drawing.Size(226, 22);
             this.menuItemBackWaybill.Text = "Возврат товара от клиента...";
             this.menuItemBackWaybill.Click += new System.EventHandler(this.menuItemBackWaybill_Click);
+            // 
+            // menuItemCancelWaybill
+            // 
+            this.menuItemCancelWaybill.Name = "menuItemCancelWaybill";
+            this.menuItemCancelWaybill.Size = new System.Drawing.Size(226, 22);
+            this.menuItemCancelWaybill.Text = "Аннулировать накладную...";
+            this.menuItemCancelWaybill.Click += new System.EventHandler(this.menuItemCancelWaybill_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -1301,13 +1308,6 @@
             // 
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
-            // 
-            // menuItemCancelWaybill
-            // 
-            this.menuItemCancelWaybill.Name = "menuItemCancelWaybill";
-            this.menuItemCancelWaybill.Size = new System.Drawing.Size(226, 22);
-            this.menuItemCancelWaybill.Text = "Аннулировать накладную...";
-            this.menuItemCancelWaybill.Click += new System.EventHandler(this.menuItemCancelWaybill_Click);
             // 
             // frmWaybillList
             // 

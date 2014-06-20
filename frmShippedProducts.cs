@@ -925,12 +925,12 @@ namespace ERPMercuryProcessingOrder
                     }
                     if (m_objIntWaybillList != null)
                     {
-                        //m_objIntWaybillList = m_objIntWaybillList.Where<CIntWaybill>(x => x.DocState.IntWaybillStateId == 0).ToList<CIntWaybill>();
+                        m_objIntWaybillList = m_objIntWaybillList.Where<CIntWaybill>(x => x.DocState.IntWaybillStateId == 0).ToList<CIntWaybill>();
 
-                        //if (m_objIntWaybillList != null)
-                        //{
+                        if (m_objIntWaybillList != null)
+                        {
                             gridControlIntWaybill.DataSource = m_objIntWaybillList;
-                        //}
+                        }
                     }
                 }
 
@@ -1954,7 +1954,6 @@ namespace ERPMercuryProcessingOrder
                 ( ( IntWaybillShipMode.SelectedItem == null ) ? null : (CIntWaybillShipMode)IntWaybillShipMode.SelectedItem ));
         }
         #endregion
-
 
     }
 

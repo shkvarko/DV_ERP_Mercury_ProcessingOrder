@@ -69,16 +69,16 @@
             this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.txtWarning = new DevExpress.XtraEditors.ListBoxControl();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
+            this.checkRulePool_IsCanShow = new DevExpress.XtraEditors.CheckEdit();
+            this.txtRulePool_Description = new DevExpress.XtraEditors.MemoEdit();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.tabControl = new DevExpress.XtraTab.XtraTabControl();
             this.tabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.tabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.tabPage3 = new DevExpress.XtraTab.XtraTabPage();
             this.tabPageDescription = new DevExpress.XtraTab.XtraTabPage();
-            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
-            this.checkRulePool_IsCanShow = new DevExpress.XtraEditors.CheckEdit();
-            this.txtRulePool_Description = new DevExpress.XtraEditors.MemoEdit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -105,15 +105,15 @@
             this.tableLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWarning)).BeginInit();
+            this.tableLayoutPanel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkRulePool_IsCanShow.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRulePool_Description.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPageDescription.SuspendLayout();
-            this.tableLayoutPanel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.checkRulePool_IsCanShow.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtRulePool_Description.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -668,6 +668,50 @@
             this.txtWarning.TabIndex = 1;
             this.txtWarning.ToolTipController = this.toolTipController;
             // 
+            // tableLayoutPanel10
+            // 
+            this.tableLayoutPanel10.ColumnCount = 2;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.Controls.Add(this.labelControl9, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.checkRulePool_IsCanShow, 1, 1);
+            this.tableLayoutPanel10.Controls.Add(this.txtRulePool_Description, 1, 0);
+            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 2;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(495, 207);
+            this.toolTipController.SetSuperTip(this.tableLayoutPanel10, null);
+            this.tableLayoutPanel10.TabIndex = 1;
+            // 
+            // labelControl9
+            // 
+            this.labelControl9.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelControl9.Location = new System.Drawing.Point(3, 85);
+            this.labelControl9.Name = "labelControl9";
+            this.labelControl9.Size = new System.Drawing.Size(53, 13);
+            this.labelControl9.TabIndex = 15;
+            this.labelControl9.Text = "Описание:";
+            // 
+            // checkRulePool_IsCanShow
+            // 
+            this.checkRulePool_IsCanShow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkRulePool_IsCanShow.Location = new System.Drawing.Point(120, 186);
+            this.checkRulePool_IsCanShow.Name = "checkRulePool_IsCanShow";
+            this.checkRulePool_IsCanShow.Properties.Caption = "Отображать описание торговым представителям";
+            this.checkRulePool_IsCanShow.Size = new System.Drawing.Size(372, 19);
+            this.checkRulePool_IsCanShow.TabIndex = 16;
+            // 
+            // txtRulePool_Description
+            // 
+            this.txtRulePool_Description.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtRulePool_Description.Location = new System.Drawing.Point(120, 3);
+            this.txtRulePool_Description.Name = "txtRulePool_Description";
+            this.txtRulePool_Description.Size = new System.Drawing.Size(372, 177);
+            this.txtRulePool_Description.TabIndex = 17;
+            // 
             // btnSave
             // 
             this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -728,50 +772,6 @@
             this.tabPageDescription.Size = new System.Drawing.Size(495, 207);
             this.tabPageDescription.Text = "Описание акции";
             // 
-            // tableLayoutPanel10
-            // 
-            this.tableLayoutPanel10.ColumnCount = 2;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Controls.Add(this.labelControl9, 0, 0);
-            this.tableLayoutPanel10.Controls.Add(this.checkRulePool_IsCanShow, 1, 1);
-            this.tableLayoutPanel10.Controls.Add(this.txtRulePool_Description, 1, 0);
-            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
-            this.tableLayoutPanel10.RowCount = 2;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(495, 207);
-            this.toolTipController.SetSuperTip(this.tableLayoutPanel10, null);
-            this.tableLayoutPanel10.TabIndex = 1;
-            // 
-            // labelControl9
-            // 
-            this.labelControl9.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelControl9.Location = new System.Drawing.Point(3, 85);
-            this.labelControl9.Name = "labelControl9";
-            this.labelControl9.Size = new System.Drawing.Size(53, 13);
-            this.labelControl9.TabIndex = 15;
-            this.labelControl9.Text = "Описание:";
-            // 
-            // checkRulePool_IsCanShow
-            // 
-            this.checkRulePool_IsCanShow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkRulePool_IsCanShow.Location = new System.Drawing.Point(120, 186);
-            this.checkRulePool_IsCanShow.Name = "checkRulePool_IsCanShow";
-            this.checkRulePool_IsCanShow.Properties.Caption = "Отображать описание торговым представителям";
-            this.checkRulePool_IsCanShow.Size = new System.Drawing.Size(372, 19);
-            this.checkRulePool_IsCanShow.TabIndex = 16;
-            // 
-            // txtRulePool_Description
-            // 
-            this.txtRulePool_Description.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtRulePool_Description.Location = new System.Drawing.Point(120, 3);
-            this.txtRulePool_Description.Name = "txtRulePool_Description";
-            this.txtRulePool_Description.Size = new System.Drawing.Size(372, 177);
-            this.txtRulePool_Description.TabIndex = 17;
-            // 
             // frmRulePoolStep
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -811,16 +811,16 @@
             this.tableLayoutPanel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWarning)).EndInit();
+            this.tableLayoutPanel10.ResumeLayout(false);
+            this.tableLayoutPanel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.checkRulePool_IsCanShow.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRulePool_Description.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).EndInit();
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPageDescription.ResumeLayout(false);
-            this.tableLayoutPanel10.ResumeLayout(false);
-            this.tableLayoutPanel10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.checkRulePool_IsCanShow.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtRulePool_Description.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

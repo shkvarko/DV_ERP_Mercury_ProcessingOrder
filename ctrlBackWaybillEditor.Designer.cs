@@ -289,7 +289,7 @@
             this.mitemDeleteSelectedRows,
             this.mitemClearRows});
             this.contextMenuStrip.Name = "contextMenuStripLicence";
-            this.contextMenuStrip.Size = new System.Drawing.Size(329, 126);
+            this.contextMenuStrip.Size = new System.Drawing.Size(329, 104);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
@@ -1578,10 +1578,11 @@
             this.controlNavigator.Name = "controlNavigator";
             this.controlNavigator.NavigatableControl = this.gridControl;
             this.controlNavigator.ShowToolTips = true;
-            this.controlNavigator.Size = new System.Drawing.Size(280, 19);
+            this.controlNavigator.Size = new System.Drawing.Size(282, 19);
             this.controlNavigator.TabIndex = 22;
             this.controlNavigator.Text = "controlNavigator";
             this.controlNavigator.TextLocation = DevExpress.XtraEditors.NavigatorButtonsTextLocation.Center;
+            this.controlNavigator.TextStringFormat = "Запись {0} из {1}";
             this.controlNavigator.ToolTipController = this.toolTipController;
             // 
             // openFileDialog

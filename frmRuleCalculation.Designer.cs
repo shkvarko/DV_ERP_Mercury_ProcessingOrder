@@ -135,7 +135,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.Image = global::ERPMercuryProcessingOrder.Properties.Resources.undo;
-            this.btnCancel.Location = new System.Drawing.Point(7, 4);
+            this.btnCancel.Location = new System.Drawing.Point(107, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 23);
             this.btnCancel.TabIndex = 2;
@@ -149,7 +149,7 @@
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Image = global::ERPMercuryProcessingOrder.Properties.Resources.disk_blue_ok;
-            this.btnSave.Location = new System.Drawing.Point(107, 4);
+            this.btnSave.Location = new System.Drawing.Point(7, 4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(90, 23);
             this.btnSave.TabIndex = 1;
