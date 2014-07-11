@@ -35,6 +35,10 @@
             this.menuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemShipWaybill = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemSetShipRemark = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemUnSetShipRemark = new System.Windows.Forms.ToolStripMenuItem();
+            this.mitemExportWaybillListForSetShipRemark = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.btnCloseFromWaybill = new DevExpress.XtraEditors.SimpleButton();
@@ -58,6 +62,7 @@
             this.gridControlWaybill = new DevExpress.XtraGrid.GridControl();
             this.gridViewWaybill = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelControlSearchCondition = new DevExpress.XtraEditors.PanelControl();
+            this.btnSearchByImportWaybillIdList = new DevExpress.XtraEditors.SimpleButton();
             this.WaybilllNum = new DevExpress.XtraEditors.TextEdit();
             this.btnWaybillRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl29 = new DevExpress.XtraEditors.LabelControl();
@@ -90,6 +95,10 @@
             this.menuItemRefreshInt = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemShipInt = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuItemSetShipRemarkInt = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemUnSetShipRemarkInt = new System.Windows.Forms.ToolStripMenuItem();
+            this.mitemExportWaybillListForSetShipRemarkInt = new System.Windows.Forms.ToolStripMenuItem();
             this.gridViewIntWaybill = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
@@ -178,30 +187,60 @@
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRefresh,
             this.toolStripSeparator1,
-            this.menuItemShipWaybill});
+            this.menuItemShipWaybill,
+            this.toolStripMenuItem1,
+            this.menuItemSetShipRemark,
+            this.menuItemUnSetShipRemark,
+            this.mitemExportWaybillListForSetShipRemark});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(202, 54);
+            this.contextMenuStrip.Size = new System.Drawing.Size(259, 126);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(201, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(258, 22);
             this.menuRefresh.Text = "Обновить";
             this.menuRefresh.Click += new System.EventHandler(this.btnWaybillRefresh_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(255, 6);
             // 
             // menuItemShipWaybill
             // 
             this.menuItemShipWaybill.Name = "menuItemShipWaybill";
-            this.menuItemShipWaybill.Size = new System.Drawing.Size(201, 22);
+            this.menuItemShipWaybill.Size = new System.Drawing.Size(258, 22);
             this.menuItemShipWaybill.Text = "Отгрузить накладную...";
             this.menuItemShipWaybill.Click += new System.EventHandler(this.menuItemShipWaybill_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(255, 6);
+            // 
+            // menuItemSetShipRemark
+            // 
+            this.menuItemSetShipRemark.Name = "menuItemSetShipRemark";
+            this.menuItemSetShipRemark.Size = new System.Drawing.Size(258, 22);
+            this.menuItemSetShipRemark.Text = "Установить пометку \"К отгрузке\"...";
+            this.menuItemSetShipRemark.Click += new System.EventHandler(this.menuItemSetShipRemark_Click);
+            // 
+            // menuItemUnSetShipRemark
+            // 
+            this.menuItemUnSetShipRemark.Name = "menuItemUnSetShipRemark";
+            this.menuItemUnSetShipRemark.Size = new System.Drawing.Size(258, 22);
+            this.menuItemUnSetShipRemark.Text = "Снять пометку \"К отгрузке\"...";
+            this.menuItemUnSetShipRemark.Click += new System.EventHandler(this.menuItemUnSetShipRemark_Click);
+            // 
+            // mitemExportWaybillListForSetShipRemark
+            // 
+            this.mitemExportWaybillListForSetShipRemark.Name = "mitemExportWaybillListForSetShipRemark";
+            this.mitemExportWaybillListForSetShipRemark.Size = new System.Drawing.Size(258, 22);
+            this.mitemExportWaybillListForSetShipRemark.Text = "Экспорт списка ТТН на отгрузку...";
+            this.mitemExportWaybillListForSetShipRemark.Click += new System.EventHandler(this.mitemExportWaybillListForSetShipRemark_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -215,7 +254,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1013, 587);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1066, 587);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel1, null);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
@@ -228,7 +267,7 @@
             this.panelControl1.Location = new System.Drawing.Point(1, 553);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1011, 33);
+            this.panelControl1.Size = new System.Drawing.Size(1064, 33);
             this.toolTipController.SetSuperTip(this.panelControl1, null);
             this.panelControl1.TabIndex = 25;
             // 
@@ -236,7 +275,7 @@
             // 
             this.btnCloseFromWaybill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCloseFromWaybill.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnCloseFromWaybill.Location = new System.Drawing.Point(914, 5);
+            this.btnCloseFromWaybill.Location = new System.Drawing.Point(967, 5);
             this.btnCloseFromWaybill.Margin = new System.Windows.Forms.Padding(1);
             this.btnCloseFromWaybill.Name = "btnCloseFromWaybill";
             this.btnCloseFromWaybill.Size = new System.Drawing.Size(92, 25);
@@ -280,7 +319,7 @@
             this.tabControl.Location = new System.Drawing.Point(3, 3);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedTabPage = this.tabPageWaybill;
-            this.tabControl.Size = new System.Drawing.Size(1007, 546);
+            this.tabControl.Size = new System.Drawing.Size(1060, 546);
             this.tabControl.TabIndex = 0;
             this.tabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.tabPageWaybill,
@@ -292,7 +331,7 @@
             // 
             this.tabPageWaybill.Controls.Add(this.tableLayoutPanel4);
             this.tabPageWaybill.Name = "tabPageWaybill";
-            this.tabPageWaybill.Size = new System.Drawing.Size(998, 515);
+            this.tabPageWaybill.Size = new System.Drawing.Size(1051, 515);
             this.tabPageWaybill.Text = "Отгрузка клиентам";
             // 
             // tableLayoutPanel4
@@ -314,7 +353,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(998, 515);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1051, 515);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel4, null);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
@@ -331,7 +370,7 @@
             this.panelControl4.Location = new System.Drawing.Point(1, 56);
             this.panelControl4.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl4.Name = "panelControl4";
-            this.panelControl4.Size = new System.Drawing.Size(996, 38);
+            this.panelControl4.Size = new System.Drawing.Size(1049, 38);
             this.toolTipController.SetSuperTip(this.panelControl4, null);
             this.panelControl4.TabIndex = 26;
             // 
@@ -353,7 +392,7 @@
             this.txtRepresentative.Name = "txtRepresentative";
             this.txtRepresentative.Properties.Appearance.Options.UseTextOptions = true;
             this.txtRepresentative.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.txtRepresentative.Size = new System.Drawing.Size(103, 20);
+            this.txtRepresentative.Size = new System.Drawing.Size(115, 20);
             this.txtRepresentative.TabIndex = 36;
             // 
             // WaybillShipMode
@@ -413,7 +452,7 @@
             // 
             this.btnShippedProducts.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnShippedProducts.Image = global::ERPMercuryProcessingOrder.Properties.Resources.check2;
-            this.btnShippedProducts.Location = new System.Drawing.Point(891, 8);
+            this.btnShippedProducts.Location = new System.Drawing.Point(913, 8);
             this.btnShippedProducts.Margin = new System.Windows.Forms.Padding(1);
             this.btnShippedProducts.Name = "btnShippedProducts";
             this.btnShippedProducts.Size = new System.Drawing.Size(92, 25);
@@ -433,7 +472,7 @@
             this.SearchProcessWoring.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SearchProcessWoring.Location = new System.Drawing.Point(3, 98);
             this.SearchProcessWoring.Name = "SearchProcessWoring";
-            this.SearchProcessWoring.Size = new System.Drawing.Size(992, 29);
+            this.SearchProcessWoring.Size = new System.Drawing.Size(1045, 29);
             this.toolTipController.SetSuperTip(this.SearchProcessWoring, null);
             this.SearchProcessWoring.TabIndex = 25;
             // 
@@ -486,7 +525,7 @@
             this.gridControlWaybill.Location = new System.Drawing.Point(3, 3);
             this.gridControlWaybill.MainView = this.gridViewWaybill;
             this.gridControlWaybill.Name = "gridControlWaybill";
-            this.gridControlWaybill.Size = new System.Drawing.Size(990, 354);
+            this.gridControlWaybill.Size = new System.Drawing.Size(1043, 354);
             this.gridControlWaybill.TabIndex = 2;
             this.gridControlWaybill.ToolTipController = this.toolTipController;
             this.gridControlWaybill.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -500,6 +539,7 @@
             this.gridViewWaybill.OptionsDetail.EnableMasterViewMode = false;
             this.gridViewWaybill.OptionsDetail.ShowDetailTabs = false;
             this.gridViewWaybill.OptionsDetail.SmartDetailExpand = false;
+            this.gridViewWaybill.OptionsSelection.MultiSelect = true;
             this.gridViewWaybill.OptionsView.ShowFooter = true;
             this.gridViewWaybill.OptionsView.ShowGroupPanel = false;
             this.gridViewWaybill.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewWaybill_FocusedRowChanged);
@@ -507,6 +547,7 @@
             // 
             // panelControlSearchCondition
             // 
+            this.panelControlSearchCondition.Controls.Add(this.btnSearchByImportWaybillIdList);
             this.panelControlSearchCondition.Controls.Add(this.WaybilllNum);
             this.panelControlSearchCondition.Controls.Add(this.btnWaybillRefresh);
             this.panelControlSearchCondition.Controls.Add(this.labelControl29);
@@ -524,9 +565,24 @@
             this.panelControlSearchCondition.Location = new System.Drawing.Point(1, 1);
             this.panelControlSearchCondition.Margin = new System.Windows.Forms.Padding(1);
             this.panelControlSearchCondition.Name = "panelControlSearchCondition";
-            this.panelControlSearchCondition.Size = new System.Drawing.Size(996, 53);
+            this.panelControlSearchCondition.Size = new System.Drawing.Size(1049, 53);
             this.toolTipController.SetSuperTip(this.panelControlSearchCondition, null);
             this.panelControlSearchCondition.TabIndex = 1;
+            // 
+            // btnSearchByImportWaybillIdList
+            // 
+            this.btnSearchByImportWaybillIdList.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnSearchByImportWaybillIdList.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.btnSearchByImportWaybillIdList.Location = new System.Drawing.Point(1007, 19);
+            this.btnSearchByImportWaybillIdList.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSearchByImportWaybillIdList.Name = "btnSearchByImportWaybillIdList";
+            this.btnSearchByImportWaybillIdList.Size = new System.Drawing.Size(39, 25);
+            this.btnSearchByImportWaybillIdList.TabIndex = 10;
+            this.btnSearchByImportWaybillIdList.Text = "...";
+            this.btnSearchByImportWaybillIdList.ToolTip = "Загрузить список накладных из файла MS Excel";
+            this.btnSearchByImportWaybillIdList.ToolTipController = this.toolTipController;
+            this.btnSearchByImportWaybillIdList.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
+            this.btnSearchByImportWaybillIdList.Click += new System.EventHandler(this.btnSearchByImportWaybillIdList_Click);
             // 
             // WaybilllNum
             // 
@@ -543,10 +599,10 @@
             // 
             this.btnWaybillRefresh.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnWaybillRefresh.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnWaybillRefresh.Location = new System.Drawing.Point(908, 19);
+            this.btnWaybillRefresh.Location = new System.Drawing.Point(913, 19);
             this.btnWaybillRefresh.Margin = new System.Windows.Forms.Padding(1);
             this.btnWaybillRefresh.Name = "btnWaybillRefresh";
-            this.btnWaybillRefresh.Size = new System.Drawing.Size(75, 25);
+            this.btnWaybillRefresh.Size = new System.Drawing.Size(92, 25);
             this.btnWaybillRefresh.TabIndex = 7;
             this.btnWaybillRefresh.Text = "Поиск";
             this.btnWaybillRefresh.ToolTip = "Обновить список накладных";
@@ -565,7 +621,7 @@
             // 
             // labelControl12
             // 
-            this.labelControl12.Location = new System.Drawing.Point(487, 4);
+            this.labelControl12.Location = new System.Drawing.Point(622, 5);
             this.labelControl12.Name = "labelControl12";
             this.labelControl12.Size = new System.Drawing.Size(32, 13);
             this.labelControl12.TabIndex = 9;
@@ -573,7 +629,7 @@
             // 
             // cboxStock
             // 
-            this.cboxStock.Location = new System.Drawing.Point(486, 21);
+            this.cboxStock.Location = new System.Drawing.Point(622, 21);
             this.cboxStock.Name = "cboxStock";
             this.cboxStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -587,7 +643,7 @@
             // 
             // labelControl11
             // 
-            this.labelControl11.Location = new System.Drawing.Point(625, 5);
+            this.labelControl11.Location = new System.Drawing.Point(761, 5);
             this.labelControl11.Name = "labelControl11";
             this.labelControl11.Size = new System.Drawing.Size(37, 13);
             this.labelControl11.TabIndex = 7;
@@ -608,7 +664,7 @@
             this.cboxCompany.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboxCompany.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboxCompany.Size = new System.Drawing.Size(133, 20);
+            this.cboxCompany.Size = new System.Drawing.Size(270, 20);
             this.cboxCompany.TabIndex = 3;
             this.cboxCompany.ToolTip = "Компания";
             this.cboxCompany.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
@@ -619,11 +675,11 @@
             // 
             this.cboxCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cboxCustomer.Location = new System.Drawing.Point(625, 21);
+            this.cboxCustomer.Location = new System.Drawing.Point(761, 21);
             this.cboxCustomer.Name = "cboxCustomer";
             this.cboxCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboxCustomer.Size = new System.Drawing.Size(279, 20);
+            this.cboxCustomer.Size = new System.Drawing.Size(138, 20);
             this.cboxCustomer.TabIndex = 5;
             this.cboxCustomer.ToolTip = "Клиент";
             this.cboxCustomer.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
@@ -683,7 +739,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(996, 360);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1049, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel2, null);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
@@ -699,7 +755,7 @@
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 360F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(996, 360);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1049, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel6, null);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
@@ -707,7 +763,7 @@
             // 
             this.tabPageIntWaybill.Controls.Add(this.tableLayoutPanelIntWaybill);
             this.tabPageIntWaybill.Name = "tabPageIntWaybill";
-            this.tabPageIntWaybill.Size = new System.Drawing.Size(998, 515);
+            this.tabPageIntWaybill.Size = new System.Drawing.Size(1051, 515);
             this.tabPageIntWaybill.Text = "Внутреннее перемещение";
             // 
             // tableLayoutPanelIntWaybill
@@ -729,7 +785,7 @@
             this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelIntWaybill.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelIntWaybill.Size = new System.Drawing.Size(998, 515);
+            this.tableLayoutPanelIntWaybill.Size = new System.Drawing.Size(1051, 515);
             this.toolTipController.SetSuperTip(this.tableLayoutPanelIntWaybill, null);
             this.tableLayoutPanelIntWaybill.TabIndex = 3;
             // 
@@ -742,7 +798,7 @@
             this.SearchProcessWoringIntWaybill.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SearchProcessWoringIntWaybill.Location = new System.Drawing.Point(3, 98);
             this.SearchProcessWoringIntWaybill.Name = "SearchProcessWoringIntWaybill";
-            this.SearchProcessWoringIntWaybill.Size = new System.Drawing.Size(992, 29);
+            this.SearchProcessWoringIntWaybill.Size = new System.Drawing.Size(1045, 29);
             this.toolTipController.SetSuperTip(this.SearchProcessWoringIntWaybill, null);
             this.SearchProcessWoringIntWaybill.TabIndex = 28;
             // 
@@ -781,7 +837,7 @@
             this.panelControl5.Location = new System.Drawing.Point(1, 56);
             this.panelControl5.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl5.Name = "panelControl5";
-            this.panelControl5.Size = new System.Drawing.Size(996, 38);
+            this.panelControl5.Size = new System.Drawing.Size(1049, 38);
             this.toolTipController.SetSuperTip(this.panelControl5, null);
             this.panelControl5.TabIndex = 27;
             // 
@@ -842,7 +898,7 @@
             // 
             this.btnShippedProductsByIntWaybill.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnShippedProductsByIntWaybill.Image = global::ERPMercuryProcessingOrder.Properties.Resources.check2;
-            this.btnShippedProductsByIntWaybill.Location = new System.Drawing.Point(891, 8);
+            this.btnShippedProductsByIntWaybill.Location = new System.Drawing.Point(944, 8);
             this.btnShippedProductsByIntWaybill.Margin = new System.Windows.Forms.Padding(1);
             this.btnShippedProductsByIntWaybill.Name = "btnShippedProductsByIntWaybill";
             this.btnShippedProductsByIntWaybill.Size = new System.Drawing.Size(92, 25);
@@ -878,7 +934,7 @@
             this.gridControlIntWaybill.Location = new System.Drawing.Point(3, 3);
             this.gridControlIntWaybill.MainView = this.gridViewIntWaybill;
             this.gridControlIntWaybill.Name = "gridControlIntWaybill";
-            this.gridControlIntWaybill.Size = new System.Drawing.Size(990, 354);
+            this.gridControlIntWaybill.Size = new System.Drawing.Size(1043, 354);
             this.gridControlIntWaybill.TabIndex = 2;
             this.gridControlIntWaybill.ToolTipController = this.toolTipController;
             this.gridControlIntWaybill.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -889,30 +945,60 @@
             this.contextMenuStripInt.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemRefreshInt,
             this.toolStripSeparator2,
-            this.menuItemShipInt});
+            this.menuItemShipInt,
+            this.toolStripMenuItem2,
+            this.menuItemSetShipRemarkInt,
+            this.menuItemUnSetShipRemarkInt,
+            this.mitemExportWaybillListForSetShipRemarkInt});
             this.contextMenuStripInt.Name = "contextMenuStrip";
-            this.contextMenuStripInt.Size = new System.Drawing.Size(202, 54);
+            this.contextMenuStripInt.Size = new System.Drawing.Size(259, 126);
             this.toolTipController.SetSuperTip(this.contextMenuStripInt, null);
             this.contextMenuStripInt.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripInt_Opening);
             // 
             // menuItemRefreshInt
             // 
             this.menuItemRefreshInt.Name = "menuItemRefreshInt";
-            this.menuItemRefreshInt.Size = new System.Drawing.Size(201, 22);
+            this.menuItemRefreshInt.Size = new System.Drawing.Size(258, 22);
             this.menuItemRefreshInt.Text = "Обновить";
             this.menuItemRefreshInt.Click += new System.EventHandler(this.btnIntWaybillRefresh_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(198, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(255, 6);
             // 
             // menuItemShipInt
             // 
             this.menuItemShipInt.Name = "menuItemShipInt";
-            this.menuItemShipInt.Size = new System.Drawing.Size(201, 22);
+            this.menuItemShipInt.Size = new System.Drawing.Size(258, 22);
             this.menuItemShipInt.Text = "Отгрузить накладную...";
             this.menuItemShipInt.Click += new System.EventHandler(this.menuItemShipInt_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(255, 6);
+            // 
+            // menuItemSetShipRemarkInt
+            // 
+            this.menuItemSetShipRemarkInt.Name = "menuItemSetShipRemarkInt";
+            this.menuItemSetShipRemarkInt.Size = new System.Drawing.Size(258, 22);
+            this.menuItemSetShipRemarkInt.Text = "Установить пометку \"К отгрузке\"...";
+            this.menuItemSetShipRemarkInt.Click += new System.EventHandler(this.menuItemSetShipRemarkInt_Click);
+            // 
+            // menuItemUnSetShipRemarkInt
+            // 
+            this.menuItemUnSetShipRemarkInt.Name = "menuItemUnSetShipRemarkInt";
+            this.menuItemUnSetShipRemarkInt.Size = new System.Drawing.Size(258, 22);
+            this.menuItemUnSetShipRemarkInt.Text = "Снять пометку \"К отгрузке\"...";
+            this.menuItemUnSetShipRemarkInt.Click += new System.EventHandler(this.menuItemUnSetShipRemarkInt_Click);
+            // 
+            // mitemExportWaybillListForSetShipRemarkInt
+            // 
+            this.mitemExportWaybillListForSetShipRemarkInt.Name = "mitemExportWaybillListForSetShipRemarkInt";
+            this.mitemExportWaybillListForSetShipRemarkInt.Size = new System.Drawing.Size(258, 22);
+            this.mitemExportWaybillListForSetShipRemarkInt.Text = "Экспорт списка ТТН на отгрузку...";
+            this.mitemExportWaybillListForSetShipRemarkInt.Click += new System.EventHandler(this.mitemExportWaybillListForSetShipRemarkInt_Click);
             // 
             // gridViewIntWaybill
             // 
@@ -948,7 +1034,7 @@
             this.panelControl3.Location = new System.Drawing.Point(1, 1);
             this.panelControl3.Margin = new System.Windows.Forms.Padding(1);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(996, 53);
+            this.panelControl3.Size = new System.Drawing.Size(1049, 53);
             this.toolTipController.SetSuperTip(this.panelControl3, null);
             this.panelControl3.TabIndex = 1;
             // 
@@ -1010,7 +1096,7 @@
             // 
             this.btnIntWaybillRefresh.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnIntWaybillRefresh.ImageAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.btnIntWaybillRefresh.Location = new System.Drawing.Point(908, 19);
+            this.btnIntWaybillRefresh.Location = new System.Drawing.Point(961, 19);
             this.btnIntWaybillRefresh.Margin = new System.Windows.Forms.Padding(1);
             this.btnIntWaybillRefresh.Name = "btnIntWaybillRefresh";
             this.btnIntWaybillRefresh.Size = new System.Drawing.Size(75, 25);
@@ -1128,7 +1214,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(996, 360);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1049, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel5, null);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
@@ -1144,7 +1230,7 @@
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 433F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(996, 360);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1049, 360);
             this.toolTipController.SetSuperTip(this.tableLayoutPanel7, null);
             this.tableLayoutPanel7.TabIndex = 4;
             // 
@@ -1154,14 +1240,14 @@
             // 
             // openFileDialog
             // 
-            this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
+            this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsx)|*.xlsx|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
             // 
             // frmShippedProducts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1013, 587);
+            this.ClientSize = new System.Drawing.Size(1066, 587);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "frmShippedProducts";
             this.toolTipController.SetSuperTip(this, null);
@@ -1322,5 +1408,14 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemRefreshInt;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem menuItemShipInt;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetShipRemark;
+        private System.Windows.Forms.ToolStripMenuItem menuItemUnSetShipRemark;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSetShipRemarkInt;
+        private System.Windows.Forms.ToolStripMenuItem menuItemUnSetShipRemarkInt;
+        private System.Windows.Forms.ToolStripMenuItem mitemExportWaybillListForSetShipRemark;
+        private System.Windows.Forms.ToolStripMenuItem mitemExportWaybillListForSetShipRemarkInt;
+        private DevExpress.XtraEditors.SimpleButton btnSearchByImportWaybillIdList;
     }
 }

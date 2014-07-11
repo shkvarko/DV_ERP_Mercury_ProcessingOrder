@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
 using ERP_Mercury.Common;
+using System.Data.OleDb;
+using OfficeOpenXml;
 
 namespace ERPMercuryProcessingOrder
 {
@@ -61,6 +63,7 @@ namespace ERPMercuryProcessingOrder
 
         private System.Boolean IsAvailableDR_ShippedWaybillPayForm1; // "ТТН ф1 отгрузка";
         private System.Boolean IsAvailableDR_ShippedWaybillPayForm2; // "ТТН ф2 отгрузка";
+        private System.Boolean IsAvailableDR_SetShipRemark;          // "Установка признака, можно ли отгружать ТТН"
 
         public System.Threading.Thread ThreadAutoShipDocumentList { get; set; }
 
@@ -111,6 +114,7 @@ namespace ERPMercuryProcessingOrder
             UniXP.Common.CClientRights objClientRights = m_objProfile.GetClientsRight();
             IsAvailableDR_ShippedWaybillPayForm1 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ShippedWaybillPayForm1);
             IsAvailableDR_ShippedWaybillPayForm2 = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_ShippedWaybillPayForm2);
+            IsAvailableDR_SetShipRemark = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strDR_SetShipRemark);
             objClientRights = null;
 
             m_objWaybillList = null;
@@ -499,6 +503,7 @@ namespace ERPMercuryProcessingOrder
         {
             WaybillColumnView.Columns.Clear();
             AddGridColumn(WaybillColumnView, "ID", "Идентификатор");
+            AddGridColumn(WaybillColumnView, "CanShip", "к отгрузке");
             AddGridColumn(WaybillColumnView, "WaybillStateName", "Состояние");
             AddGridColumn(WaybillColumnView, "DocNum", "Номер");
             AddGridColumn(WaybillColumnView, "BeginDate", "Дата");
@@ -581,6 +586,7 @@ namespace ERPMercuryProcessingOrder
         {
             IntWaybillColumnView.Columns.Clear();
             AddGridColumn(IntWaybillColumnView, "ID", "Идентификатор");
+            AddGridColumn(IntWaybillColumnView, "CanShip", "можно отгружать");
             AddGridColumn(IntWaybillColumnView, "DocStateName", "Состояние");
             AddGridColumn(IntWaybillColumnView, "DocNum", "Номер");
             AddGridColumn(IntWaybillColumnView, "BeginDate", "Дата");
@@ -796,7 +802,7 @@ namespace ERPMercuryProcessingOrder
                 m_objIntWaybillStateList = CIntWaybillState.GetIntWaybillStateList(m_objProfile, ref strErr);
 
                 WaybillShipMode.Properties.Items.AddRange( CWaybillShipMode.GetWaybillShipModeList( m_objProfile, ref strErr ) );
-                IntWaybillShipMode.Properties.Items.AddRange(CIntWaybillShipMode.GetWaybillShipModeList(m_objProfile, ref strErr));
+                IntWaybillShipMode.Properties.Items.AddRange(CIntWaybillShipMode.GetIntWaybillShipModeList(m_objProfile, ref strErr));
                 
             }
             catch (System.Exception f)
@@ -828,7 +834,7 @@ namespace ERPMercuryProcessingOrder
 
                 Depart.Properties.Items.Clear();
 
-                m_objWaybillList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, System.Guid.Empty, false, dtBeginDate.DateTime,
+                m_objWaybillList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, System.Guid.Empty, null, false, dtBeginDate.DateTime,
                     dtEndDate.DateTime, uuidCompanyId, uuidStockId, uuidPaymentTypeId, uuidCustomerId, ref strErr, bOnlyUnShippedWaybills);
 
                 if (m_objWaybillList != null)
@@ -1414,7 +1420,7 @@ namespace ERPMercuryProcessingOrder
 
                     Cursor = Cursors.Default;
 
-                    DevExpress.XtraEditors.XtraMessageBox.Show(System.String.Format("Отгрузка твоара по накладным завершена.\nОтгружено накладных: {0:### ### ##0} на сумму: {1:### ### ##0}  ", WaybillsCount, WaybillsTotalSum), "Внимание!",
+                    DevExpress.XtraEditors.XtraMessageBox.Show(System.String.Format("Отгрузка товара по накладным завершена.\nОтгружено накладных: {0:### ### ##0} на сумму: {1:### ### ##0}  ", WaybillsCount, WaybillsTotalSum), "Внимание!",
                         System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 }
                 else
@@ -1429,6 +1435,7 @@ namespace ERPMercuryProcessingOrder
                             {
                                 objItem.ShipDate = Waybill_ShipDate;
                                 objItem.WaybillState = m_objWaybillStateList.SingleOrDefault<CWaybillState>(x=>x.ID.CompareTo(WaybillState_Guid) == 0);
+                                objItem.CanShip = false;
                             }
                             else
                             {
@@ -1540,6 +1547,9 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 menuItemShipWaybill.Enabled = (SelectedWaybill != null);
+                menuItemSetShipRemark.Enabled = ( ( IsAvailableDR_SetShipRemark == true ) && (gridViewWaybill.GetSelectedRows().Length > 0) );
+                menuItemUnSetShipRemark.Enabled = ( ( IsAvailableDR_SetShipRemark == true ) && (gridViewWaybill.GetSelectedRows().Length > 0));
+                mitemExportWaybillListForSetShipRemark.Enabled = (IsAvailableDR_SetShipRemark == true);
             }
             catch (System.Exception f)
             {
@@ -1856,6 +1866,9 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 menuItemShipInt.Enabled = (SelectedIntWaybill != null);
+                menuItemSetShipRemarkInt.Enabled = ( ( IsAvailableDR_SetShipRemark == true ) && ( gridViewIntWaybill.GetSelectedRows().Length > 0 ) );
+                menuItemUnSetShipRemarkInt.Enabled = ( ( IsAvailableDR_SetShipRemark == true ) && ( gridViewIntWaybill.GetSelectedRows().Length > 0 ) );
+                mitemExportWaybillListForSetShipRemarkInt.Enabled = (IsAvailableDR_SetShipRemark == true);
             }
             catch (System.Exception f)
             {
@@ -1952,6 +1965,674 @@ namespace ERPMercuryProcessingOrder
         {
             ShipIntWaybill( SelectedIntWaybill, dtIntWaybill_ShipDate.DateTime, 
                 ( ( IntWaybillShipMode.SelectedItem == null ) ? null : (CIntWaybillShipMode)IntWaybillShipMode.SelectedItem ));
+        }
+        #endregion
+
+        #region Установка пометки "накладную можно отгружать"
+        /// <summary>
+        /// Установка пометки "накладную можно отгружать" для отгрузочных накладных
+        /// </summary>
+        /// <param name="ShipRemark">признак "накладную можно отгружать"</param>
+        private void SetShipRemarkForWaybillList(System.Boolean ShipRemark)
+        {
+            try
+            {
+                int[] arr = gridViewWaybill.GetSelectedRows();
+
+                if (arr.Length >= 1)
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    List<System.Guid> WaybillGuidList = new List<Guid>();
+                    for (System.Int32 i = 0; i < arr.Length; i++)
+                    {
+                        WaybillGuidList.Add(m_objWaybillList[gridViewWaybill.GetDataSourceRowIndex(arr[i])].ID);
+                    }
+
+                    System.String strErr = System.String.Empty;
+                    if (CWaybill.SetShipRemarkForWaybillList(m_objProfile, null, WaybillGuidList, ShipRemark, ref strErr) == true)
+                    {
+                        for (System.Int32 i = 0; i < arr.Length; i++)
+                        {
+                            m_objWaybillList[gridViewWaybill.GetDataSourceRowIndex(arr[i])].CanShip = ShipRemark;
+                        }
+                        gridControlWaybill.RefreshDataSource();
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание!",
+                            System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Необходимо выбрать хотя бы одну накладную в списке.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("SetShipRemarkForWaybillList. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+            return;
+        }
+
+        /// <summary>
+        /// Установка пометки "накладную можно отгружать" для накладных на внутреннее перемещение
+        /// </summary>
+        /// <param name="ShipRemark">признак "накладную можно отгружать"</param>
+        private void SetShipRemarkForIntWaybillList(System.Boolean ShipRemark)
+        {
+            try
+            {
+                int[] arr = gridViewIntWaybill.GetSelectedRows();
+
+                if (arr.Length >= 1)
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    List<System.Guid> WaybillGuidList = new List<Guid>();
+                    for (System.Int32 i = 0; i < arr.Length; i++)
+                    {
+                        WaybillGuidList.Add(m_objIntWaybillList[gridViewIntWaybill.GetDataSourceRowIndex(arr[i])].ID);
+                    }
+
+                    System.String strErr = System.String.Empty;
+                    if (CIntWaybill.SetShipRemarkForWaybillList(m_objProfile, null, WaybillGuidList, ShipRemark, ref strErr) == true)
+                    {
+                        for (System.Int32 i = 0; i < arr.Length; i++)
+                        {
+                            m_objIntWaybillList[gridViewIntWaybill.GetDataSourceRowIndex(arr[i])].CanShip = ShipRemark;
+                        }
+                        gridControlIntWaybill.RefreshDataSource();
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание!",
+                            System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Необходимо выбрать хотя бы одну накладную в списке.", "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("SetShipRemarkForIntWaybillList. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+            return;
+        }
+
+        private void menuItemSetShipRemark_Click(object sender, EventArgs e)
+        {
+            SetShipRemarkForWaybillList(true);
+        }
+
+        private void menuItemUnSetShipRemark_Click(object sender, EventArgs e)
+        {
+            SetShipRemarkForWaybillList(false);
+        }
+
+        private void menuItemSetShipRemarkInt_Click(object sender, EventArgs e)
+        {
+            SetShipRemarkForIntWaybillList(true);
+        }
+        private void menuItemUnSetShipRemarkInt_Click(object sender, EventArgs e)
+        {
+            SetShipRemarkForIntWaybillList(false);
+        }
+        #endregion
+
+        #region Экспорт списка накладных к отгруке в DBF
+
+        private string ShowSaveFileDialog(string title, string filter)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            string name = ( System.DateTime.Today.Year.ToString() + System.DateTime.Today.Month.ToString() +  System.DateTime.Today.Day.ToString() );
+            int n = name.LastIndexOf(".") + 1;
+            if (n > 0) name = name.Substring(n, name.Length - n);
+            dlg.Title = "Экспорт списка накладных для отгрузки в " + title;
+            dlg.FileName = name;
+            dlg.Filter = filter;
+            if (dlg.ShowDialog() == DialogResult.OK) return dlg.FileName;
+            return "";
+        }
+
+        private System.String ConvertWaybillIdToString(System.Int32 iPrefix, System.Int32 iNumberLength, System.Int32 iWaybillIbId)
+        {
+            System.String strRet = System.String.Empty;
+
+            try
+            {
+                System.String strPrefix = System.Convert.ToString(iPrefix);
+                System.String strWaybillIbId = System.Convert.ToString(iWaybillIbId);
+                
+                if ((strPrefix.Length + strWaybillIbId.Length) <= iNumberLength)
+                {
+                    strRet = strWaybillIbId;
+                    while( (strRet.Length) < (iNumberLength - strPrefix.Length))
+                    {
+                        strRet = ("0" + strRet);
+                    }
+                    strRet = (strPrefix + strRet);
+                }
+            }
+            catch
+            {
+                strRet = System.String.Empty; 
+            }
+
+            return strRet;
+        }
+
+        private bool EхportWaybillWithShipRemarkInDBF( List<CWaybill> objWaybillList, List<CIntWaybill> objIntWaybillList, 
+            string fileName, ref System.String strErr )
+        {
+            string tableName = string.Empty;
+            bool returnStatus = false;
+            try
+            {
+                System.Int32 imaxLenghtFilename = 8;
+                if (System.IO.Path.GetFileNameWithoutExtension(fileName).Length > imaxLenghtFilename)
+                {
+                    fileName = (System.IO.Path.GetDirectoryName(fileName) + "\\" + System.IO.Path.GetFileNameWithoutExtension(fileName).Trim().Replace(" ", "").Substring(0, imaxLenghtFilename) + ".dbf");
+                }
+                System.IO.File.Delete(fileName);
+
+
+                string jetOleDbConString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0}; Extended Properties=dBASE IV";
+                OleDbConnection conn = new System.Data.OleDb.OleDbConnection();
+                conn.ConnectionString = String.Format(jetOleDbConString, System.IO.Path.GetDirectoryName(fileName));
+
+                System.Data.OleDb.OleDbCommand oleDbCommandCreateTable = new System.Data.OleDb.OleDbCommand();
+                System.Data.OleDb.OleDbCommand oleDbJetInsertCommand = new System.Data.OleDb.OleDbCommand();
+                oleDbCommandCreateTable.Connection = conn;
+                oleDbJetInsertCommand.Connection = conn;
+
+                System.String strTableName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                oleDbCommandCreateTable.CommandText = "CREATE TABLE " + strTableName + "(ID Integer, REASON Integer, MODE Integer )";
+
+                conn.Open();
+
+                oleDbCommandCreateTable.ExecuteNonQuery();
+
+                oleDbJetInsertCommand.CommandText = "INSERT INTO " + strTableName + " (ID, REASON, MODE) VALUES (?, ?, ?)";
+                oleDbJetInsertCommand.Parameters.Add(new System.Data.OleDb.OleDbParameter("ID", System.Data.OleDb.OleDbType.Integer, 0, "ID"));
+                oleDbJetInsertCommand.Parameters.Add(new System.Data.OleDb.OleDbParameter("REASON", System.Data.OleDb.OleDbType.Integer, 0, "REASON"));
+                oleDbJetInsertCommand.Parameters.Add(new System.Data.OleDb.OleDbParameter("MODE", System.Data.OleDb.OleDbType.Integer, 0, "MODE"));
+                System.Int32 iPrefix = 0; 
+                System.Int32 iNumberLength = 8;
+                if (objWaybillList != null)
+                {
+                    iPrefix = 3;
+                    foreach (CWaybill objWaybill in objWaybillList)
+                    {
+                        oleDbJetInsertCommand.Parameters["ID"].Value = ConvertWaybillIdToString( iPrefix, iNumberLength, objWaybill.Ib_ID);
+                        oleDbJetInsertCommand.Parameters["REASON"].Value = System.Convert.ToInt32(objWaybill.WaybillShipMode.WaybillShipModeId);
+                        oleDbJetInsertCommand.Parameters["MODE"].Value = 0;
+
+                        oleDbJetInsertCommand.ExecuteNonQuery();
+                    }
+                }
+                else if (objIntWaybillList != null)
+                {
+                    iPrefix = 2;
+                    foreach (CIntWaybill objIntWaybill in objIntWaybillList)
+                    {
+                        oleDbJetInsertCommand.Parameters["ID"].Value = ConvertWaybillIdToString(iPrefix, iNumberLength, objIntWaybill.Ib_ID);
+                        oleDbJetInsertCommand.Parameters["REASON"].Value = System.Convert.ToInt32(objIntWaybill.WaybillShipMode.WaybillShipModeId);
+                        oleDbJetInsertCommand.Parameters["MODE"].Value = 0;
+
+                        oleDbJetInsertCommand.ExecuteNonQuery();
+                    }
+                }
+
+
+                conn.Close();
+                returnStatus = true;
+
+            }
+            catch (System.Exception f)
+            {
+                strErr += (String.Format("Не удалось произвести экспорт заказа в файл dbf.\n\nТекст ошибки: {0}", f.Message));
+            }
+            finally
+            {
+            }
+
+            return returnStatus;
+        }
+
+        private void mitemExportWaybillListForSetShipRemark_Click(object sender, EventArgs e)
+        {
+            if (m_objWaybillList == null) { return; }
+            try
+            {
+                List<CWaybill> objWaybillList = m_objWaybillList.Where<CWaybill>(x => x.CanShip == true).ToList<CWaybill>();
+
+                if ((objWaybillList == null) || (objWaybillList.Count == 0))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных с пометкой \"можно отгружать\" пуст.", "Внимание",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+                    return;
+                }
+
+                System.String strErr = System.String.Empty;
+
+                string fileName = ShowSaveFileDialog("документ DBF", "DBF Files|*.dbf");
+
+                if (fileName.Trim().Length > 0)
+                {
+                    System.Boolean bOKdbf = false;
+                    System.Boolean bOKexcel = false;
+
+                    bOKdbf = EхportWaybillWithShipRemarkInDBF(objWaybillList, null, fileName, ref strErr);
+                    bOKexcel = ExportToExcelWaybillWithShipRemark(System.IO.Path.ChangeExtension(fileName, "xlsx"), "1", objWaybillList, null, ref strErr);
+
+                    if ((bOKdbf && bOKexcel) == true)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Экспорт данных успешно завершён.\nСформированы файлы DBF и MSExcel.\n" + fileName + "\n" + System.IO.Path.ChangeExtension(fileName, "xlsx"), "Внимание",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    }
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("sbExportToTXT_Click. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+
+            return;
+
+        }
+
+        private void mitemExportWaybillListForSetShipRemarkInt_Click(object sender, EventArgs e)
+        {
+            if (m_objIntWaybillList == null) { return; }
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+
+                List<CIntWaybill> objWaybillList = m_objIntWaybillList.Where<CIntWaybill>(x => x.CanShip == true).ToList<CIntWaybill>();
+
+                if ((objWaybillList == null) || (objWaybillList.Count == 0))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Список накладных с пометкой \"можно отгружать\" пуст.", "Внимание",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+                    return;
+                }
+
+                System.String strErr = System.String.Empty;
+                string fileName = ShowSaveFileDialog("документ DBF", "DBF Files|*.dbf");
+                if (fileName.Trim().Length > 0 )
+                {
+                    System.Boolean bOKdbf = false;
+                    System.Boolean bOKexcel = false;
+
+                    bOKdbf = EхportWaybillWithShipRemarkInDBF(null, objWaybillList, fileName, ref strErr);
+                    bOKexcel = ExportToExcelWaybillWithShipRemark( System.IO.Path.ChangeExtension(fileName, "xlsx" ), "1", null, objWaybillList, ref strErr);
+
+                    if ((bOKdbf && bOKexcel) == true)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Экспорт данных успешно завершён.\nСформированы файлы DBF и MSExcel.\n" + fileName + "\n" + System.IO.Path.ChangeExtension(fileName, "xlsx"), "Внимание",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание!",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("mitemExportWaybillListForSetShipRemarkInt_Click. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+
+            return;
+
+        } // close function
+
+        private System.Boolean ExportToExcelWaybillWithShipRemark( string strFileName, string strSheetName, 
+            List<CWaybill> objWaybillList, List<CIntWaybill> objIntWaybillList, ref System.String strErr  )
+        {
+            System.Boolean bRet = false;
+            try
+            {
+
+                System.IO.FileInfo newFile = new System.IO.FileInfo(strFileName);
+                if (newFile.Exists)
+                {
+                    newFile.Delete();
+                    newFile = new System.IO.FileInfo(strFileName);
+                }
+
+                System.Int32 iColumnID = 1;
+                System.Int32 iColumnREASON = 2;
+                System.Int32 iColumnMODE = 3;
+
+                System.String strColumnID = "ID";
+                System.String strColumnREASON = "REASON";
+                System.String strColumnMODE = "MODE";
+
+                using (ExcelPackage package = new ExcelPackage(newFile))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(strSheetName);
+                    System.Int32 iCurrentRow = 1;
+
+                    worksheet.Cells[iCurrentRow, iColumnID].Value = strColumnID;
+                    worksheet.Cells[iCurrentRow, iColumnREASON].Value = strColumnREASON;
+                    worksheet.Cells[iCurrentRow, iColumnMODE].Value = strColumnMODE;
+
+                    iCurrentRow++;
+
+                    System.Int32 iPrefix = 0;
+                    System.Int32 iNumberLength = 8;
+
+                    if (objWaybillList != null)
+                    {
+                        iPrefix = 3;
+                        foreach (CWaybill objWaybill in objWaybillList)
+                        {
+                            worksheet.Cells[iCurrentRow, iColumnID].Value = ConvertWaybillIdToString(iPrefix, iNumberLength, objWaybill.Ib_ID);
+                            worksheet.Cells[iCurrentRow, iColumnREASON].Value = System.Convert.ToInt32(objWaybill.WaybillShipMode.WaybillShipModeId);
+                            worksheet.Cells[iCurrentRow, iColumnMODE].Value = 0;
+
+                            iCurrentRow++;
+                        }
+                    }
+                    else if (objIntWaybillList != null)
+                    {
+                        iPrefix = 2;
+                        foreach (CIntWaybill objIntWaybill in objIntWaybillList)
+                        {
+                            worksheet.Cells[iCurrentRow, iColumnID].Value = ConvertWaybillIdToString(iPrefix, iNumberLength, objIntWaybill.Ib_ID);
+                            worksheet.Cells[iCurrentRow, iColumnREASON].Value = System.Convert.ToInt32(objIntWaybill.WaybillShipMode.WaybillShipModeId);
+                            worksheet.Cells[iCurrentRow, iColumnMODE].Value = 0;
+
+                            iCurrentRow++;
+                        }
+                    }
+
+                    worksheet = null;
+
+                    package.Save();
+
+                    bRet = true;
+
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                strErr += (String.Format("Ошибка экспорта в MS Excel.\n\nТекст ошибки: {0}", f.Message));
+            }
+            finally
+            {
+            }
+
+            return bRet;
+        }
+
+
+        #endregion
+
+        #region Загрузка журнала накладных по списку кодов из файла MS Excel
+        /// <summary>
+        /// Загрузка журнала неотгруженных накладных согласно списка кодов накладных
+        /// </summary>
+        /// <param name="WaybillIdList">список кодов накладных</param>
+        private void LoadWaybillsShipRemark( List<System.Int32> WaybillIdList )
+        {
+            this.Cursor = Cursors.WaitCursor;
+            System.String strErr = System.String.Empty;
+            try
+            {
+                gridControlWaybill.DataSource = null;
+                m_objWaybillList = ERP_Mercury.Common.CWaybill.GetWaybillListByWaybillIdList(m_objProfile, WaybillIdList, ref strErr);
+
+                if (m_objWaybillList != null)
+                {
+                    m_objWaybillList = m_objWaybillList.Where<CWaybill>(x => x.WaybillState.WaybillStateId == 0).ToList<CWaybill>();
+                    gridControlWaybill.DataSource = m_objWaybillList;
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr, "Внимание",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                }
+
+            }
+            catch (System.Exception f)
+            {
+                SendMessageToLog("Загрузка журнала не отгруженных накладных. Текст ошибки: " + f.Message);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+                this.Refresh();
+            }
+
+            return ;
+        }
+
+        /// <summary>
+        /// Считывает информацию из фала MS Excel
+        /// </summary>
+        /// <param name="strFileName">имя файла MS Excel</param>
+        /// <param name="strErr">текст ошибки</param>
+        /// <returns>список идентификаторов накладных</returns>
+        private List<System.Int32> ReadDataFromXLSFile(System.String strFileName, ref System.String strErr )
+        {
+            List<System.Int32> WaybillIdList = null;
+           
+            System.IO.FileInfo newFile = new System.IO.FileInfo(strFileName);
+            if (newFile.Exists == false)
+            {
+                strErr += ("Ошибка экспорта в MS Excel.\n\nНе найден файл: " + strFileName);
+
+                return WaybillIdList;
+            }
+
+            try
+            {
+                WaybillIdList = new List<int>();
+                System.Int32 iStartRow = 2;
+
+                System.Int32 iColumnID = 1;
+                System.Int32 iColumnREASON = 2;
+                System.Int32 iColumnMODE = 3;
+                System.Int32 iSheet = 1;
+
+                System.Int32 iCurrentRow = iStartRow;
+
+                using (ExcelPackage package = new ExcelPackage(newFile))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[iSheet];
+                    if (worksheet != null)
+                    {
+
+                        System.Boolean bStopRead = false;
+                        System.Boolean bErrExists = false;
+                        System.String strFrstColumn = System.String.Empty;
+                        System.Int32 i = 1;
+
+                        System.String strID = System.String.Empty;
+                        System.Int32 iID = 0;
+                        System.Int32 iREASON = 0;
+                        System.Int32 iMODE = 0;
+
+                        while (bStopRead == false)
+                        {
+                            bErrExists = false;
+                            strID = System.String.Empty;
+                            iID = 0;
+                            iREASON = 0;
+                            iMODE = 0;
+
+                            // пробежим по строкам и считаем информацию
+                            strFrstColumn = System.Convert.ToString(worksheet.Cells[iCurrentRow, iColumnID].Value);
+                            if (strFrstColumn == "")
+                            {
+                                bStopRead = true;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    strID = System.Convert.ToString(worksheet.Cells[iCurrentRow, iColumnID].Value);
+                                }
+                                catch
+                                {
+                                    bErrExists = true;
+                                    strID = System.String.Empty;
+                                    SendMessageToLog(String.Format("№ позиции: {0} ошибка преобразования кода накладной в строку", i));
+                                }
+                                try
+                                {
+                                    iREASON = System.Convert.ToInt32(worksheet.Cells[iCurrentRow, iColumnREASON].Value);
+                                }
+                                catch
+                                {
+                                    bErrExists = true; 
+                                    iREASON = 0;
+                                    SendMessageToLog(String.Format("№ позиции: {0} ошибка преобразования кода вида отгрузки в числовой формат", i));
+                                }
+                                try
+                                {
+                                    iMODE = System.Convert.ToInt32(worksheet.Cells[iCurrentRow, iColumnMODE].Value);
+                                }
+                                catch
+                                {
+                                    bErrExists = true;
+                                    iMODE = 0;
+                                    SendMessageToLog(String.Format("№ позиции: {0} ошибка преобразования кода доставки в числовой формат", i));
+                                }
+
+                                if ((bErrExists == false) && (bStopRead == false))
+                                {
+                                    strID = strID.Substring(1);
+                                    while (strID[0] == '0')
+                                    {
+                                        strID = strID.Substring(1);
+                                    }
+
+                                    if (strID.Length > 0)
+                                    {
+                                        try
+                                        {
+                                            iID = System.Convert.ToInt32(strID);
+                                            WaybillIdList.Add(iID);
+                                        }
+                                        catch
+                                        {
+                                            bErrExists = true;
+                                            iREASON = 0;
+                                            SendMessageToLog(String.Format(" № позиции: {0} ошибка преобразования кода накладной {1} в числовой формат", i, strID));
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                            iCurrentRow++;
+                            i++;
+                            strFrstColumn = System.Convert.ToString(worksheet.Cells[iCurrentRow, iColumnID].Value);
+
+                        } //while (bStopRead == false)
+                    }
+                    worksheet = null;
+                }
+
+
+            }
+            catch (System.Exception f)
+            {
+                strErr += ("Ошибка импорта данных из MS Excel.\n\nТекст ошибки: " + f.Message);
+            }
+            finally
+            {
+            }
+
+            return WaybillIdList;
+        }
+
+        private void btnSearchByImportWaybillIdList_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    this.Refresh();
+                    if ((openFileDialog.FileName != "") && (System.IO.File.Exists(openFileDialog.FileName) == true))
+                    {
+                        System.String strFileName = openFileDialog.FileName;
+                        if (strFileName.Length > 0)
+                        {
+                            Cursor = Cursors.WaitCursor;
+
+                            System.String strErr = System.String.Empty;
+                            List<System.Int32> objWaybillList = ReadDataFromXLSFile(strFileName, ref strErr);
+
+                            if (objWaybillList != null)
+                            {
+                                LoadWaybillsShipRemark(objWaybillList);
+                            }
+                            else
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show( strErr, "Внимание!",
+                                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error );
+                            }
+                                 
+                        }
+
+                    }
+                }
+            }//try
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "btnSearchByImportWaybillIdList_Click.\nТекст ошибки: " + f.Message, "Ошибка",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = System.Windows.Forms.Cursors.Default;
+            }
+
+            return;
         }
         #endregion
 

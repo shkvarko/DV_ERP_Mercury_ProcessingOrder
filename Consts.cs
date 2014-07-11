@@ -45,5 +45,6 @@ namespace ERPMercuryProcessingOrder
         public static readonly System.String strRightEditRulePool = "Редактирование правил расчета цен";
         public static readonly System.String strRightEditRulePoolDecription = "Редактирование описания акций";
 
+        public static readonly System.String strDR_SetShipRemark = "Установка пометки, можно ли отгружать ТТН";
     }
 }

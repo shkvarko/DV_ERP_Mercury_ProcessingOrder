@@ -1020,7 +1020,7 @@
             this.menuTransformSupplToWaybillInAutoMode,
             this.menuGoToWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(324, 248);
+            this.contextMenuStrip.Size = new System.Drawing.Size(324, 270);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 

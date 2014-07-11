@@ -2056,7 +2056,7 @@ namespace ERPMercuryProcessingOrder
             {
                 System.String strErr = System.String.Empty;
 
-                List<ERP_Mercury.Common.CWaybill> objWaybillList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, objOrder.ID, true, System.DateTime.Today,
+                List<ERP_Mercury.Common.CWaybill> objWaybillList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, objOrder.ID, null, true, System.DateTime.Today,
                     System.DateTime.Today, System.Guid.Empty, System.Guid.Empty, System.Guid.Empty, System.Guid.Empty, ref strErr);
                 if ((objWaybillList == null) || (objWaybillList.Count == 0))
                 {

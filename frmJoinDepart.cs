@@ -634,7 +634,7 @@ namespace ERPMercuryProcessingOrder
 
                 Depart.Properties.Items.Clear();
 
-                m_objList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, System.Guid.Empty, false, dtBeginDate.DateTime,
+                m_objList = ERP_Mercury.Common.CWaybill.GetWaybillList(m_objProfile, System.Guid.Empty, null, false, dtBeginDate.DateTime,
                     dtEndDate.DateTime, uuidCompanyId, uuidStockId, uuidPaymentTypeId, uuidCustomerId, ref strErr);
 
                 if (m_objList != null)
