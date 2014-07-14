@@ -96,12 +96,12 @@ namespace ERPMercuryProcessingOrder
             IsAvailableDR_ExcludeOrderInADJ = objClientRights.GetState(ERPMercuryProcessingOrder.Consts.strExcludeOrderInADJ);
             
             objClientRights = null;
-            
+
+            m_objCustomerList = new List<ERP_Mercury.Common.CCustomer>();
             m_objOrderList = null;
             frmItemEditor = null;
             m_objSelectedOrder = null;
             m_bThreadFinishJob = false;
-            m_objCustomerList = new List<ERP_Mercury.Common.CCustomer>();
             m_objOrderStateList = null;
 
             AddGridColumns();
@@ -208,7 +208,7 @@ namespace ERPMercuryProcessingOrder
                 foreach (System.String strPath in this.m_objProfile.ResourcePathList)
                 {
                     //Load the assembly from the specified path. 
-                    strFileFullName = strPath + "\\" + strDllName;
+                    strFileFullName = String.Format("{0}\\{1}", strPath, strDllName);
                     if (System.IO.File.Exists(strFileFullName))
                     {
                         try
@@ -2136,8 +2136,6 @@ namespace ERPMercuryProcessingOrder
 
         }
         #endregion
-
-
 
     }
 
