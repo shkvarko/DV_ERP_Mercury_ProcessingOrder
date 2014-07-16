@@ -215,6 +215,34 @@ namespace ERPMercuryProcessingOrder
             return MyAssembly;
         }
 #endregion
+
+        #region Редактирование накладной
+        public void EditWaybill(CIntWaybill objWaybill, System.Boolean bNewObject, System.Boolean bOnlyShowMode = false)
+        {
+            return;
+        }
+        #endregion
+
+        #region Копирование накладной
+        public void CopyWaybill(CIntWaybill objWaybill)
+        {
+            return;
+        }
+        #endregion
+
+        #region Новая накладная
+        public void NewWaybill(CCompany objSrcCompany, CStock objSrcStock, CCompany objDstCompany, CStock objDstStock)
+        {
+            return;
+        }
+        #endregion
+
+        #region Импорт приложения к накладной
+        public void ImportFromExcel()
+        {
+        }
+        #endregion
+
     }
 
     /// <summary>
@@ -234,17 +262,17 @@ namespace ERPMercuryProcessingOrder
         public System.Boolean IsNewWaybill
         { get { return m_bIsNewWaybill; } }
 
-        private readonly System.Guid m_uuidOrderCurrentStateGuid;
-        public System.Guid OrderCurrentStateGuid
-        { get { return m_uuidOrderCurrentStateGuid; } }
+        private readonly System.Guid m_uuidWaybillCurrentStateGuid;
+        public System.Guid WaybillCurrentStateGuid
+        { get { return m_uuidWaybillCurrentStateGuid; } }
 
         public ChangeIntWaybillPropertieEventArgs(CIntWaybill objWaybill, enumActionSaveCancel enActionType,
-            System.Boolean bIsNewWaybill, System.Guid uuidOrderCurrentStateGuid)
+            System.Boolean bIsNewWaybill, System.Guid uuidWaybillCurrentStateGuid)
         {
             m_objWaybill = objWaybill;
             m_enActionType = enActionType;
             m_bIsNewWaybill = bIsNewWaybill;
-            m_uuidOrderCurrentStateGuid = uuidOrderCurrentStateGuid;
+            m_uuidWaybillCurrentStateGuid = uuidWaybillCurrentStateGuid;
         }
     }
 

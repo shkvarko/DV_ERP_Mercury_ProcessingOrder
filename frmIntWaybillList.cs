@@ -12,41 +12,19 @@ using ERP_Mercury.Common;
 
 namespace ERPMercuryProcessingOrder
 {
-    public partial class frmIntOrderList : DevExpress.XtraEditors.XtraForm
+    public partial class frmIntWaybillList : DevExpress.XtraEditors.XtraForm
     {
         #region Свойства
         private UniXP.Common.CProfile m_objProfile;
         private UniXP.Common.MENUITEM m_objMenuItem;
-        private List<CIntOrder> m_objOrderList;
-        private List<CIntOrderState> m_objOrderStateList;
-        private CIntOrder m_objSelectedOrder;
-        private ctrlIntOrderEditor frmOrderEditor;
+        private List<CIntWaybill> m_objWaybillList;
+        private List<CIntWaybillState> m_objWaybillStateList;
+        private CIntWaybill m_objSelectedWaybill;
         private ctrlIntWaybillEditor frmWaybillEditor;
         private DevExpress.XtraGrid.Views.Base.ColumnView ColumnView
         {
             get { return gridControlDocList.MainView as DevExpress.XtraGrid.Views.Base.ColumnView; }
         }
-        // потоки
-        private System.Threading.Thread thrStockOrderTypeParts;
-        public System.Threading.Thread ThreadStockOrderTypeParts
-        {
-            get { return thrStockOrderTypeParts; }
-        }
-        private System.Threading.ManualResetEvent m_EventStopThread;
-        public System.Threading.ManualResetEvent EventStopThread
-        {
-            get { return m_EventStopThread; }
-        }
-        private System.Threading.ManualResetEvent m_EventThreadStopped;
-        public System.Threading.ManualResetEvent EventThreadStopped
-        {
-            get { return m_EventThreadStopped; }
-        }
-        public delegate void LoadCustomerListDelegate(List<ERP_Mercury.Common.CCustomer> objCustomerList, System.Int32 iRowCountInLis);
-        public LoadCustomerListDelegate m_LoadCustomerListDelegate;
-        private const System.Int32 iThreadSleepTime = 1000;
-        private const System.String strWaitCustomer = "ждите... идет заполнение списка";
-        private System.Boolean m_bThreadFinishJob;
 
         // используемые динамические права 
         private System.Boolean IsAvailableDR_ViewSupplPayForm1;             // "Заказ ф1 просмотр";
@@ -59,7 +37,7 @@ namespace ERPMercuryProcessingOrder
         #endregion
 
         #region Конструктор
-        public frmIntOrderList(UniXP.Common.MENUITEM objMenuItem)
+        public frmIntWaybillList(UniXP.Common.MENUITEM objMenuItem)
         {
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ru-RU");
             ci.NumberFormat.CurrencyDecimalSeparator = ".";
@@ -85,11 +63,10 @@ namespace ERPMercuryProcessingOrder
 
             objClientRights = null;
 
-            m_objOrderList = null;
+            m_objWaybillList = null;
             frmWaybillEditor = null;
-            m_objSelectedOrder = null;
-            m_bThreadFinishJob = false;
-            m_objOrderStateList = null;
+            m_objSelectedWaybill = null;
+            m_objWaybillStateList = null;
 
             AddGridColumns();
 
@@ -157,42 +134,6 @@ namespace ERPMercuryProcessingOrder
         #endregion
 
         #region Обработчики событий
-        private void OnChangeOrderPropertie(Object sender, ChangeIntOrderPropertieEventArgs e)
-        {
-            try
-            {
-                switch (e.ActionType)
-                {
-                    case ERP_Mercury.Common.enumActionSaveCancel.Cancel:
-                        {
-                            CancelChangesInOrder();
-                            break;
-                        }
-                    case ERP_Mercury.Common.enumActionSaveCancel.Save:
-                        {
-                            if (e.IsNewOrder == true)
-                            {
-                                m_objSelectedOrder = null;
-                                LoadDocList();
-                            }
-                            else
-                            {
-                                SaveChangesInOrder();
-                            }
-                            break;
-                        }
-                }
-            }
-            catch (System.Exception f)
-            {
-                SendMessageToLog("OnChangeOrderPropertie. Текст ошибки: " + f.Message);
-            }
-            finally // очищаем занимаемые ресурсы
-            {
-            }
-
-            return;
-        }
 
         private void OnChangeWaybillPropertie(Object sender, ChangeIntWaybillPropertieEventArgs e)
         {
@@ -201,14 +142,14 @@ namespace ERPMercuryProcessingOrder
                 tabControl.SelectedTabPage = tabPageViewer;
                 if (e.ActionType == ERP_Mercury.Common.enumActionSaveCancel.Save)
                 {
-                    CIntOrder objOrder = GetSelectedOrder();
-                    if ((objOrder != null) && (e.WaybillCurrentStateGuid.CompareTo(System.Guid.Empty) != 0))
+                    CIntWaybill objWaybill = GetSelectedWaybill();
+                    if ((objWaybill != null) && (e.WaybillCurrentStateGuid.CompareTo(System.Guid.Empty) != 0))
                     {
-                        if (objOrder.DocState.ID.CompareTo(e.WaybillCurrentStateGuid) != 0)
+                        if (objWaybill.DocState.ID.CompareTo(e.WaybillCurrentStateGuid) != 0)
                         {
-                            if ((m_objOrderStateList != null) && (m_objOrderStateList.Count > 0))
+                            if ((m_objWaybillStateList != null) && (m_objWaybillStateList.Count > 0))
                             {
-                                objOrder.DocState = m_objOrderStateList.SingleOrDefault<CIntOrderState>(x => x.ID.CompareTo(e.WaybillCurrentStateGuid) == 0);
+                                objWaybill.DocState = m_objWaybillStateList.SingleOrDefault<CIntWaybillState>(x => x.ID.CompareTo(e.WaybillCurrentStateGuid) == 0);
                                 gridControlDocList.RefreshDataSource();
                             }
                         }
@@ -246,8 +187,8 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
-        #region Отмена изменений в редакторе заказа
-        private void CancelChangesInOrder()
+        #region Отмена изменений в редакторе накладной
+        private void CancelChangesInWaybill()
         {
             try
             {
@@ -270,8 +211,8 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
-        #region Изменения в редакторе заказа подтверждены
-        private void SaveChangesInOrder()
+        #region Изменения в редакторе накладной подтверждены
+        private void SaveChangesInWaybill()
         {
             try
             {
@@ -294,18 +235,18 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
-        #region Редактировать заказ
+        #region Редактировать накладную
         /// <summary>
-        /// Загружает свойства заказа для редактирования
+        /// Загружает реквизиты и табличную часть накладной для редактирования
         /// </summary>
-        /// <param name="objOrder">заказ</param>
-        private void EditOrder(CIntOrder objOrder)
+        /// <param name="objWaybill">накладная</param>
+        private void EditWaybill( CIntWaybill objWaybill )
         {
-            if (objOrder == null) { return; }
+            if( objWaybill == null ) { return; }
 
             if ((IsAvailableDR_ViewSupplPayForm1 || IsAvailableDR_ViewSupplPayForm2) == false)
             {
-                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"просмотр заказа\".", "Внимание",
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"просмотр накладной\".", "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
 
                 return;
@@ -313,27 +254,27 @@ namespace ERPMercuryProcessingOrder
 
             try
             {
-                m_objSelectedOrder = objOrder;
+                m_objSelectedWaybill = objWaybill;
 
                 System.String strErr = System.String.Empty;
-                m_objSelectedOrder.IntOrderItemList = ERP_Mercury.Common.CIntOrderItem.GetIntOrderTablePart(m_objProfile, m_objSelectedOrder.ID, ref strErr);
+                m_objSelectedWaybill.WaybillItemList = CIntWaybillItem.GetIntWaybillTablePart(m_objProfile, m_objSelectedWaybill.ID, ref strErr);
 
-                if (frmOrderEditor == null)
+                if (frmWaybillEditor == null)
                 {
-                    frmOrderEditor = new ctrlIntOrderEditor( m_objMenuItem );
-                    tableLayoutPanelAgreementEditor.Controls.Add(frmOrderEditor, 0, 0);
-                    frmOrderEditor.Dock = DockStyle.Fill;
-                    frmOrderEditor.ChangeIntOrderProperties += OnChangeOrderPropertie;
+                    frmWaybillEditor = new ctrlIntWaybillEditor(m_objMenuItem);
+                    tableLayoutPanelAgreementEditor.Controls.Add(frmWaybillEditor, 0, 0);
+                    frmWaybillEditor.Dock = DockStyle.Fill;
+                    frmWaybillEditor.ChangeIntWaybillProperties += OnChangeWaybillPropertie;
                 }
 
-                frmOrderEditor.EditOrder(objOrder, false);
+                frmWaybillEditor.EditWaybill(m_objSelectedWaybill, false);
 
                 tabControl.SelectedTabPage = tabPageEditor;
 
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка редактирования заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Ошибка редактирования накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -346,12 +287,12 @@ namespace ERPMercuryProcessingOrder
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                EditOrder(GetSelectedOrder());
+                EditWaybill(GetSelectedWaybill());
 
             }//try
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка редактирования заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Ошибка редактирования накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -361,18 +302,18 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
-        private void gridControlAgreementGrid_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void gridControlDocListGrid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             try
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                EditOrder(GetSelectedOrder());
+                EditWaybill(GetSelectedWaybill());
 
             }//try
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка редактирования заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Ошибка редактирования накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -382,12 +323,12 @@ namespace ERPMercuryProcessingOrder
             return;
         }
         /// <summary>
-        /// Возвращает ссылку на выбранный в списке заказ
+        /// Возвращает ссылку на выбранную в списке накладную
         /// </summary>
-        /// <returns>ссылка на заказ</returns>
-        private ERP_Mercury.Common.CIntOrder GetSelectedOrder()
+        /// <returns>ссылка на накладную</returns>
+        private ERP_Mercury.Common.CIntWaybill GetSelectedWaybill()
         {
-            ERP_Mercury.Common.CIntOrder objRet = null;
+            ERP_Mercury.Common.CIntWaybill objRet = null;
             try
             {
                 if ((((DevExpress.XtraGrid.Views.Grid.GridView)gridControlDocList.MainView).RowCount > 0) &&
@@ -395,12 +336,12 @@ namespace ERPMercuryProcessingOrder
                 {
                     System.Guid uuidID = (System.Guid)(((DevExpress.XtraGrid.Views.Grid.GridView)gridControlDocList.MainView)).GetFocusedRowCellValue("ID");
 
-                    objRet = m_objOrderList.Single<CIntOrder>(x => x.ID.CompareTo(uuidID) == 0);
+                    objRet = m_objWaybillList.Single<CIntWaybill>(x => x.ID.CompareTo(uuidID) == 0);
                 }
             }//try
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка поиска выбранного заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Ошибка поиска идентификатора выбранной в списке накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -411,44 +352,44 @@ namespace ERPMercuryProcessingOrder
 
         #endregion
 
-        #region Копировать заказ
+        #region Копировать накладную
         /// <summary>
-        /// Копирует свойства заказа в новый и открывает его для редактирования
+        /// Копирует свойства накладной в новый и открывает её для редактирования
         /// </summary>
-        /// <param name="objOrder">заказ</param>
-        private void CopyOrder(CIntOrder objOrder)
+        /// <param name="objWaybill">накладная</param>
+        private void CopyWaybill(CIntWaybill objWaybill)
         {
-            if (objOrder == null) { return; }
+            if (objWaybill == null) { return; }
             if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
             {
-                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"копирование заказа\".", "Внимание",
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"копирование накладной\".", "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
 
                 return;
             }
             try
             {
-                m_objSelectedOrder = objOrder;
+                m_objSelectedWaybill = objWaybill;
 
                 ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
                 this.SuspendLayout();
 
-                if (frmOrderEditor == null)
+                if (frmWaybillEditor == null)
                 {
-                    frmOrderEditor = new ctrlIntOrderEditor( m_objMenuItem );
-                    tableLayoutPanelAgreementEditor.Controls.Add(frmOrderEditor, 0, 0);
-                    frmOrderEditor.Dock = DockStyle.Fill;
-                    frmOrderEditor.ChangeIntOrderProperties += OnChangeOrderPropertie;
+                    frmWaybillEditor = new ctrlIntWaybillEditor(m_objMenuItem);
+                    tableLayoutPanelAgreementEditor.Controls.Add(frmWaybillEditor, 0, 0);
+                    frmWaybillEditor.Dock = DockStyle.Fill;
+                    frmWaybillEditor.ChangeIntWaybillProperties += OnChangeWaybillPropertie;
                 }
 
-                frmOrderEditor.CopyOrder(objOrder);
+                frmWaybillEditor.CopyWaybill(objWaybill);
 
                 tabControl.SelectedTabPage = tabPageEditor;
 
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка копирования заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Ошибка копирования накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -465,12 +406,12 @@ namespace ERPMercuryProcessingOrder
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                CopyOrder(GetSelectedOrder());
+                CopyWaybill(GetSelectedWaybill());
 
             }//try
             catch (System.Exception f)
             {
-                SendMessageToLog("Ошибка копирования заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Ошибка копирования накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -482,17 +423,17 @@ namespace ERPMercuryProcessingOrder
 
         #endregion
 
-        #region Удалить заказ
+        #region Удалить накладную
         /// <summary>
-        /// Удаляет заказ
+        /// Удаляет накладную
         /// </summary>
-        /// <param name="objOrder">заказ</param>
-        private void DeleteOrder(CIntOrder objOrder)
+        /// <param name="objWaybill">накладная</param>
+        private void DeleteWaybill(CIntWaybill objWaybill)
         {
-            if (objOrder == null) { return; }
+            if (objWaybill == null) { return; }
             if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
             {
-                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"удаление заказа\".", "Внимание",
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"удаление накладной\".", "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
 
                 return;
@@ -500,23 +441,23 @@ namespace ERPMercuryProcessingOrder
             try
             {
                 System.Int32 iFocusedRowHandle = gridViewDocList.FocusedRowHandle;
-                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Подтвердите, пожалуйста, удаление заказа.\n\n№{0}\nКомпания (источник): {1}\nСклад (источник): {2}\nКомпания (получатель): {1}\nСклад (получатель): {2}", 
-                    objOrder.DocNum, objOrder.CompanySrcAcronym, objOrder.StockSrcName), "Подтверждение",
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Подтвердите, пожалуйста, удаление накладной.\n\n№{0}\nКомпания (источник): {1}\nСклад (источник): {2}\nКомпания (получатель): {1}\nСклад (получатель): {2}",
+                    objWaybill.DocNum, objWaybill.CompanySrcAcronym, objWaybill.StockSrcName), "Подтверждение",
                     System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == DialogResult.No) { return; }
 
                 System.String strErr = "";
-                //if (ERP_Mercury.Common.COrderRepository.MakeDeletedDB(m_objProfile, null, objOrder.ID, ref strErr) == true)
+                //if (COrderRepository.MakeDeletedDB(m_objProfile, null, objWaybill.ID, ref strErr) == true)
                 //{
                 //    LoadDocList();
                 //}
                 //else
                 //{
-                //    SendMessageToLog("Удаление заказа. Текст ошибки: " + strErr);
+                //    SendMessageToLog("Удаление накладной. Текст ошибки: " + strErr);
                 //}
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Удаление заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Удаление накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -527,11 +468,11 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                DeleteOrder(GetSelectedOrder());
+                DeleteWaybill(GetSelectedWaybill());
             }//try
             catch (System.Exception f)
             {
-                SendMessageToLog("Удаление заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Удаление накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -541,15 +482,15 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
-        #region Новый заказ
+        #region Новая накладная
         /// <summary>
-        /// Открывает редактор заказа в режиме "Новый заказ"
+        /// Открывает редактор накладной в режиме "Новая накладная"
         /// </summary>
-        private void NewOrder()
+        private void NewWaybill()
         {
             if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
             {
-                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"создание нового заказа\".", "Внимание",
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"создание новой накладной\".", "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
 
                 return;
@@ -560,12 +501,12 @@ namespace ERPMercuryProcessingOrder
                 ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
                 this.SuspendLayout();
 
-                if (frmOrderEditor == null)
+                if (frmWaybillEditor == null)
                 {
-                    frmOrderEditor = new ctrlIntOrderEditor( m_objMenuItem );
-                    tableLayoutPanelAgreementEditor.Controls.Add(frmOrderEditor, 0, 0);
-                    frmOrderEditor.Dock = DockStyle.Fill;
-                    frmOrderEditor.ChangeIntOrderProperties += OnChangeOrderPropertie;
+                    frmWaybillEditor = new ctrlIntWaybillEditor(m_objMenuItem);
+                    tableLayoutPanelAgreementEditor.Controls.Add(frmWaybillEditor, 0, 0);
+                    frmWaybillEditor.Dock = DockStyle.Fill;
+                    frmWaybillEditor.ChangeIntWaybillProperties += OnChangeWaybillPropertie;
                 }
 
                 ERP_Mercury.Common.CCompany objSelectedCompanySrc = (((cboxCompanySrc.SelectedItem == null) || (System.Convert.ToString(cboxCompanySrc.SelectedItem) == "")) ? null : ((CCompany)cboxCompanySrc.SelectedItem));
@@ -573,14 +514,14 @@ namespace ERPMercuryProcessingOrder
                 ERP_Mercury.Common.CCompany objSelectedCompanyDst = (((cboxCompanyDst.SelectedItem == null) || (System.Convert.ToString(cboxCompanyDst.SelectedItem) == "")) ? null : ((CCompany)cboxCompanyDst.SelectedItem));
                 ERP_Mercury.Common.CStock objSelectedStockDst = (((cboxStockDst.SelectedItem == null) || (System.Convert.ToString(cboxStockDst.SelectedItem) == "")) ? null : ((CStock)cboxStockDst.SelectedItem));
 
-                frmOrderEditor.NewOrder(objSelectedCompanySrc, objSelectedStockSrc, objSelectedCompanyDst, objSelectedStockDst);
+                frmWaybillEditor.NewWaybill(objSelectedCompanySrc, objSelectedStockSrc, objSelectedCompanyDst, objSelectedStockDst);
 
                 tabControl.SelectedTabPage = tabPageEditor;
 
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Создание заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Создание накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -594,11 +535,11 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                NewOrder();
+                NewWaybill();
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Создание заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Создание накладной. Текст ошибки: " + f.Message);
             }
             finally
             {
@@ -608,7 +549,7 @@ namespace ERPMercuryProcessingOrder
 
         #endregion
 
-        #region Импорт заказа
+        #region Импорт накладной
         private void btnImportProduct_Click(object sender, EventArgs e)
         {
             try
@@ -628,7 +569,7 @@ namespace ERPMercuryProcessingOrder
         {
             if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
             {
-                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"импорт заказа\".", "Внимание",
+                DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"импорт накладной\".", "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
 
                 return;
@@ -638,9 +579,9 @@ namespace ERPMercuryProcessingOrder
                 if (cboxCompanySrc.SelectedItem == null) { return; }
                 if (cboxStockSrc.SelectedItem == null) { return; }
 
-                NewOrder();
-                
-                if (frmOrderEditor != null)  { frmOrderEditor.ImportFromExcel(); }
+                NewWaybill();
+
+                if (frmWaybillEditor != null) { frmWaybillEditor.ImportFromExcel(); }
             }
             catch (System.Exception f)
             {
@@ -695,7 +636,7 @@ namespace ERPMercuryProcessingOrder
         }
         #endregion
 
-        #region Список заказов
+        #region Список накладных
         private void AddGridColumn(DevExpress.XtraGrid.Views.Base.ColumnView view, string fieldName, string caption) { AddGridColumn(view, fieldName, caption, null); }
         private void AddGridColumn(DevExpress.XtraGrid.Views.Base.ColumnView view, string fieldName, string caption, DevExpress.XtraEditors.Repository.RepositoryItem item) { AddGridColumn(view, fieldName, caption, item, "", DevExpress.Utils.FormatType.None); }
         private void AddGridColumn(DevExpress.XtraGrid.Views.Base.ColumnView view, string fieldName, string caption, DevExpress.XtraEditors.Repository.RepositoryItem item, string format, DevExpress.Utils.FormatType type)
@@ -717,19 +658,20 @@ namespace ERPMercuryProcessingOrder
             AddGridColumn(ColumnView, "DocNum", "Номер");
             AddGridColumn(ColumnView, "BeginDate", "Дата");
             AddGridColumn(ColumnView, "IntOrderShipModeName", "Вид отгрузки");
+            AddGridColumn(ColumnView, "ShipDate", "Дата отгрузки");
             AddGridColumn(ColumnView, "CompanySrcAcronym", "Компания-источник");
             AddGridColumn(ColumnView, "StockSrcName", "Склад-источник");
             AddGridColumn(ColumnView, "CompanyDstAcronym", "Компания-получатель");
             AddGridColumn(ColumnView, "StockDstName", "Склад-получатель");
             AddGridColumn(ColumnView, "DepartCode", "Подразделение");
-  //          AddGridColumn(ColumnView, "PaymentTypeName", "Форма оплаты");
+            //          AddGridColumn(ColumnView, "PaymentTypeName", "Форма оплаты");
 
             AddGridColumn(ColumnView, "Quantity", "Количество, шт.");
 
             AddGridColumn(ColumnView, "SumOrder", "Сумма, руб.");
             AddGridColumn(ColumnView, "SumDiscount", "Сумма скидки, руб.");
             AddGridColumn(ColumnView, "SumWithDiscount", "С учетом скидки, руб.");
-            
+
             AddGridColumn(ColumnView, "SumRetail", "Сумма розн., руб.");
 
             foreach (DevExpress.XtraGrid.Columns.GridColumn objColumn in ColumnView.Columns)
@@ -741,7 +683,7 @@ namespace ERPMercuryProcessingOrder
                 {
                     objColumn.Visible = false;
                 }
-                if (objColumn.FieldName == "BeginDate")
+                if ((objColumn.FieldName == "BeginDate") || (objColumn.FieldName == "ShipDate"))
                 {
                     objColumn.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
                     objColumn.DisplayFormat.FormatString = "dd.MM.yyyy";
@@ -831,10 +773,10 @@ namespace ERPMercuryProcessingOrder
                             }
                         }
                     }
-                    if (StockIdList.Count > 0)
-                    {
-                        cboxStock.SelectedItem = objStockList.Single<ERP_Mercury.Common.CStock>(x => x.IBId == StockIdList.Min<int>());
-                    }
+                    //if (StockIdList.Count > 0)
+                    //{
+                    //    cboxStock.SelectedItem = objStockList.Single<ERP_Mercury.Common.CStock>(x => x.IBId == StockIdList.Min<int>());
+                    //}
                     StockIdList = null;
                 }
             }
@@ -891,7 +833,7 @@ namespace ERPMercuryProcessingOrder
                 LoadStockForCompany(cboxStockSrc, cboxCompanySrc);
                 LoadStockForCompany(cboxStockDst, cboxCompanyDst);
 
-                m_objOrderStateList = CIntOrderState.GetIntOrderStateList( m_objProfile, ref strErr );
+                m_objWaybillStateList = CIntWaybillState.GetIntWaybillStateList(m_objProfile, ref strErr);
 
                 ChangeConditionForSearch();
             }
@@ -921,18 +863,18 @@ namespace ERPMercuryProcessingOrder
                 System.Guid uuidPaymentTypeId = System.Guid.Empty;
                 System.Boolean bOnlyUnShippedWaybills = false;
 
-                m_objOrderList = CIntOrder.GetIntOrderList(m_objProfile, System.Guid.Empty, IntWaybill_DateBegin,
+                m_objWaybillList = CIntWaybill.GetWaybillList(m_objProfile, System.Guid.Empty, IntWaybill_DateBegin,
                     IntWaybill_DateEnd, uuidCompanySrcId, uuidStockSrcId, uuidCompanyDstId, uuidStockDstId, uuidPaymentTypeId,
                     ref strErr, bOnlyUnShippedWaybills);
 
-                if (m_objOrderList != null)
+                if (m_objWaybillList != null)
                 {
                     if (DocNum.Text.Trim().Length > 0)
                     {
-                        m_objOrderList = m_objOrderList.Where<CIntOrder>(x => x.DocNum.Contains(DocNum.Text.Trim()) == true).ToList<CIntOrder>();
+                        m_objWaybillList = m_objWaybillList.Where<CIntWaybill>(x => x.DocNum.Contains(DocNum.Text.Trim()) == true).ToList<CIntWaybill>();
                     }
 
-                    gridControlDocList.DataSource = m_objOrderList;
+                    gridControlDocList.DataSource = m_objWaybillList;
 
                 }
 
@@ -945,7 +887,7 @@ namespace ERPMercuryProcessingOrder
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Загрузка журнала заказов на внутреннее перемещение. Текст ошибки: " + f.Message);
+                SendMessageToLog("Загрузка журнала накладных на внутреннее перемещение. Текст ошибки: " + f.Message);
                 //
             }
             finally
@@ -1069,12 +1011,12 @@ namespace ERPMercuryProcessingOrder
 
         #endregion
 
-        #region Свойства заказа
+        #region Свойства накладной
         private void gridViewDocList_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             try
             {
-                ShowDocProperties(GetSelectedOrder());
+                ShowDocProperties(GetSelectedWaybill());
 
                 barBtnAdd.Enabled = (IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2);
                 barBtnEdit.Enabled = ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) && (e.FocusedRowHandle >= 0));
@@ -1091,7 +1033,7 @@ namespace ERPMercuryProcessingOrder
         {
             try
             {
-                ShowDocProperties(GetSelectedOrder());
+                ShowDocProperties(GetSelectedWaybill());
 
                 barBtnAdd.Enabled = (IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2);
                 barBtnEdit.Enabled = ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) && (gridViewDocList.FocusedRowHandle >= 0));
@@ -1109,7 +1051,7 @@ namespace ERPMercuryProcessingOrder
         /// Отображает свойства документа
         /// </summary>
         /// <param name="objDoc">документ</param>
-        private void ShowDocProperties(CIntOrder objDoc)
+        private void ShowDocProperties(CIntWaybill objDoc)
         {
             try
             {
@@ -1133,7 +1075,7 @@ namespace ERPMercuryProcessingOrder
                 {
                     txtCompanyDst.Text = objDoc.CompanyDstAcronym;
                     txtCompanySrc.Text = objDoc.CompanySrcAcronym;
-                    txtDocAllPrice.Text = System.String.Format("{0:### ### ##0}", objDoc.SumOrder);
+                    txtDocAllPrice.Text = System.String.Format("{0:### ### ##0}", objDoc.SumWaybill);
                     txtDocBeginDate.Text = objDoc.BeginDate.ToShortDateString();
                     txtDoclDescrpn.Text = objDoc.Description;
                     txtDocNum.Text = objDoc.DocNum;
@@ -1150,7 +1092,7 @@ namespace ERPMercuryProcessingOrder
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("Отображение свойств заказа. Текст ошибки: " + f.Message);
+                SendMessageToLog("Отображение свойств накладной. Текст ошибки: " + f.Message);
             }
             return;
         }
@@ -1166,12 +1108,12 @@ namespace ERPMercuryProcessingOrder
             strReestrPath += ("\\Tools\\");
             try
             {
-                gridViewDocList.RestoreLayoutFromRegistry(String.Format("{0}{1}IntOrder", strReestrPath, gridViewDocList.Name));
+                gridViewDocList.RestoreLayoutFromRegistry(String.Format("{0}{1}IntWaybill", strReestrPath, gridViewDocList.Name));
             }
             catch (System.Exception f)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                "Ошибка загрузки настроек списка заказов.\n\nТекст ошибки : " + f.Message, "Внимание",
+                "Ошибка загрузки настроек списка накладных.\n\nТекст ошибки : " + f.Message, "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
             finally // очищаем занимаемые ресурсы
@@ -1189,12 +1131,12 @@ namespace ERPMercuryProcessingOrder
             strReestrPath += ("\\Tools\\");
             try
             {
-                gridViewDocList.SaveLayoutToRegistry(String.Format("{0}{1}IntOrder", strReestrPath, gridViewDocList.Name));
+                gridViewDocList.SaveLayoutToRegistry(String.Format("{0}{1}IntWaybill", strReestrPath, gridViewDocList.Name));
             }
             catch (System.Exception f)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show(
-                "Ошибка записи настроек списка заказов.\n\nТекст ошибки : " + f.Message, "Внимание",
+                "Ошибка записи настроек списка накладных.\n\nТекст ошибки : " + f.Message, "Внимание",
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
             finally // очищаем занимаемые ресурсы
@@ -1206,7 +1148,7 @@ namespace ERPMercuryProcessingOrder
         #endregion
 
         #region Закрытие формы
-        private void frmOrderList_FormClosed(object sender, FormClosedEventArgs e)
+        private void frmIntWaybillList_FormClosed(object sender, FormClosedEventArgs e)
         {
             try
             {
@@ -1214,14 +1156,14 @@ namespace ERPMercuryProcessingOrder
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("frmOrderList_FormClosed. Текст ошибки: " + f.Message);
+                SendMessageToLog("frmIntWaybillList_FormClosed. Текст ошибки: " + f.Message);
             }
             return;
         }
         #endregion
 
         #region Открытие формы
-        private void frmOrderList_Shown(object sender, EventArgs e)
+        private void frmIntWaybillList_Shown(object sender, EventArgs e)
         {
             try
             {
@@ -1235,20 +1177,18 @@ namespace ERPMercuryProcessingOrder
             }
             catch (System.Exception f)
             {
-                SendMessageToLog("frmOrderList_Shown. Текст ошибки: " + f.Message);
+                SendMessageToLog("frmIntWaybillList_Shown. Текст ошибки: " + f.Message);
             }
             return;
         }
         #endregion
-
-
     }
 
-    public class IntOrderListEditor : PlugIn.IClassTypeView
+    public class IntWaybillListEditor : PlugIn.IClassTypeView
     {
         public override void Run(UniXP.Common.MENUITEM objMenuItem, System.String strCaption)
         {
-            frmIntOrderList obj = new frmIntOrderList(objMenuItem);
+            frmIntWaybillList obj = new frmIntWaybillList(objMenuItem);
             obj.Text = strCaption;
             obj.MdiParent = objMenuItem.objProfile.m_objMDIManager.MdiParent;
             obj.Visible = true;

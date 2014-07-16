@@ -149,6 +149,12 @@
     <Compile Include="frmIntOrderList.Designer.cs">
       <DependentUpon>frmIntOrderList.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmIntWaybillList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIntWaybillList.Designer.cs">
+      <DependentUpon>frmIntWaybillList.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmJoinDepart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmIntOrderList.resx">
       <DependentUpon>frmIntOrderList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIntWaybillList.resx">
+      <DependentUpon>frmIntWaybillList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmJoinDepart.resx">
       <DependentUpon>frmJoinDepart.cs</DependentUpon>
