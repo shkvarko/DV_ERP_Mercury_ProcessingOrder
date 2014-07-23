@@ -289,7 +289,7 @@
             this.mitemDeleteSelectedRows,
             this.mitemClearRows});
             this.contextMenuStrip.Name = "contextMenuStripLicence";
-            this.contextMenuStrip.Size = new System.Drawing.Size(329, 104);
+            this.contextMenuStrip.Size = new System.Drawing.Size(329, 126);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
             this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
@@ -364,7 +364,7 @@
             // mitmsImportFromExcel
             // 
             this.mitmsImportFromExcel.Name = "mitmsImportFromExcel";
-            this.mitmsImportFromExcel.Size = new System.Drawing.Size(130, 22);
+            this.mitmsImportFromExcel.Size = new System.Drawing.Size(152, 22);
             this.mitmsImportFromExcel.Text = "из MS Excel";
             // 
             // toolStripSeparator2

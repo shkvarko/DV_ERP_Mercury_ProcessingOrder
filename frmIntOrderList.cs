@@ -361,7 +361,7 @@ namespace ERPMercuryProcessingOrder
             return;
         }
 
-        private void gridControlAgreementGrid_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void gridControlDocList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             try
             {
@@ -419,6 +419,9 @@ namespace ERPMercuryProcessingOrder
         private void CopyOrder(CIntOrder objOrder)
         {
             if (objOrder == null) { return; }
+
+            System.String strErr = System.String.Empty;
+
             if ((IsAvailableDR_EditSupplPayForm1 || IsAvailableDR_EditSupplPayForm2) == false)
             {
                 DevExpress.XtraEditors.XtraMessageBox.Show("У Вас нет прав на операцию \"копирование заказа\".", "Внимание",
@@ -441,7 +444,7 @@ namespace ERPMercuryProcessingOrder
                     frmOrderEditor.ChangeIntOrderProperties += OnChangeOrderPropertie;
                 }
 
-                frmOrderEditor.CopyOrder(objOrder);
+                frmOrderEditor.CopyOrder(objOrder, ref strErr );
 
                 tabControl.SelectedTabPage = tabPageEditor;
 
@@ -479,6 +482,10 @@ namespace ERPMercuryProcessingOrder
 
             return;
         }
+        private void menuCopy_Click(object sender, EventArgs e)
+        {
+            barBtnCopy_Click(sender, e);
+        }
 
         #endregion
 
@@ -504,15 +511,42 @@ namespace ERPMercuryProcessingOrder
                     objOrder.DocNum, objOrder.CompanySrcAcronym, objOrder.StockSrcName), "Подтверждение",
                     System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == DialogResult.No) { return; }
 
-                System.String strErr = "";
-                //if (ERP_Mercury.Common.COrderRepository.MakeDeletedDB(m_objProfile, null, objOrder.ID, ref strErr) == true)
-                //{
-                //    LoadDocList();
-                //}
-                //else
-                //{
-                //    SendMessageToLog("Удаление заказа. Текст ошибки: " + strErr);
-                //}
+                System.Guid Doc_Guid = objOrder.ID;
+                System.Guid CurrentDocState_Guid = objOrder.DocState.ID;
+                System.Guid NewDocState_Guid = System.Guid.Empty;
+                System.String strErr = System.String.Empty;
+
+                Cursor = Cursors.WaitCursor;
+                
+                System.Boolean bRet = CIntOrder.CancelIntOrder(m_objProfile, Doc_Guid, ref NewDocState_Guid, ref strErr);
+
+                Cursor = Cursors.Default;
+
+                if (bRet == true)
+                {
+                    if (NewDocState_Guid.CompareTo(System.Guid.Empty) != 0)
+                    {
+                        List<CIntOrderState> objDocStateList = CIntOrderState.GetIntOrderStateList(m_objProfile, ref strErr);
+                        if (objDocStateList != null)
+                        {
+                            CIntOrderState objNewDocState = objDocStateList.SingleOrDefault<CIntOrderState>(x => x.ID.CompareTo(NewDocState_Guid) == 0);
+                            if (objNewDocState != null)
+                            {
+                                objOrder.DocState = objNewDocState;
+                            }
+                            objDocStateList = null;
+                        }
+
+                        gridControlDocList.RefreshDataSource();
+                        SendMessageToLog(String.Format("{0}  от {1} {2}", objOrder.DocNum, objOrder.BeginDate.ToShortDateString(), strErr));
+                    }
+
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(strErr,
+                    "Внимание", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                }
             }
             catch (System.Exception f)
             {
@@ -1065,6 +1099,25 @@ namespace ERPMercuryProcessingOrder
                 return;
             }
 
+        }
+
+        private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                menuEventLog.Enabled = (( gridViewDocList.FocusedRowHandle >= 0) && (IsAvailableDR_ViewSupplPayForm1 == true));
+                menuCopy.Enabled = ((gridViewDocList.FocusedRowHandle >= 0) && (IsAvailableDR_EditSupplPayForm1 == true));
+                menuMakeSupplDeleted.Enabled = ((gridViewDocList.FocusedRowHandle >= 0) && (IsAvailableDR_EditSupplPayForm1 == true));
+                menuTransformSupplToWaybillInManualMode.Enabled = ((gridViewDocList.FocusedRowHandle >= 0) && (IsAvailableDR_MoveSupplToWaybillPayForm1 || IsAvailableDR_MoveSupplToWaybillPayForm2));
+                menuGoToWaybill.Enabled = ((gridViewDocList.FocusedRowHandle >= 0) && (IsAvailableDR_ViewSupplPayForm1 == true));
+            }
+            catch (System.Exception f)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show("contextMenuStrip_Opening\n" + f.Message, "Ошибка",
+                   System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+
+            return;
         }
 
         #endregion

@@ -35,6 +35,7 @@
             this.menuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuMakeSupplDeleted = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuEventLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -106,6 +107,7 @@
             this.tabPageWaybill = new DevExpress.XtraTab.XtraTabPage();
             this.tableLayoutPanelWaybillEditor = new System.Windows.Forms.TableLayoutPanel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl)).BeginInit();
@@ -155,6 +157,8 @@
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRefresh,
             this.toolStripSeparator1,
+            this.menuCopy,
+            this.toolStripSeparator3,
             this.menuMakeSupplDeleted,
             this.toolStripSeparator2,
             this.menuEventLog,
@@ -162,53 +166,61 @@
             this.menuTransformSupplToWaybillInManualMode,
             this.menuGoToWaybill});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(324, 132);
+            this.contextMenuStrip.Size = new System.Drawing.Size(242, 182);
             this.toolTipController.SetSuperTip(this.contextMenuStrip, null);
+            this.contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_Opening);
             // 
             // menuRefresh
             // 
             this.menuRefresh.Name = "menuRefresh";
-            this.menuRefresh.Size = new System.Drawing.Size(323, 22);
+            this.menuRefresh.Size = new System.Drawing.Size(241, 22);
             this.menuRefresh.Text = "Обновить";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(320, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
             // 
             // menuMakeSupplDeleted
             // 
             this.menuMakeSupplDeleted.Name = "menuMakeSupplDeleted";
-            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(323, 22);
+            this.menuMakeSupplDeleted.Size = new System.Drawing.Size(241, 22);
             this.menuMakeSupplDeleted.Text = "Удалить заказ";
             this.menuMakeSupplDeleted.ToolTipText = "Изменить состояние заказа на \"удален\"";
+            // 
+            // menuCopy
+            // 
+            this.menuCopy.Name = "menuCopy";
+            this.menuCopy.Size = new System.Drawing.Size(241, 22);
+            this.menuCopy.Text = "Копировать заказ...";
+            this.menuCopy.Click += new System.EventHandler(this.menuCopy_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(320, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(238, 6);
             // 
             // menuEventLog
             // 
             this.menuEventLog.Name = "menuEventLog";
-            this.menuEventLog.Size = new System.Drawing.Size(323, 22);
-            this.menuEventLog.Text = "Журнал событий";
+            this.menuEventLog.Size = new System.Drawing.Size(241, 22);
+            this.menuEventLog.Text = "Журнал событий...";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(320, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(238, 6);
             // 
             // menuTransformSupplToWaybillInManualMode
             // 
             this.menuTransformSupplToWaybillInManualMode.Name = "menuTransformSupplToWaybillInManualMode";
-            this.menuTransformSupplToWaybillInManualMode.Size = new System.Drawing.Size(323, 22);
-            this.menuTransformSupplToWaybillInManualMode.Text = "Перевести заказ в накладную (ручной режим)...";
+            this.menuTransformSupplToWaybillInManualMode.Size = new System.Drawing.Size(241, 22);
+            this.menuTransformSupplToWaybillInManualMode.Text = "Перевести заказ в накладную...";
             // 
             // menuGoToWaybill
             // 
             this.menuGoToWaybill.Name = "menuGoToWaybill";
-            this.menuGoToWaybill.Size = new System.Drawing.Size(323, 22);
+            this.menuGoToWaybill.Size = new System.Drawing.Size(241, 22);
             this.menuGoToWaybill.Text = "Перейти к накладной...";
             // 
             // tableLayoutPanel1
@@ -912,6 +924,7 @@
             this.gridControlDocList.ToolTipController = this.toolTipController;
             this.gridControlDocList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewDocList});
+            this.gridControlDocList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.gridControlDocList_MouseDoubleClick);
             // 
             // gridViewDocList
             // 
@@ -1084,6 +1097,11 @@
             this.openFileDialog.Filter = "MS Excel 2010 files (*.xlsm)|*.xlsm|MS Excel 2003 files (*.xls)|*.xls|All files (" +
     "*.*)|*.*";
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(238, 6);
+            // 
             // frmIntOrderList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1222,5 +1240,7 @@
         private DevExpress.XtraEditors.LabelControl labelControl18;
         private DevExpress.XtraEditors.DateEdit dtBeginDate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.ToolStripMenuItem menuCopy;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }

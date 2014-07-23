@@ -445,8 +445,8 @@ namespace ERPMercuryProcessingOrder
                     objWaybill.DocNum, objWaybill.CompanySrcAcronym, objWaybill.StockSrcName), "Подтверждение",
                     System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == DialogResult.No) { return; }
 
-                System.String strErr = "";
-                //if (COrderRepository.MakeDeletedDB(m_objProfile, null, objWaybill.ID, ref strErr) == true)
+                System.String strErr = System.String.Empty;
+                //if ( CIntOrder.CancelIntOrder(m_objProfile,  null, objWaybill.ID, ref strErr) == true)
                 //{
                 //    LoadDocList();
                 //}
